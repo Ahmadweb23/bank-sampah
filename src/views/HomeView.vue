@@ -208,7 +208,7 @@
             </svg>
           </div>
           <p class="text-[15px] font-medium leading-tight">
-            Jadwal Penjemputan
+            Jual ke Pengepul
           </p>
         </router-link>
 
@@ -615,7 +615,7 @@ async function loadInitialData() {
     if (resTransaksi.status === 'fulfilled') {
       if (resTransaksi.value?.success && Array.isArray(resTransaksi.value.data)) {
         transactions.value = resTransaksi.value.data.map((item) => {
-          const namaWarga = item.nama || item.nama_warga || item.username || 'Nama Tidak Diketahui'
+          const nama = item.nama || 'Nama Tidak Diketahui'
           
           let waktuFormatted = 'Terbaru'
           if (item.tanggal) {
@@ -646,12 +646,23 @@ async function loadInitialData() {
             }
           }
           
-          return {
-            title: 'Setoran Sampah',
-            subtitle: `${namaWarga} • ${item.total_kg || 0} kg`,
-            amount: Number(item.total_rupiah || 0),
-            time: waktuFormatted,
-            type: 'Setoran'
+          if (item.tipe === 'penjualan') {
+            return {
+              title: 'Penjualan ke Pengepul',
+              subtitle: `${nama} • ${item.total_kg || 0} kg`,
+              amount: Number(item.total_rupiah || 0),
+              time: waktuFormatted,
+              type: 'Penjualan',
+              aliases: ['Pembelian']
+            }
+          } else {
+            return {
+              title: 'Setoran Sampah',
+              subtitle: `${nama} • ${item.total_kg || 0} kg`,
+              amount: Number(item.total_rupiah || 0),
+              time: waktuFormatted,
+              type: 'Setoran'
+            }
           }
         })
       }

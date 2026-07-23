@@ -21,7 +21,7 @@
           >
           <input
             v-model="namaPengepul"
-            placeholder="Masukkan nama pengepul atau"
+            placeholder="Masukkan nama pengepul"
             class="w-full bg-transparent outline-none"
           />
         </div>
@@ -30,17 +30,18 @@
           <p class="text-sm text-slate-600">Jenis Sampah</p>
           <div class="mt-2 grid grid-cols-2 gap-3">
             <button
-              v-for="type in types"
-              :key="type"
-              @click="selectType(type)"
+              v-for="item in stokList"
+              :key="item.kode"
+              @click="selectItem(item)"
               :class="[
-                'rounded-xl p-3 text-sm border',
-                selectedType === type
+                'rounded-xl p-3 text-sm border text-left',
+                selectedKode === item.kode
                   ? 'bg-primary/10 border-primary'
                   : 'bg-white border-slate-200',
               ]"
             >
-              {{ type }}
+              <div class="font-medium">{{ item.nama }}</div>
+              <div class="text-xs text-slate-500">Stok: {{ item.stok }} kg</div>
             </button>
           </div>
         </div>
@@ -50,13 +51,15 @@
         >
           <div>
             <p class="text-sm text-on-surface-variant">Stok Tersedia</p>
-            <p class="font-semibold">{{ stok }} kg</p>
+            <p class="font-semibold">{{ selectedItem?.stok || 0 }} kg</p>
           </div>
           <div>
             <p class="text-sm text-on-surface-variant">Berat Dijual (kg)</p>
             <input
               v-model.number="beratJual"
               type="number"
+              min="0"
+              :max="selectedItem?.stok"
               class="w-28 text-right font-semibold bg-transparent outline-none"
             />
           </div>
@@ -71,6 +74,7 @@
             <input
               v-model.number="hargaPerKg"
               type="number"
+              min="0"
               class="w-36 text-right font-semibold bg-transparent outline-none"
             />
           </div>
@@ -92,9 +96,10 @@
           </button>
           <button
             @click="terimaSimpan"
-            class="w-full rounded-2xl bg-primary py-3 text-white font-semibold"
+            :disabled="loading"
+            class="w-full rounded-2xl bg-primary py-3 text-white font-semibold disabled:opacity-50"
           >
-            Terima & Simpan
+            {{ loading ? 'Menyimpan...' : 'Terima & Simpan' }}
           </button>
         </div>
       </div>
@@ -103,34 +108,127 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, inject, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { getStok, submitPenjualan } from '../services/api'
 
-const namaPengepul = ref("");
-const types = ["Plastik", "Kertas", "Logam", "Kaca"];
-const selectedType = ref("Plastik");
-const stok = ref("125.5");
-const beratJual = ref(50);
-const hargaPerKg = ref(2000);
+const showModal = inject('showModal')
+const router = useRouter()
+
+const namaPengepul = ref('')
+const stokList = ref([])
+const selectedKode = ref('')
+const beratJual = ref(0)
+const hargaPerKg = ref(0)
+const loading = ref(false)
+
+const selectedItem = computed(() => {
+  return stokList.value.find(item => item.kode === selectedKode.value)
+})
 
 const totalDiterima = computed(() => {
-  return (Number(beratJual.value) || 0) * (Number(hargaPerKg.value) || 0);
-});
+  return (Number(beratJual.value) || 0) * (Number(hargaPerKg.value) || 0)
+})
 
 function formatRupiah(v) {
-  return "Rp" + Number(v).toLocaleString("id-ID");
+  return 'Rp' + Number(v).toLocaleString('id-ID')
 }
 
-function selectType(t) {
-  selectedType.value = t;
+function selectItem(item) {
+  selectedKode.value = item.kode
+  hargaPerKg.value = item.harga_jual || 0
+  beratJual.value = 0
 }
 
-function terimaSimpan() {
-  alert(
-    "Transaksi jual tersimpan (demo). Total: " +
-      formatRupiah(totalDiterima.value),
-  );
-  // In real app: call API to save
-  // then navigate back or show receipt
-  // router.push('/transaksi')
+async function loadStok() {
+  try {
+    const result = await getStok()
+    if (result.success && result.data) {
+      stokList.value = result.data
+      if (stokList.value.length > 0) {
+        selectItem(stokList.value[0])
+      }
+    }
+  } catch (error) {
+    showModal({
+      type: 'error',
+      title: 'Gagal',
+      message: error.message || 'Gagal memuat data stok'
+    })
+  }
 }
+
+async function terimaSimpan() {
+  if (!namaPengepul.value.trim()) {
+    showModal({
+      type: 'error',
+      title: 'Gagal',
+      message: 'Nama pengepul wajib diisi'
+    })
+    return
+  }
+
+  if (!selectedKode.value) {
+    showModal({
+      type: 'error',
+      title: 'Gagal',
+      message: 'Pilih jenis sampah terlebih dahulu'
+    })
+    return
+  }
+
+  if (beratJual.value <= 0) {
+    showModal({
+      type: 'error',
+      title: 'Gagal',
+      message: 'Berat jual harus lebih dari 0'
+    })
+    return
+  }
+
+  if (selectedItem.value && beratJual.value > selectedItem.value.stok) {
+    showModal({
+      type: 'error',
+      title: 'Gagal',
+      message: `Stok tidak mencukupi. Sisa stok: ${selectedItem.value.stok} kg`
+    })
+    return
+  }
+
+  loading.value = true
+
+  try {
+    await submitPenjualan({
+      nama_pengepul: namaPengepul.value,
+      items: [
+        {
+          kode: selectedKode.value,
+          berat: beratJual.value,
+          harga_jual: hargaPerKg.value
+        }
+      ]
+    })
+
+    showModal({
+      type: 'success',
+      title: 'Berhasil',
+      message: 'Penjualan berhasil disimpan',
+      onConfirm: () => {
+        router.back()
+      }
+    })
+  } catch (error) {
+    showModal({
+      type: 'error',
+      title: 'Gagal',
+      message: error.message || 'Gagal menyimpan penjualan'
+    })
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  loadStok()
+})
 </script>

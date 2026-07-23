@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-background px-4 text-on-surface md:px-0 pb-24">
+  <div class="min-h-screen bg-background px-4 text-on-surface md:px-0 pb-36">
     <div class="mx-auto max-w-md">
       <!-- Top bar -->
       <header class="flex items-center justify-between py-4 px-2">
@@ -21,17 +21,23 @@
         <div class="rounded-2xl bg-white p-4 soft-float">
           <div class="flex items-center justify-between">
             <p class="text-sm text-slate-500">Saldo Saat Ini</p>
-            <button 
-              @click="fetchSaldo" 
+            <button
+              @click="fetchSaldo"
               class="text-xs text-primary flex items-center gap-1 hover:underline"
               :disabled="loadingSaldo"
             >
-              <span class="material-symbols-outlined text-sm" :class="{ 'animate-spin': loadingSaldo }">refresh</span>
-              {{ loadingSaldo ? 'Memuat...' : 'Refresh' }}
+              <span
+                class="material-symbols-outlined text-sm"
+                :class="{ 'animate-spin': loadingSaldo }"
+                >refresh</span
+              >
+              {{ loadingSaldo ? "Memuat..." : "Refresh" }}
             </button>
           </div>
           <p class="mt-3 text-2xl font-bold text-primary">
-            <span v-if="loadingSaldo" class="text-slate-400 text-lg">Memuat saldo...</span>
+            <span v-if="loadingSaldo" class="text-slate-400 text-lg"
+              >Memuat saldo...</span
+            >
             <span v-else>{{ formatRupiah(saldoAwal) }}</span>
           </p>
         </div>
@@ -90,7 +96,7 @@
 
       <!-- Sticky action -->
       <div
-        class="fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-md p-4 border-t border-slate-100 z-50"
+        class="sticky bottom-0 mt-4 w-full bg-surface/90 backdrop-blur-md p-4 border-t border-slate-100 z-40"
       >
         <div class="max-w-md mx-auto flex items-center justify-between gap-4">
           <div>
@@ -104,11 +110,18 @@
             :disabled="submitting"
             class="ml-2 flex-1 rounded-2xl bg-primary py-3 text-white font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors disabled:opacity-50"
           >
-            <span v-if="submitting" class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
-            <span>{{ submitting ? 'Menyimpan...' : 'Simpan Biaya' }}</span>
+            <span
+              v-if="submitting"
+              class="material-symbols-outlined animate-spin text-sm"
+              >progress_activity</span
+            >
+            <span>{{ submitting ? "Menyimpan..." : "Simpan Biaya" }}</span>
           </button>
         </div>
       </div>
+
+      <!-- Bottom Navigation -->
+      <BottomNav />
     </div>
   </div>
 </template>
@@ -116,8 +129,9 @@
 <script setup>
 import { ref, computed, onMounted, inject } from "vue";
 import { submitBiaya, getSaldoKas } from "../services/api";
+import BottomNav from "../components/BottomNav.vue";
 
-const showModal = inject('showModal') || window.showModal;
+const showModal = inject("showModal") || window.showModal;
 
 const nominal = ref(0);
 const keterangan = ref("");
@@ -140,7 +154,12 @@ async function fetchSaldo() {
   loadingSaldo.value = true;
   try {
     const res = await getSaldoKas();
-    if (res && res.success && res.data && typeof res.data.saldo !== "undefined") {
+    if (
+      res &&
+      res.success &&
+      res.data &&
+      typeof res.data.saldo !== "undefined"
+    ) {
       saldoAwal.value = Number(res.data.saldo) || 0;
     } else if (res && typeof res.saldo !== "undefined") {
       saldoAwal.value = Number(res.saldo) || 0;
@@ -182,8 +201,8 @@ async function submitKeuangan() {
 
   submitting.value = true;
   try {
-    const ketFull = selectedCategory.value 
-      ? `[${selectedCategory.value}] ${keterangan.value || ''}`.trim() 
+    const ketFull = selectedCategory.value
+      ? `[${selectedCategory.value}] ${keterangan.value || ""}`.trim()
       : keterangan.value;
 
     const res = await submitBiaya({
@@ -207,4 +226,3 @@ async function submitKeuangan() {
   }
 }
 </script>
-

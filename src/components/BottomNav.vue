@@ -120,6 +120,7 @@ const route = useRoute();
 const navItems = [
   { label: "Beranda", to: "/dashboard", icon: "home" },
   { label: "Catat Biaya", to: "/keuangan", icon: "receipt" },
+  { label: "Katalog", to: "/katalog-pengelola", icon: "box" },
   { label: "Laporan", to: "/laporan", icon: "chart" },
 ];
 

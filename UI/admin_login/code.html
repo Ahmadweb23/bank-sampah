@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login Admin - Bank Sampah Bojong Karya 2</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#00534d",
+                    "surface-container-high": "#dee8ff",
+                    "background": "#f9f9ff",
+                    "on-error-container": "#93000a",
+                    "primary": "#003a36",
+                    "primary-fixed": "#acefe6",
+                    "on-tertiary-fixed": "#221a0f",
+                    "on-secondary-container": "#f9f7ff",
+                    "surface": "#f9f9ff",
+                    "on-secondary-fixed-variant": "#0035bd",
+                    "surface-container": "#e7eeff",
+                    "inverse-primary": "#91d3ca",
+                    "surface-tint": "#246862",
+                    "surface-container-highest": "#d9e3f9",
+                    "outline": "#6f7977",
+                    "primary-fixed-dim": "#91d3ca",
+                    "on-tertiary-container": "#c5b7a5",
+                    "inverse-on-surface": "#ebf1ff",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#00201d",
+                    "on-surface-variant": "#3f4947",
+                    "surface-container-low": "#f0f3ff",
+                    "secondary-fixed-dim": "#b8c3ff",
+                    "tertiary-fixed": "#efe0cd",
+                    "error-container": "#ffdad6",
+                    "tertiary-container": "#52483a",
+                    "secondary-fixed": "#dde1ff",
+                    "secondary-container": "#3862ff",
+                    "secondary": "#0a45e6",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-container": "#83c5bd",
+                    "error": "#ba1a1a",
+                    "on-background": "#121c2c",
+                    "surface-variant": "#d9e3f9",
+                    "tertiary": "#3a3225",
+                    "on-secondary-fixed": "#001355",
+                    "on-tertiary-fixed-variant": "#4f4537",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#bfc9c6",
+                    "on-surface": "#121c2c",
+                    "inverse-surface": "#273141",
+                    "surface-bright": "#f9f9ff",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#d0daf0",
+                    "on-primary-fixed-variant": "#00504a",
+                    "tertiary-fixed-dim": "#d3c4b2",
+                    "surface-container-lowest": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "stack-lg": "24px",
+                    "section-gap": "32px",
+                    "base": "8px",
+                    "container-padding": "20px",
+                    "stack-sm": "4px",
+                    "stack-md": "12px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "display-currency": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-currency": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f9f9ff;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .soft-float {
+        box-shadow: 0px 10px 30px rgba(0, 83, 77, 0.06);
+      }
+      .input-glow:focus-within {
+        box-shadow: 0px 0px 0px 2px rgba(0, 58, 54, 0.1);
+        background-color: white;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex items-center justify-center p-container-padding overflow-x-hidden">
+<!-- Background Decorative Elements -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+<div class="absolute top-[-10%] right-[-10%] w-96 h-96 rounded-full bg-primary-fixed/20 blur-[100px]"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-96 h-96 rounded-full bg-secondary-fixed/20 blur-[100px]"></div>
+</div>
+<!-- Login Container -->
+<main class="w-full max-w-[420px] bg-surface-container-lowest rounded-3xl p-8 soft-float flex flex-col items-center">
+<!-- App Logo -->
+<div class="mb-section-gap flex flex-col items-center gap-stack-md">
+<div class="w-16 h-16 rounded-2xl bg-primary-container flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-white text-4xl" data-icon="account_balance_wallet" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<div class="text-center">
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">Bank Sampah</h1>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest">Bojong Karya 2</p>
+</div>
+</div>
+<!-- Heading -->
+<div class="w-full mb-8 text-center">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Masuk sebagai Admin</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Kelola ekosistem lingkungan Anda</p>
+</div>
+<!-- Login Form -->
+<form class="w-full flex flex-col gap-6" onsubmit="return false;">
+<!-- Phone Number Input -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-primary ml-1" for="phone">Nomor Handphone</label>
+<div class="group relative flex items-center bg-background rounded-xl border border-outline-variant/30 px-4 py-3.5 input-glow transition-all duration-200">
+<span class="font-body-md text-body-md text-primary font-semibold border-r border-outline-variant/50 pr-3 mr-3">+62</span>
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 font-body-md text-body-md text-on-surface placeholder:text-outline/50" id="phone" placeholder="812 3456 7890" type="tel"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center px-1">
+<label class="font-label-md text-label-md text-primary" for="password">Password</label>
+<a class="font-label-sm text-label-sm text-secondary hover:underline transition-all" href="#">Lupa Password?</a>
+</div>
+<div class="group relative flex items-center bg-background rounded-xl border border-outline-variant/30 px-4 py-3.5 input-glow transition-all duration-200">
+<span class="material-symbols-outlined text-outline/70 mr-3" data-icon="lock">lock</span>
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 font-body-md text-body-md text-on-surface placeholder:text-outline/50" id="password" placeholder="••••••••" type="password"/>
+<button class="flex items-center justify-center text-outline/70 hover:text-primary active:scale-95 transition-all" id="togglePassword" type="button">
+<span class="material-symbols-outlined" data-icon="visibility" id="eyeIcon">visibility</span>
+</button>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-primary text-white py-4 rounded-xl font-headline-md text-headline-md soft-float active:scale-[0.98] hover:opacity-90 transition-all duration-200 mt-2 flex items-center justify-center gap-3" onclick="handleLogin()">
+<span>Masuk Sekarang</span>
+<span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+<!-- Footer Info -->
+<p class="mt-12 font-label-sm text-label-sm text-outline text-center leading-relaxed">
+            Butuh bantuan akses? Hubungi <span class="text-primary font-bold">IT Support Center</span> atau manajer operasional wilayah.
+        </p>
+</main>
+<!-- Visual Polish Image (Bento style hint) -->
+<div class="hidden lg:flex fixed bottom-12 right-12 w-64 h-64 rounded-3xl overflow-hidden soft-float rotate-3 border-8 border-white">
+<div class="w-full h-full bg-cover bg-center" data-alt="A cinematic, high-quality digital art piece showing a clean, modern banking dashboard interface with vibrant deep teal and royal blue accents. The scene is illuminated by soft, bright natural light, emphasizing a high-end minimalist fintech aesthetic. Sustainable environmental motifs like stylized green leaf icons and circular economy symbols are subtly integrated into the UI cards. The atmosphere is professional, trustworthy, and technologically advanced." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB0XEzK0vlDQAxiIlMYHQgbRaRTeyj1ZheekoZr-50k0d2RhiA0ibEJop1H0U19PIY8HYBhBd2fsBTKI3n1bCuhamjxAmknW5yJWLMSlOXIQoTItdxUkxJHJArLSILZzUau03Ht9uejnb6X9pdP6GceNkeAd8ngClycdWQlm__rd7dq5DnPlu7ih_woQdMzGcfEL7q50cdHO30Ov0QdS2ZD7m_mdzzyVD55HgEa1Km4qu6FvVNXRg0Cv1fAs1GHVfHTtvTqUT0IBlkq')"></div>
+</div>
+<script>
+        // Password Visibility Toggle
+        const passwordInput = document.getElementById('password');
+        const toggleButton = document.getElementById('togglePassword');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        toggleButton.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Toggle icon text
+            eyeIcon.innerText = type === 'password' ? 'visibility' : 'visibility_off';
+        });
+
+        // Mock Login Interaction
+        function handleLogin() {
+            const btn = document.querySelector('button span:first-child');
+            const originalText = btn.innerText;
+            btn.innerText = 'Memproses...';
+            
+            // Simple visual feedback
+            setTimeout(() => {
+                btn.innerText = originalText;
+                alert('Sistem sedang dalam mode demo. Autentikasi Admin tidak tersedia di lingkungan ini.');
+            }, 1000);
+        }
+
+        // Input Focus Polish
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('border-primary');
+                input.parentElement.classList.remove('border-outline-variant/30');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('border-primary');
+                input.parentElement.classList.add('border-outline-variant/30');
+            });
+        });
+    </script>
+</body></html>

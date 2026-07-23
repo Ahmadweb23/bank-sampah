@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="id" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed-dim": "#d3c4b2",
+                      "secondary-fixed-dim": "#b8c3ff",
+                      "surface-dim": "#d0daf0",
+                      "on-primary-container": "#83c5bd",
+                      "on-surface-variant": "#3f4947",
+                      "on-secondary-fixed": "#001355",
+                      "secondary-fixed": "#dde1ff",
+                      "secondary-container": "#3862ff",
+                      "primary-container": "#00534d",
+                      "on-tertiary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "on-secondary-fixed-variant": "#0035bd",
+                      "outline-variant": "#bfc9c6",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#c5b7a5",
+                      "on-primary-fixed-variant": "#00504a",
+                      "surface-container-high": "#dee8ff",
+                      "tertiary-container": "#52483a",
+                      "error": "#ba1a1a",
+                      "background": "#f9f9ff",
+                      "on-surface": "#121c2c",
+                      "inverse-primary": "#91d3ca",
+                      "surface-bright": "#f9f9ff",
+                      "tertiary": "#3a3225",
+                      "primary": "#003a36",
+                      "surface-variant": "#d9e3f9",
+                      "surface-container-low": "#f0f3ff",
+                      "inverse-surface": "#273141",
+                      "on-secondary-container": "#f9f7ff",
+                      "on-tertiary-fixed-variant": "#4f4537",
+                      "surface-container": "#e7eeff",
+                      "secondary": "#0a45e6",
+                      "on-background": "#121c2c",
+                      "primary-fixed": "#acefe6",
+                      "on-tertiary-fixed": "#221a0f",
+                      "on-error-container": "#93000a",
+                      "inverse-on-surface": "#ebf1ff",
+                      "surface-container-highest": "#d9e3f9",
+                      "on-primary-fixed": "#00201d",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed": "#efe0cd",
+                      "outline": "#6f7977",
+                      "surface-tint": "#246862",
+                      "primary-fixed-dim": "#91d3ca",
+                      "surface": "#f9f9ff",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "4px",
+                      "stack-md": "12px",
+                      "gutter": "16px",
+                      "base": "8px",
+                      "stack-lg": "24px",
+                      "container-padding": "20px",
+                      "section-gap": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "label-md": ["Inter"],
+                      "display-currency": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "display-currency": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-surface min-h-screen pb-32" style="opacity: 1; transition: opacity 0.6s ease-out;">
+<!-- Header Navigation -->
+<header class="bg-background sticky top-0 z-40 w-full max-w-[768px] mx-auto flex justify-between items-center px-container-padding py-stack-md">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors active:scale-90">
+<span class="material-symbols-outlined text-primary" data-original-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md-mobile text-primary">Terima Sampah</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="max-w-[768px] mx-auto px-container-padding">
+<!-- Progress Indicator -->
+<section class="mt-base mb-section-gap">
+<div class="flex items-center justify-between relative px-2">
+<!-- Line -->
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-outline-variant -z-10 -translate-y-1/2"></div>
+<!-- Step 1 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Data</span>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Timbang</span>
+</div>
+<!-- Step 3 (Active) -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md step-active">
+                        3
+                    </div>
+<span class="font-label-md text-label-md text-primary">Periksa</span>
+</div>
+</div>
+</section>
+<!-- Resident Profile Bento -->
+<section class="mb-stack-lg">
+<div class="bg-surface-container-lowest rounded-2xl p-gutter shadow-[0px_10px_30px_rgba(0,83,77,0.06)] flex items-center gap-4">
+<div class="w-14 h-14 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-headline-md overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait photography of a middle-aged Indonesian woman with a kind smile, Ibu Siti Aminah, wearing a modest hijab. The lighting is soft and natural, emphasizing a community-oriented and trustworthy atmosphere. The background is a clean, blurred residential setting with soft teal and cream tones reflecting the bank sampah brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2PjrIH-4B_zX71DY8Wo7gnP0H_2zCDW9U-cyti2kNrU2fFKtU1zdW32kwPszQrrGNbXGj--fY0MTCI-PTiNVGhSNvVcSwaU9IGPPMvEWSZTR-sF72Mlj-22ubcRVLKDDArir5YukDq2hPlLOCbwr157SvMLslL70GOsDQyXU5rL4H9MEXokBDVXVI3iAM6Nz_36npIoSBXpTY4UTEuP-yUWzAsjh147GR8IFGV760h1w8fjJOIWgiup91z9lTpOQmoUJIo_KusDtL">
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Ibu Siti Aminah</h2>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                        RT: 07
+                    </p>
+</div>
+</div>
+</section>
+<!-- Transaction Summary List -->
+<section class="space-y-stack-md mb-section-gap">
+<h3 class="font-label-md text-label-md text-outline uppercase tracking-wider px-1">Rincian Sampah</h3>
+<!-- Item 1 -->
+<div class="bg-surface-container-lowest rounded-2xl p-gutter shadow-[0px_10px_30px_rgba(0,83,77,0.06)] flex justify-between items-center group active:scale-[0.98] transition-transform">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-on-surface">Kardus</p>
+<p class="font-label-md text-label-md text-outline">Harga: Rp1.500 / kg</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-headline-md text-on-surface">4 kg</p>
+<p class="font-label-md text-label-md text-secondary">60 Poin</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-lowest rounded-2xl p-gutter shadow-[0px_10px_30px_rgba(0,83,77,0.06)] flex justify-between items-center group active:scale-[0.98] transition-transform">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined">water_drop</span>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-on-surface">Botol Plastik</p>
+<p class="font-label-md text-label-md text-outline">Harga: Rp5.000 / kg</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-headline-md text-on-surface">2 kg</p>
+<p class="font-label-md text-label-md text-secondary">60 Poin</p>
+</div>
+</div>
+<!-- Summary Divider-->
+<div class="py-stack-md flex justify-between items-center px-4 border-t border-dashed border-outline-variant mt-stack-lg">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Berat</span>
+<span class="font-headline-md text-headline-md text-primary">6 kg</span>
+</div>
+</section>
+<!-- Highlight Payment Section -->
+<section class="mb-stack-lg">
+<div class="bg-secondary-container/10 border-2 border-secondary/20 rounded-3xl p-stack-lg text-center relative overflow-hidden">
+<!-- Abstract visual element -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-secondary/5 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-10 -left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+<p class="font-label-md text-label-md text-secondary-fixed-variant uppercase tracking-widest mb-stack-sm">POIN DITERIMA</p>
+<div class="flex flex-col items-center gap-1"><h2 class="font-display-currency text-display-currency text-secondary">120 Poin</h2><div class="flex items-center gap-2 bg-secondary/10 px-3 py-1 rounded-full mt-2"><span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">stars</span><span class="font-label-sm text-label-sm text-secondary">Poin akan dikirim ke saldo warga</span></div></div>
+</div>
+</section>
+<!-- Additional Notes Placeholder -->
+<section class="mb-stack-lg">
+<div class="bg-surface-container rounded-2xl p-gutter border border-outline-variant/30 flex items-start gap-3">
+<span class="material-symbols-outlined text-outline">info</span>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Pastikan berat dan jenis sampah sudah sesuai sebelum menekan tombol simpan. Data tidak dapat diubah setelah transaksi selesai.
+                </p>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Action -->
+<footer class="fixed bottom-0 left-0 w-full p-container-padding bg-background/80 backdrop-blur-xl z-50">
+<div class="max-w-[768px] mx-auto">
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-headline-md shadow-[0px_10px_30px_rgba(0,58,54,0.25)] flex items-center justify-center gap-3 hover:opacity-90 active:scale-95 transition-all"><span class="material-symbols-outlined">stars</span>Simpan Poin</button>
+</div>
+</footer>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('button, .bg-surface-container-lowest').forEach(el => {
+            el.addEventListener('touchstart', () => {
+                el.classList.add('scale-[0.98]');
+            });
+            el.addEventListener('touchend', () => {
+                el.classList.remove('scale-[0.98]');
+            });
+        });
+
+        // Simple Fade-in Animation on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.6s ease-out';
+            requestAnimationFrame(() => {
+                document.body.style.opacity = '1';
+            });
+        });
+    </script>
+
+
+
+
+</body></html>

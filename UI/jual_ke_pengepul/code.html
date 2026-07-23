@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Jual ke Pengepul - Bank Sampah</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary": "#0a45e6",
+                      "on-surface-variant": "#3f4947",
+                      "on-secondary-fixed": "#001355",
+                      "on-primary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "background": "#f9f9ff",
+                      "tertiary": "#3a3225",
+                      "primary": "#003a36",
+                      "secondary-fixed-dim": "#b8c3ff",
+                      "tertiary-container": "#52483a",
+                      "on-tertiary-fixed-variant": "#4f4537",
+                      "outline-variant": "#bfc9c6",
+                      "surface-container-high": "#dee8ff",
+                      "on-secondary": "#ffffff",
+                      "surface-container-highest": "#d9e3f9",
+                      "surface-tint": "#246862",
+                      "tertiary-fixed-dim": "#d3c4b2",
+                      "on-secondary-container": "#f9f7ff",
+                      "secondary-fixed": "#dde1ff",
+                      "on-tertiary-container": "#c5b7a5",
+                      "surface-dim": "#d0daf0",
+                      "primary-container": "#00534d",
+                      "tertiary-fixed": "#efe0cd",
+                      "surface-container": "#e7eeff",
+                      "error": "#ba1a1a",
+                      "on-background": "#121c2c",
+                      "surface-container-low": "#f0f3ff",
+                      "inverse-on-surface": "#ebf1ff",
+                      "primary-fixed": "#acefe6",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-container": "#83c5bd",
+                      "on-secondary-fixed-variant": "#0035bd",
+                      "surface-bright": "#f9f9ff",
+                      "on-surface": "#121c2c",
+                      "on-error-container": "#93000a",
+                      "surface": "#f9f9ff",
+                      "surface-variant": "#d9e3f9",
+                      "inverse-primary": "#91d3ca",
+                      "inverse-surface": "#273141",
+                      "on-tertiary-fixed": "#221a0f",
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "outline": "#6f7977",
+                      "on-primary-fixed": "#00201d",
+                      "secondary-container": "#3862ff",
+                      "primary-fixed-dim": "#91d3ca",
+                      "on-primary-fixed-variant": "#00504a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "2xl": "1rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-lg": "24px",
+                      "stack-md": "12px",
+                      "container-padding": "20px",
+                      "gutter": "16px",
+                      "section-gap": "32px",
+                      "stack-sm": "4px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "display-currency": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "display-currency": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body {
+            background-color: #f9f9ff;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* Custom styles for select to remove default arrow and add custom one if needed, though Tailwind forms plugin handles it mostly well. We'll rely on it. */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .soft-shadow {
+            box-shadow: 0px 10px 30px rgba(0, 83, 77, 0.06);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md pb-[100px] md:pb-0">
+<!-- TopAppBar -->
+<header class="w-full top-0 bg-background flex justify-between items-center px-container-padding py-stack-md w-full max-w-[768px] mx-auto z-40 relative md:hidden">
+<div class="flex items-center gap-gutter">
+<!-- Close Action - Transactional context implies a departure -->
+<button class="text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform p-2 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h1 class="font-headline-md text-headline-md-mobile text-primary font-bold">Jual ke Pengepul</h1>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-[768px] mx-auto px-container-padding pt-stack-md md:pt-section-gap pb-section-gap flex flex-col gap-section-gap">
+<!-- Desktop Header (Visible only on md+) -->
+<div class="hidden md:flex items-center gap-gutter mb-stack-lg">
+<button class="text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform p-2 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-lg text-headline-lg text-primary font-bold">Jual ke Pengepul</h1>
+</div>
+<form class="flex flex-col gap-section-gap">
+<!-- Section 1: Pengepul Info -->
+<section class="bg-surface-container-lowest rounded-2xl soft-shadow p-stack-lg flex flex-col gap-stack-md">
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant" for="namaPengepul">Nama Pengepul</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">local_shipping</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-low rounded-xl border-none focus:ring-2 focus:ring-primary-container focus:bg-surface-container-lowest transition-colors font-body-md text-body-md text-on-surface placeholder:text-outline-variant" id="namaPengepul" placeholder="Masukkan nama pengepul atau pilih" type="text">
+</div>
+</div>
+</section>
+<!-- Section 2: Waste Details (Bento-style grid for inputs) -->
+<section class="bg-surface-container-lowest rounded-2xl soft-shadow p-stack-lg flex flex-col gap-stack-lg">
+<!-- Kategori Selection -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">Jenis Sampah</label>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-stack-md">
+<!-- Chip Radio alternative -->
+<label class="cursor-pointer relative">
+<input checked="" class="peer sr-only" name="jenisSampah" type="radio" value="plastik">
+<div class="flex flex-col items-center p-3 rounded-xl border border-outline-variant/30 peer-checked:bg-primary-container/10 peer-checked:border-primary-container transition-all hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-primary mb-1" style="font-variation-settings: 'FILL' 1;">recycling</span>
+<span class="font-label-sm text-label-sm text-on-surface">Plastik</span>
+</div>
+</label>
+<label class="cursor-pointer relative">
+<input class="peer sr-only" name="jenisSampah" type="radio" value="kertas">
+<div class="flex flex-col items-center p-3 rounded-xl border border-outline-variant/30 peer-checked:bg-primary-container/10 peer-checked:border-primary-container transition-all hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-tertiary mb-1" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-label-sm text-label-sm text-on-surface">Kertas</span>
+</div>
+</label>
+<label class="cursor-pointer relative">
+<input class="peer sr-only" name="jenisSampah" type="radio" value="logam">
+<div class="flex flex-col items-center p-3 rounded-xl border border-outline-variant/30 peer-checked:bg-primary-container/10 peer-checked:border-primary-container transition-all hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-on-surface-variant mb-1" style="font-variation-settings: 'FILL' 1;">hardware</span>
+<span class="font-label-sm text-label-sm text-on-surface">Logam</span>
+</div>
+</label>
+<label class="cursor-pointer relative">
+<input class="peer sr-only" name="jenisSampah" type="radio" value="kaca">
+<div class="flex flex-col items-center p-3 rounded-xl border border-outline-variant/30 peer-checked:bg-primary-container/10 peer-checked:border-primary-container transition-all hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-secondary-container mb-1" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+<span class="font-label-sm text-label-sm text-on-surface">Kaca</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Stock Indicator -->
+<div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-primary-fixed/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Stok Tersedia</span>
+</div>
+<span class="font-label-md text-label-md text-primary font-bold">125.5 kg</span>
+</div>
+<!-- Weight and Price Inputs -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant" for="beratDijual">Berat Dijual (kg)</label>
+<input class="w-full px-4 py-3 bg-surface-container-low rounded-xl border-none focus:ring-2 focus:ring-primary-container focus:bg-surface-container-lowest transition-colors font-body-lg text-body-lg text-on-surface text-right" id="beratDijual" placeholder="0.0" type="number" value="50">
+</div>
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant" for="hargaJual">Harga Jual / kg (Rp)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-body-lg text-body-lg text-on-surface-variant">Rp</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-low rounded-xl border-none focus:ring-2 focus:ring-primary-container focus:bg-surface-container-lowest transition-colors font-body-lg text-body-lg text-on-surface text-right" id="hargaJual" placeholder="0" type="number" value="2000">
+</div>
+</div>
+</div>
+</section>
+<!-- Summary Section -->
+<section class="bg-secondary-fixed/20 rounded-2xl p-stack-lg flex flex-col gap-stack-md items-center justify-center border border-secondary-fixed">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total Diterima</span>
+<span class="font-display-currency text-display-currency text-secondary font-bold">Rp100.000</span>
+</section>
+<!-- Actions -->
+<div class="flex flex-col md:flex-row gap-gutter mt-stack-md">
+<button class="md:w-1/3 py-4 rounded-xl font-label-md text-label-md text-primary bg-transparent hover:bg-surface-container-low transition-colors active:scale-95" type="button">Batal</button>
+<button class="md:w-2/3 py-4 rounded-xl font-label-md text-label-md text-on-primary bg-primary-container soft-shadow hover:opacity-90 transition-opacity active:scale-95 flex justify-center items-center gap-2" type="button">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">save</span>
+                    Terima &amp; Simpan
+                </button>
+</div>
+</form>
+</main>
+<!-- Shell Suppressed: Transactional Screen (Jual ke Pengepul is a focused task) -->
+</body></html>

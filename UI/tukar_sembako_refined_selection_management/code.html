@@ -1,0 +1,354 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Tukar Poin Sembako - Bank Sampah Bojong Karya 2</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#52483a",
+                    "on-secondary": "#ffffff",
+                    "background": "#f9f9ff",
+                    "secondary-container": "#3862ff",
+                    "tertiary-fixed": "#efe0cd",
+                    "surface": "#f9f9ff",
+                    "tertiary-fixed-dim": "#d3c4b2",
+                    "primary": "#003a36",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#d9e3f9",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#3f4947",
+                    "inverse-primary": "#91d3ca",
+                    "surface-container": "#e7eeff",
+                    "secondary-fixed": "#dde1ff",
+                    "on-surface": "#121c2c",
+                    "inverse-on-surface": "#ebf1ff",
+                    "on-primary-fixed-variant": "#00504a",
+                    "secondary": "#0a45e6",
+                    "tertiary": "#3a3225",
+                    "surface-bright": "#f9f9ff",
+                    "outline-variant": "#bfc9c6",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#acefe6",
+                    "surface-container-high": "#dee8ff",
+                    "on-secondary-container": "#f9f7ff",
+                    "primary-container": "#00534d",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed-variant": "#4f4537",
+                    "on-tertiary-fixed": "#221a0f",
+                    "secondary-fixed-dim": "#b8c3ff",
+                    "primary-fixed-dim": "#91d3ca",
+                    "surface-dim": "#d0daf0",
+                    "surface-tint": "#246862",
+                    "outline": "#6f7977",
+                    "on-primary-fixed": "#00201d",
+                    "on-primary-container": "#83c5bd",
+                    "on-secondary-fixed": "#001355",
+                    "surface-variant": "#d9e3f9",
+                    "on-tertiary-container": "#c5b7a5",
+                    "on-secondary-fixed-variant": "#0035bd",
+                    "on-background": "#121c2c",
+                    "inverse-surface": "#273141",
+                    "surface-container-low": "#f0f3ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "2xl": "1rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "section-gap": "32px",
+                    "stack-md": "12px",
+                    "stack-lg": "24px",
+                    "gutter": "16px",
+                    "stack-sm": "4px",
+                    "container-padding": "20px"
+            },
+            "fontFamily": {
+                    "display-currency": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "display-currency": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f9f9ff;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .soft-float {
+            shadow-sm; /* Fallback */
+            box-shadow: 0px 10px 30px rgba(0, 83, 77, 0.06);
+        }
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-md text-on-background min-h-screen pb-40">
+<!-- Top App Bar -->
+<header class="bg-background sticky top-0 z-50 flex justify-between items-center px-container-padding py-stack-md w-full max-w-[768px] mx-auto">
+<div class="flex items-center gap-3">
+<button class="active:scale-95 transition-transform hover:opacity-80 transition-opacity" onclick="history.back()">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md-mobile text-primary">Tukar Poin Sembako</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold">
+            BK
+        </div>
+</header>
+<main class="max-w-[768px] mx-auto px-container-padding">
+<!-- Balance Card -->
+<section class="mt-base mb-section-gap"><div class="bg-white p-stack-lg rounded-2xl soft-float border border-outline-variant/20">
+<label class="font-label-md text-label-md text-on-surface-variant mb-2 block uppercase tracking-wider">Pilih Warga</label>
+<div class="relative">
+<div class="flex items-center bg-surface-container-low rounded-xl px-4 py-3 gap-3 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full font-body-md text-on-surface" placeholder="Cari nama atau ID warga..." type="text">
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-xs">BK</div>
+<span class="font-label-md text-primary">Budi Kusuma (5.150 Poin)</span>
+</div>
+</div></section>
+<!-- Grocery List -->
+<section class="flex flex-col gap-gutter">
+<div class="flex flex-col gap-4 mb-4">
+<div class="flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-primary">Katalog Sembako</h2>
+
+</div>
+<div class="flex items-center gap-2 overflow-x-auto pb-2">
+<button class="px-4 py-2 bg-primary text-white rounded-full font-label-md whitespace-nowrap">Sembako</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface-variant rounded-full font-label-md whitespace-nowrap">Kebutuhan Rumah</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface-variant rounded-full font-label-md whitespace-nowrap">Lainnya</button>
+<button class="flex items-center gap-1 px-3 py-2 border border-dashed border-outline text-primary rounded-full font-label-md whitespace-nowrap">
+<span class="material-symbols-outlined text-base">add</span>
+      Tambah Kategori
+    </button>
+</div>
+</div>
+<!-- Item: Beras -->
+<div class="bg-white p-stack-md rounded-2xl soft-float flex items-center gap-4 group transition-all duration-300 active:scale-[0.98]">
+<div class="w-20 h-20 rounded-xl overflow-hidden bg-surface-container flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="High-quality close-up studio shot of a 1kg bag of premium white jasmine rice. The lighting is soft and bright, emphasizing the clean texture of the grains visible through transparent packaging. The background is a minimalist soft cream, fitting a modern high-end fintech app aesthetic for a community bank." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6lNWkus-IWwdxrzyBP2GzLg7rDXI-K_0Mo19_ZdfgJXyL4W-rBDIh8rltjk9AJJf9b7Frsk40B7H2uYYOmq9sT_pk9UYtWkzzJSiddkc0_uL9h3Oc0xfvq_rY-pAcPu9gWohGKrWqIb2vqz6ZwBCePjXI5ITrTvAyQlmB_uYnHSvz1SYalvI4UmU6rCIgYRTAsnB8W0IxlkKf4tgZBntCmNgGKvoQSg9ITyLCrIlvEZX8Ou1OXWy9ulfUdEd5Z2qkm3qNBJXR3N9g">
+</div>
+<div class="flex-grow">
+<h3 class="font-headline-md text-headline-md text-primary">Beras (1kg)</h3>
+<p class="font-label-md text-label-md text-secondary mb-3">150 Poin</p>
+<div class="flex items-center justify-between">
+<!-- Quantity Selector -->
+<div class="flex items-center bg-surface-container-low rounded-xl p-1 gap-3">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-primary active:bg-surface-container-high transition-colors" onclick="updateQty('beras', -1)">
+<span class="material-symbols-outlined text-base">remove</span>
+</button>
+<span class="font-label-md text-label-md w-4 text-center" id="qty-beras">0</span>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-primary active:bg-surface-container-high transition-colors" onclick="updateQty('beras', 1)">
+<span class="material-symbols-outlined text-base">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Item: Gula -->
+<div class="bg-white p-stack-md rounded-2xl soft-float flex items-center gap-4 group transition-all duration-300 active:scale-[0.98]">
+<div class="w-20 h-20 rounded-xl overflow-hidden bg-surface-container flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A detailed commercial product photograph of a 1kg pack of fine granulated white sugar. The setting is bright and airy with soft directional lighting. The packaging is minimalist and reflects a sustainable, community-focused brand. Soft teal and cream color palette dominates the visual environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGKvKIS3qFfbNfz-CjuwMtxxEE3NKNsI8YKwA243LJRXaKn009cJVX7adxVUH_fs5HpvDoKDfu7l7hF_7jwuFqNPyQ3El7lEuQVtSJG2ygdilg5Y8kXISJg0xRq_uL053WvEKqZDrkrTYgPqtky0noQ3aIpN9qDSLtWc7sCCO0Zw3nJ9IWFz8UcUIdBlpZK3pHFFtWYNmv7DGh3BKNXhQE2QYM8Ar5CWM0HI6dZJfe3_KbKma5ccGdnJn1dgZTO2VjyikXtmuOnz5Q">
+</div>
+<div class="flex-grow">
+<h3 class="font-headline-md text-headline-md text-primary">Gula (1kg)</h3>
+<p class="font-label-md text-label-md text-secondary mb-3">160 Poin</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center bg-surface-container-low rounded-xl p-1 gap-3">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-primary active:bg-surface-container-high transition-colors" onclick="updateQty('gula', -1)">
+<span class="material-symbols-outlined text-base">remove</span>
+</button>
+<span class="font-label-md text-label-md w-4 text-center" id="qty-gula">0</span>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-primary active:bg-surface-container-high transition-colors" onclick="updateQty('gula', 1)">
+<span class="material-symbols-outlined text-base">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Item: Minyak Goreng -->
+<div class="bg-white p-stack-md rounded-2xl soft-float flex items-center gap-4 group transition-all duration-300 active:scale-[0.98]">
+<div class="w-20 h-20 rounded-xl overflow-hidden bg-surface-container flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A sleek, modern 1-liter bottle of golden cooking oil. The liquid glows with warm ambient light. The product is presented against a clean, professional studio background with soft cream tones and subtle teal shadows. The image quality is high-resolution, suitable for a 2026 financial application interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf0_gLuxHG-fROu089vqs1nX-sFPuGyc7X3Z6uvdVQr4NuMR8jtLw6htGvIb6ezfmt2oDTVz3nl-BpZCRhzhQpYte_H0MoKwOGBGOKARSZpAD_oiGNe0HHZ8MNfd_qUwGJLQP_SJ7X1bwP19O0ZZyZYLAdhh1Ya63RNjHffwGDka1ct3inQOjPP3um7N4vupLpcaPxPxhakYIkCk3bKNOidIx1H6zEp1B1Bxddecp10P9qtseoGrnlTazWfNsTYqJsvCdFX82-SWqn">
+</div>
+<div class="flex-grow">
+<h3 class="font-headline-md text-headline-md text-primary">Minyak Goreng (1L)</h3>
+<p class="font-label-md text-label-md text-secondary mb-3">180 Poin</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center bg-surface-container-low rounded-xl p-1 gap-3">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-primary active:bg-surface-container-high transition-colors" onclick="updateQty('minyak', -1)">
+<span class="material-symbols-outlined text-base">remove</span>
+</button>
+<span class="font-label-md text-label-md w-4 text-center" id="qty-minyak">0</span>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-primary active:bg-surface-container-high transition-colors" onclick="updateQty('minyak', 1)">
+<span class="material-symbols-outlined text-base">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Item: Garam -->
+<div class="bg-white p-stack-md rounded-2xl soft-float flex items-center gap-4 group transition-all duration-300 active:scale-[0.98]">
+<div class="w-20 h-20 rounded-xl overflow-hidden bg-surface-container flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A pack of iodized table salt displayed in a minimalist, eco-friendly container. The focus is sharp on the product with a shallow depth of field. Soft, warm lighting illuminates the scene, consistent with a clean and trustworthy community financial service brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHz60tnPmjFW-bmN3wASFIhlDf2Aylcl69EKZjzGj4kZ83MwCi2-omZj1HBpy72i77_8IsTYO6_Ndc9jBBi6X5FotepvlhTce4idsRzKkb6SrG5ZIIRbgiFik4nd_BZwp9xWuGQ_j1Lhb2efejA1pPXk91YrQYf0bgdLPCHliE4C7K9kkLbcQzE1_fDqFTrzWIaYafrU_PhWmeQs-Q_soGLZtb31KI-Vlvry-YaEqXdeJrx8wzFGpdiDKHYXUpZuZSMXk9mfVMoQ0C">
+</div>
+<div class="flex-grow">
+<h3 class="font-headline-md text-headline-md text-primary">Garam</h3>
+<p class="font-label-md text-label-md text-secondary mb-3">50 Poin</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center bg-surface-container-low rounded-xl p-1 gap-3">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-primary active:bg-surface-container-high transition-colors" onclick="updateQty('garam', -1)">
+<span class="material-symbols-outlined text-base">remove</span>
+</button>
+<span class="font-label-md text-label-md w-4 text-center" id="qty-garam">0</span>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-primary active:bg-surface-container-high transition-colors" onclick="updateQty('garam', 1)">
+<span class="material-symbols-outlined text-base">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 w-full z-50 bg-surface/80 glass-nav border-t border-outline-variant/20 rounded-t-2xl pb-8 pt-4 px-container-padding soft-float">
+<div class="max-w-[768px] mx-auto">
+<div class="flex justify-between items-center mb-4">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Total Poin Ditukar</p>
+<p class="font-headline-lg text-headline-lg-mobile text-primary" id="total-points">0 Poin</p>
+</div>
+<div class="text-right hidden" id="remaining-points-label">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Sisa Saldo</p>
+<p class="font-label-md text-label-md text-secondary" id="remaining-points">5.150 Poin</p>
+</div>
+</div>
+<button class="w-full bg-primary text-white py-4 rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-transform hover:opacity-90 disabled:opacity-50 disabled:grayscale" disabled="" id="confirm-btn" onclick="confirmExchange()">
+<span class="material-symbols-outlined">shopping_cart_checkout</span>
+                Konfirmasi Tukar
+            </button>
+</div>
+</div>
+<!-- Script for Interactions -->
+<script>
+        const PRICES = {
+            beras: 150,
+            gula: 160,
+            minyak: 180,
+            garam: 50
+        };
+
+        const cart = {
+            beras: 0,
+            gula: 0,
+            minyak: 0,
+            garam: 0
+        };
+
+        let userBalance = 5150;
+
+        function updateQty(item, delta) {
+            const newQty = cart[item] + delta;
+            if (newQty >= 0) {
+                cart[item] = newQty;
+                document.getElementById(`qty-${item}`).innerText = newQty;
+                calculateTotal();
+            }
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            for (const item in cart) {
+                total += cart[item] * PRICES[item];
+            }
+
+            document.getElementById('total-points').innerText = `${total.toLocaleString()} Poin`;
+            
+            const remaining = userBalance - total;
+            const remainingEl = document.getElementById('remaining-points');
+            const remainingLabel = document.getElementById('remaining-points-label');
+            const confirmBtn = document.getElementById('confirm-btn');
+
+            if (total > 0) {
+                remainingLabel.classList.remove('hidden');
+                remainingEl.innerText = `${remaining.toLocaleString()} Poin`;
+                
+                if (remaining < 0) {
+                    remainingEl.classList.add('text-error');
+                    confirmBtn.disabled = true;
+                } else {
+                    remainingEl.classList.remove('text-error');
+                    confirmBtn.disabled = false;
+                }
+            } else {
+                remainingLabel.classList.add('hidden');
+                confirmBtn.disabled = true;
+            }
+        }
+
+        function confirmExchange() {
+            const total = parseInt(document.getElementById('total-points').innerText.replace(/\D/g, ''));
+            if (total > 0 && total <= userBalance) {
+                alert(`Berhasil menukar ${total} poin dengan sembako! Silakan ambil di outlet terdekat.`);
+                // Reset state
+                for (let key in cart) {
+                    cart[key] = 0;
+                    document.getElementById(`qty-${key}`).innerText = '0';
+                }
+                userBalance -= total;
+                document.getElementById('user-balance').innerText = userBalance.toLocaleString();
+                calculateTotal();
+            }
+        }
+    </script>
+<!-- Bottom Navigation Component (Shared Component Context) -->
+<nav class="fixed bottom-0 left-0 w-full z-[60] flex justify-around items-center px-4 pb-6 pt-3 md:hidden bg-surface/80 backdrop-blur-xl border-t border-outline-variant/20 shadow-[0px_-10px_30px_rgba(0,83,77,0.06)] hidden">
+<!-- Not displayed as this is a transactional sub-page according to "The Destination Rule" -->
+</nav>
+
+
+</body></html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Onboarding - Bank Sampah Bojong Karya 2</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9ff; /* Soft Cream/Light mode background */
+            overflow-x: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .soft-float {
+            box-shadow: 0px 10px 30px rgba(0, 83, 77, 0.06);
+        }
+
+        .input-focus-glow:focus-within {
+            box-shadow: 0px 0px 0px 4px rgba(0, 58, 54, 0.1);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#003a36",
+                        "on-tertiary-fixed-variant": "#4f4537",
+                        "on-secondary-fixed-variant": "#0035bd",
+                        "tertiary": "#3a3225",
+                        "surface-dim": "#d0daf0",
+                        "surface-container": "#e7eeff",
+                        "on-surface": "#121c2c",
+                        "on-primary-fixed": "#00201d",
+                        "on-background": "#121c2c",
+                        "background": "#f9f9ff",
+                        "surface-container-highest": "#d9e3f9",
+                        "on-surface-variant": "#3f4947",
+                        "outline": "#6f7977",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#d9e3f9",
+                        "secondary": "#0a45e6",
+                        "inverse-surface": "#273141",
+                        "tertiary-fixed": "#efe0cd",
+                        "surface": "#f9f9ff",
+                        "primary-container": "#00534d",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f0f3ff",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#dde1ff",
+                        "primary-fixed": "#acefe6",
+                        "inverse-on-surface": "#ebf1ff",
+                        "tertiary-container": "#52483a",
+                        "outline-variant": "#bfc9c6",
+                        "surface-container-high": "#dee8ff",
+                        "on-tertiary-container": "#c5b7a5",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#b8c3ff",
+                        "on-tertiary-fixed": "#221a0f",
+                        "inverse-primary": "#91d3ca",
+                        "on-primary-fixed-variant": "#00504a",
+                        "secondary-container": "#3862ff",
+                        "on-secondary-container": "#f9f7ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#83c5bd",
+                        "surface-bright": "#f9f9ff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#d3c4b2",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#246862",
+                        "primary-fixed-dim": "#91d3ca",
+                        "on-secondary-fixed": "#001355"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "32px",
+                        "gutter": "16px",
+                        "stack-md": "12px",
+                        "stack-lg": "24px",
+                        "container-padding": "20px",
+                        "stack-sm": "4px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-currency": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-currency": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex items-center justify-center p-container-padding selection:bg-primary-fixed selection:text-primary">
+<!-- Atmospheric background elements -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden">
+<div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary-fixed-dim/20 blur-[120px] rounded-full"></div>
+<div class="absolute top-[60%] -right-[5%] w-[30%] h-[40%] bg-secondary-fixed/30 blur-[100px] rounded-full"></div>
+</div>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-[480px] relative z-10 flex flex-col gap-stack-lg">
+<!-- Illustration Section -->
+<div class="flex justify-center mb-base">
+<div class="relative w-48 h-48 md:w-56 md:h-56 animate-float">
+<div class="absolute inset-0 bg-primary-fixed rounded-full opacity-20 blur-2xl"></div>
+<div class="relative w-full h-full rounded-3xl bg-surface-container-lowest flex items-center justify-center soft-float border border-white/50 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A warm and friendly digital illustration of a diverse community in a clean green neighborhood. Neighbors are happily exchanging bags of recyclables for groceries in a modern, sunlit park setting. The style is minimalist with soft gradients, using a professional palette of deep teal, soft cream, and royal blue accents. High-key lighting evokes trust and ecological progress." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC4k7zzdOFcyolNngKKYcd2jXhmOkREZn87hcrTl-JsEUR4BhdjtemPDRiS9ETotxaEK4nOTMxQDtBRWDdy5zAMqlU_-By2H8jBOlSzK18krPUSiZOdhcWeFykM8283-EjjImTsawi4UmG5nPWOa56pBMOOPeGRHm3nG0bO-LyJukPCSKEDL3HG7Yf0CageYYfjtVOSoYLKa9iSVdmhK0i6pQe3CsB5OB2W1P3n-StR-15u9FJnJLpufSnm9nfY_FrpmyWhWHaxH7F"/>
+</div>
+<!-- Mini floating badges for depth -->
+<div class="absolute -bottom-4 -right-4 bg-secondary text-on-secondary px-4 py-2 rounded-xl soft-float flex items-center gap-2 animate-bounce transition-all duration-1000" style="animation-delay: 0.5s;">
+<span class="material-symbols-outlined text-[20px]">eco</span>
+<span class="font-label-md text-label-md">Eco-Friendly</span>
+</div>
+</div>
+</div>
+<!-- Header Text -->
+<header class="text-center flex flex-col gap-stack-sm">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary tracking-tight">
+                Selamat Datang di Bank Sampah Bojong Karya 2
+            </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[85%] mx-auto">
+                Masukkan data diri Anda untuk melihat saldo poin dan katalog sembako.
+            </p>
+</header>
+<!-- Form Section -->
+<section class="glass-card rounded-2xl p-6 md:p-8 soft-float border border-white/40 flex flex-col gap-stack-md">
+<!-- Input: Nama Lengkap -->
+<div class="flex flex-col gap-2 group">
+<label class="font-label-md text-label-md text-primary ml-1" for="full_name">
+                    Nama Lengkap
+                </label>
+<div class="relative flex items-center input-focus-glow rounded-xl bg-surface-container-low border border-outline-variant/30 transition-all focus-within:border-primary/20">
+<span class="material-symbols-outlined absolute left-4 text-on-surface-variant">person</span>
+<input class="w-full bg-transparent border-none focus:ring-0 py-4 pl-12 pr-4 text-on-surface font-body-md placeholder:text-outline-variant" id="full_name" placeholder="Contoh: Budi Santoso" type="text"/>
+</div>
+</div>
+<!-- Input: WhatsApp -->
+<div class="flex flex-col gap-2 group">
+<label class="font-label-md text-label-md text-primary ml-1" for="whatsapp">
+                    Nomor WhatsApp
+                </label>
+<div class="relative flex items-center input-focus-glow rounded-xl bg-surface-container-low border border-outline-variant/30 transition-all focus-within:border-primary/20">
+<span class="material-symbols-outlined absolute left-4 text-on-surface-variant">phone_iphone</span>
+<input class="w-full bg-transparent border-none focus:ring-0 py-4 pl-12 pr-4 text-on-surface font-body-md placeholder:text-outline-variant" id="whatsapp" placeholder="081234567890" type="tel"/>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="mt-4 w-full bg-primary text-on-primary font-label-md text-label-md py-4 rounded-xl soft-float hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2" id="entry-btn">
+                Masuk ke Dashboard
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<!-- Secondary Info -->
+<div class="mt-4 flex items-center justify-center gap-2 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+<p class="font-label-sm text-label-sm">Data Anda aman dan terenkripsi</p>
+</div>
+</section>
+<!-- Community Trust Footer -->
+<footer class="flex flex-col items-center gap-2">
+<div class="flex -space-x-3">
+<div class="w-8 h-8 rounded-full border-2 border-background bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up professional headshot of a friendly smiling Indonesian woman in her 40s wearing a modest hijab, looking directly at the camera. Professional lighting and high-end photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCwCr6OzFBw4OW_4555MntLoa1ffJ4KOJz7I-R_CrzhWE4i5-adwtIVvRdVOjCN-FUVz_4qroeB6D669_1JuZZ-z1qrHnMpIciWdR--UMZ23rXG8rH6lggGmuXJPHzbjT9Zw5NN5NpaJrgWrPBCn6Iyg3zE4FgWWh3W8a1CTjlyC6naAVAnZwN37bcc8k30PKurIrpXImI7hG2rZqNNPUbR-N7bVMqNStOnae3tO4e6_n2HFAnn8LuUSeLm8HRKq1aCGJpetCW_7R8"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-background bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up professional headshot of a smiling Indonesian man in his 30s wearing a casual batik shirt, looking directly at the camera. Soft natural lighting and studio quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtpnUF-T0_T1KVYvc_JiD1osLaLJEi54bmrxqf0R5Lmqgz4rzBmAQofxlLeA0appXaZQCYLgzd1t0O3_mB69bnLXOZTrK-srdo7zJZ2SL_3bc58rYFX-bVtcCjX6dtB7VsYsMWJekgtFuxheQCb1g5EpO1TWiTIueh4-D5Zbl759pxGbpv6N2whsnQY1sYhszMEfihB-_34kWp8bcQFGRmMOg3_thf3JI5xbp8C7TU-VWaeK2rO85nDGmtTI4Ji5V2iKvJRC7eY_N8"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-background bg-primary-container flex items-center justify-center text-[10px] text-on-primary-container font-bold">
+                    120+
+                </div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+                Bergabung dengan <span class="font-bold text-primary">120+ Warga</span> aktif lainnya
+            </p>
+</footer>
+</main>
+<script>
+        // Simple Interaction Logic
+        document.getElementById('entry-btn').addEventListener('click', function() {
+            const name = document.getElementById('full_name').value;
+            const phone = document.getElementById('whatsapp').value;
+            
+            if (!name || !phone) {
+                // Shake effect on form if empty
+                const form = document.querySelector('section');
+                form.classList.add('animate-shake');
+                setTimeout(() => form.classList.remove('animate-shake'), 400);
+                alert('Silakan isi nama dan nomor WhatsApp Anda untuk melanjutkan.');
+                return;
+            }
+            
+            // Visual feedback
+            this.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Memproses...';
+            this.style.opacity = '0.7';
+            
+            // Simulate navigation delay
+            setTimeout(() => {
+                alert('Selamat datang, ' + name + '! Mengalihkan ke dashboard...');
+                // In a real app: window.location.href = '/dashboard';
+                this.innerHTML = 'Masuk ke Dashboard <span class="material-symbols-outlined">arrow_forward</span>';
+                this.style.opacity = '1';
+            }, 1000);
+        });
+
+        // Add shake animation dynamically
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+            .animate-shake {
+                animation: shake 0.2s ease-in-out 2;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body></html>

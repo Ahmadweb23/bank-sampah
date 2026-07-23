@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bank Sampah - Dashboard Warga</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9ff; /* Soft Cream/Beige Base */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .soft-float {
+            box-shadow: 0px 10px 30px rgba(0, 83, 77, 0.06);
+        }
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .active-scale:active {
+            transform: scale(0.98);
+            transition: transform 0.15s ease-out;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#003a36",
+                        "on-tertiary-fixed-variant": "#4f4537",
+                        "on-secondary-fixed-variant": "#0035bd",
+                        "tertiary": "#3a3225",
+                        "surface-dim": "#d0daf0",
+                        "surface-container": "#e7eeff",
+                        "on-surface": "#121c2c",
+                        "on-primary-fixed": "#00201d",
+                        "on-background": "#121c2c",
+                        "background": "#f9f9ff",
+                        "surface-container-highest": "#d9e3f9",
+                        "on-surface-variant": "#3f4947",
+                        "outline": "#6f7977",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#d9e3f9",
+                        "secondary": "#0a45e6",
+                        "inverse-surface": "#273141",
+                        "tertiary-fixed": "#efe0cd",
+                        "surface": "#f9f9ff",
+                        "primary-container": "#00534d",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f0f3ff",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#dde1ff",
+                        "primary-fixed": "#acefe6",
+                        "inverse-on-surface": "#ebf1ff",
+                        "tertiary-container": "#52483a",
+                        "outline-variant": "#bfc9c6",
+                        "surface-container-high": "#dee8ff",
+                        "on-tertiary-container": "#c5b7a5",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#b8c3ff",
+                        "on-tertiary-fixed": "#221a0f",
+                        "inverse-primary": "#91d3ca",
+                        "on-primary-fixed-variant": "#00504a",
+                        "secondary-container": "#3862ff",
+                        "on-secondary-container": "#f9f7ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#83c5bd",
+                        "surface-bright": "#f9f9ff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#d3c4b2",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#246862",
+                        "primary-fixed-dim": "#91d3ca",
+                        "on-secondary-fixed": "#001355"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "32px",
+                        "gutter": "16px",
+                        "stack-md": "12px",
+                        "stack-lg": "24px",
+                        "container-padding": "20px",
+                        "stack-sm": "4px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-currency": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-currency": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface selection:bg-primary-fixed-dim">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky bg-surface z-40 flex justify-between items-center px-container-padding h-16 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed-dim flex items-center justify-center overflow-hidden soft-float">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a smiling Indonesian woman in her late 30s, dressed in modern modest attire. The photography is bright and clean with soft natural lighting, reflecting a warm, trustworthy community-oriented bank persona. High-end fintech aesthetic with a blurred soft cream background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWcbjw8lw57OIIxrpGLLXglJUISsHhXKOK4M3AXSF8eT13uW3jvOzpDgPb5-nXUXy-fipacdumbQHkDUb64SWyAxyRyLRUmpov2LAujAgi5oW3w27PVGU1kMLUlehI7ahoUjtuai7A1GiErDHeb3moU-MDd9_XvkBNY9zhVZB_cMiw0l5XsALO68qa1Fq95QMMH5MVRzcUV3kMCBTLg48QutaqOVs_1FZQtGVtJmhNlzQSqiXxDR5xmX8tFOHLeyP7F3Vli6y-PGKG"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Bank Sampah</h1>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-95 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<main class="pb-32">
+<!-- Hero Section: Welcome & Balance -->
+<section class="px-container-padding pt-6 flex flex-col gap-stack-lg">
+<div>
+<p class="text-on-surface-variant font-label-md text-label-md">Selamat pagi,</p>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Halo, Ibu Siti!</h2>
+</div>
+<!-- Financial Card -->
+<div class="bg-primary-container p-6 rounded-2xl soft-float relative overflow-hidden active-scale group cursor-pointer">
+<!-- Decorative background elements -->
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-primary rounded-full opacity-20 blur-2xl group-hover:scale-110 transition-transform duration-500"></div>
+<div class="absolute -left-4 -bottom-4 w-24 h-24 bg-primary-fixed-dim rounded-full opacity-10 blur-xl"></div>
+<div class="relative z-10">
+<p class="text-on-primary-container opacity-80 font-label-md text-label-md mb-1">Saldo Poin Anda</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-currency text-display-currency text-on-secondary">1.250</span>
+<span class="font-headline-md text-headline-md text-on-primary-container">Poin</span>
+</div>
+<div class="mt-6 flex gap-3">
+<button class="flex-1 py-3 px-4 bg-secondary text-on-secondary rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 soft-float active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                            Tukar Poin
+                        </button>
+<button class="flex-1 py-3 px-4 bg-white/10 text-white border border-white/20 rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 backdrop-blur-sm active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">history</span>
+                            Riwayat
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Catalog Section -->
+<section class="mt-section-gap">
+<div class="px-container-padding flex justify-between items-center mb-stack-md">
+<h3 class="font-headline-md text-headline-md text-primary">Katalog Sembako Populer</h3>
+<button class="text-primary font-label-md text-label-md hover:opacity-70 transition-opacity">Lihat Semua</button>
+</div>
+<div class="flex overflow-x-auto gap-4 px-container-padding hide-scrollbar snap-x">
+<!-- Item 1 -->
+<div class="min-w-[160px] bg-white p-3 rounded-2xl soft-float snap-start active-scale flex flex-col gap-2">
+<div class="aspect-square w-full rounded-xl bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A premium 5kg bag of high-quality organic white rice, positioned neatly in a minimalist studio setting with soft side lighting. The packaging is clean and professional. The overall aesthetic is bright, high-tech fintech, using a soft cream and deep teal color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_051t4pXg95j-SJkEh2rBpDUHi8Er_5mVuC3PCGygrVzLqVh_ET1luDSC_mbBx4VyxgScEqKl1o1x9SCZQB4LX_Pd2Kc0ojs-ExYLXy11zpSyF3eYyYoZ5Kk2gcuuDdN-8eh6NLEHaxZRW2dzfo8dG1hqotibH21460sA4isVcrL0yExD9yjOf0WUbOecd1a121ZrOxd1w-RwJiC7Msb66UfCZPhxtMY25kXcWBbPxzlHokWXI0zf_EsxaDGl5_8U4rDjPW1rdjT1"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface truncate">Beras Premium 5kg</p>
+<p class="font-headline-md text-headline-md text-secondary mt-1">650 Poin</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="min-w-[160px] bg-white p-3 rounded-2xl soft-float snap-start active-scale flex flex-col gap-2">
+<div class="aspect-square w-full rounded-xl bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A modern, clear bottle of high-quality cooking oil with a vibrant golden liquid inside. The label is minimal and elegant. Set against a clean, soft cream background with soft shadows, maintaining a professional and ecological financial service vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZpqJIEGQMTGgR-Qoo-p1jGrodc2YijBzmUwVoIYVhSxe40ghAzt9GI65osqEAFJXuLXvIqSeciVxMneJyTZTo0HhB0MHoVNlWV43PVfzerff4IfB8yvn2GX2WbGt3UW5llCaSOI4T6VwXtTuCBKFPIb1uUQc7edX_j1Q39DDvu_HSMWMupKk1RFZliNDbOw7-3ZVx-h_oZ_NqkPRvfXVvVYQd8p3QiZ4fjs2rCd3lFfK9iGd-tPwriSC1i3jJ8BrAnA-1PMfN40pD"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface truncate">Minyak Goreng 2L</p>
+<p class="font-headline-md text-headline-md text-secondary mt-1">320 Poin</p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="min-w-[160px] bg-white p-3 rounded-2xl soft-float snap-start active-scale flex flex-col gap-2">
+<div class="aspect-square w-full rounded-xl bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A clean pack of organic granulated sugar in high-quality paper packaging. Minimalist layout with soft focus on a light wooden table, warm natural lighting. Cohesive with a professional community-oriented bank app style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWCl1VrjhmIGJVwFs5FXj1lzgcnDkUb26ys7ySvB4TQ7Cpq51_WqEwnUQEU0ycmvgLc8DQHKYf8r0Hiz09KxAvcpyUkvkkDgf2oySPEDDrB58ISJKUvDviF3vK4W2QkECtu_i-xqOzyY-NVuL3XF9rgh3qJB6UjPXmSBnTIFvP0AH2F7KasJ0C0EcfiPGO0eV7_Il2CbYRYqR7Ff11yWPjLt8F8_EUwPRuc0mxsANh82ofmnKVhRwTGxSK8TzSNUjF6a_ipPLbrkrW"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface truncate">Gula Pasir 1kg</p>
+<p class="font-headline-md text-headline-md text-secondary mt-1">150 Poin</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Information & News Section -->
+<section class="mt-section-gap px-container-padding">
+<h3 class="font-headline-md text-headline-md text-primary mb-stack-md">Informasi &amp; Pengumuman</h3>
+<div class="flex flex-col gap-4">
+<!-- News Card 1 -->
+<div class="bg-white p-4 rounded-2xl soft-float flex gap-4 active-scale group cursor-pointer">
+<div class="w-20 h-20 rounded-xl bg-primary-fixed-dim flex-shrink-0 flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">event_repeat</span>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-secondary font-label-sm text-label-sm uppercase tracking-wider mb-1">Jadwal</span>
+<h4 class="font-label-md text-label-md text-on-surface">Jadwal Penjemputan Rutin Minggu Ini</h4>
+<p class="text-on-surface-variant text-label-sm font-label-sm mt-1">Berlaku mulai 12 - 18 Agustus 2024</p>
+</div>
+</div>
+<!-- News Card 2 -->
+<div class="bg-white p-4 rounded-2xl soft-float flex gap-4 active-scale group cursor-pointer">
+<div class="w-20 h-20 rounded-xl bg-secondary-fixed flex-shrink-0 flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-secondary text-3xl group-hover:scale-110 transition-transform">celebration</span>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-secondary font-label-sm text-label-sm uppercase tracking-wider mb-1">Promo</span>
+<h4 class="font-label-md text-label-md text-on-surface">Promo Tukar Poin Merdeka</h4>
+<p class="text-on-surface-variant text-label-sm font-label-sm mt-1">Diskon 17% tukar poin untuk semua sembako</p>
+</div>
+</div>
+<!-- News Card 3 -->
+<div class="bg-white p-4 rounded-2xl soft-float flex gap-4 active-scale group cursor-pointer">
+<div class="w-20 h-20 rounded-xl bg-tertiary-fixed flex-shrink-0 flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-tertiary text-3xl group-hover:scale-110 transition-transform">eco</span>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-tertiary font-label-sm text-label-sm uppercase tracking-wider mb-1">Edukasi</span>
+<h4 class="font-label-md text-label-md text-on-surface">Cara Memilah Sampah Plastik Baru</h4>
+<p class="text-on-surface-variant text-label-sm font-label-sm mt-1">Tips agar sampah plastik Anda dihargai lebih tinggi</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface/80 glass-nav shadow-[0px_-10px_30px_rgba(0,83,77,0.06)] rounded-t-xl transition-all">
+<!-- Beranda (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 active-scale transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm">Beranda</span>
+</a>
+<!-- Katalog (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:opacity-80 px-4 py-1 active-scale transition-all" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-sm text-label-sm">Katalog</span>
+</a>
+<!-- Info (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:opacity-80 px-4 py-1 active-scale transition-all" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span class="font-label-sm text-label-sm">Informasi</span>
+</a>
+</nav>
+<!-- FAB for quick action (Optional, high-end feel) -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-white rounded-2xl flex items-center justify-center soft-float active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<script>
+        // Micro-interactions for scrolling effects
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+                header.classList.remove('bg-surface');
+                header.classList.add('bg-white/90', 'backdrop-blur-md');
+            } else {
+                header.classList.remove('shadow-md', 'bg-white/90', 'backdrop-blur-md');
+                header.classList.add('bg-surface');
+            }
+        });
+
+        // Simulating tap feedback on catalog items
+        document.querySelectorAll('.active-scale').forEach(item => {
+            item.addEventListener('touchstart', () => {
+                item.style.transform = 'scale(0.96)';
+            });
+            item.addEventListener('touchend', () => {
+                item.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

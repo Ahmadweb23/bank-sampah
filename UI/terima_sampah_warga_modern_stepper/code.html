@@ -1,0 +1,348 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Bank Sampah - Terima Sampah</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary": "#0a45e6",
+                      "on-surface-variant": "#3f4947",
+                      "on-secondary-fixed": "#001355",
+                      "on-primary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "background": "#f9f9ff",
+                      "tertiary": "#3a3225",
+                      "primary": "#003a36",
+                      "secondary-fixed-dim": "#b8c3ff",
+                      "tertiary-container": "#52483a",
+                      "on-tertiary-fixed-variant": "#4f4537",
+                      "outline-variant": "#bfc9c6",
+                      "surface-container-high": "#dee8ff",
+                      "on-secondary": "#ffffff",
+                      "surface-container-highest": "#d9e3f9",
+                      "surface-tint": "#246862",
+                      "tertiary-fixed-dim": "#d3c4b2",
+                      "on-secondary-container": "#f9f7ff",
+                      "secondary-fixed": "#dde1ff",
+                      "on-tertiary-container": "#c5b7a5",
+                      "surface-dim": "#d0daf0",
+                      "primary-container": "#00534d",
+                      "tertiary-fixed": "#efe0cd",
+                      "surface-container": "#e7eeff",
+                      "error": "#ba1a1a",
+                      "on-background": "#121c2c",
+                      "surface-container-low": "#f0f3ff",
+                      "inverse-on-surface": "#ebf1ff",
+                      "primary-fixed": "#acefe6",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-container": "#83c5bd",
+                      "on-secondary-fixed-variant": "#0035bd",
+                      "surface-bright": "#f9f9ff",
+                      "on-surface": "#121c2c",
+                      "on-error-container": "#93000a",
+                      "surface": "#f9f9ff",
+                      "surface-variant": "#d9e3f9",
+                      "inverse-primary": "#91d3ca",
+                      "inverse-surface": "#273141",
+                      "on-tertiary-fixed": "#221a0f",
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "outline": "#6f7977",
+                      "on-primary-fixed": "#00201d",
+                      "secondary-container": "#3862ff",
+                      "primary-fixed-dim": "#91d3ca",
+                      "on-primary-fixed-variant": "#00504a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-lg": "24px",
+                      "stack-md": "12px",
+                      "container-padding": "20px",
+                      "gutter": "16px",
+                      "section-gap": "32px",
+                      "stack-sm": "4px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "display-currency": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "display-currency": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-shadow {
+            box-shadow: 0px 10px 30px rgba(0, 83, 77, 0.06);
+        }
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .hide-step { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0 md:flex">
+<!-- Mobile Nav Anchor - Hidden on this linear flow -->
+<!-- TopAppBar -->
+<header class="w-full top-0 bg-background flex justify-between items-center px-container-padding py-stack-md max-w-[768px] mx-auto sticky z-40">
+<div class="flex items-center gap-3">
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors text-primary" onclick="window.history.back()">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile md:font-headline-md md:text-headline-md text-primary font-extrabold tracking-tight">Terima Sampah</h1>
+</div>
+</header>
+<main class="w-full max-w-[768px] mx-auto px-container-padding pt-stack-md flex-1">
+<!-- Multi-step Indicator -->
+<div class="mb-section-gap px-2">
+<div class="relative flex justify-between items-center">
+<!-- Background Track -->
+<div class="absolute top-4 left-0 w-full h-[2px] bg-surface-variant/50 -z-10"></div>
+<!-- Active Progress Line -->
+<div class="absolute top-4 left-0 h-[2px] bg-primary transition-all duration-500 ease-in-out -z-10" id="progress-bar" style="width: 33%;"></div>
+<!-- Step 1 -->
+<div class="flex flex-col items-center gap-3 step-indicator active" data-step="1">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg shadow-primary/20 ring-4 ring-background transition-all duration-300">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold tracking-wide uppercase">Pilih Warga</span>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center gap-3 step-indicator" data-step="2">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center ring-4 ring-background transition-all duration-300">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium tracking-wide uppercase">Sampah</span>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center gap-3 step-indicator" data-step="3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center ring-4 ring-background transition-all duration-300">
+<span class="material-symbols-outlined text-sm">fact_check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium tracking-wide uppercase">Periksa</span>
+</div>
+</div>
+</div>
+<!-- Step 1: Pilih Warga -->
+<section class="transition-opacity duration-300" id="step-1">
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-lg">Data Warga</h2>
+<div class="bg-surface-lowest rounded-2xl soft-shadow p-stack-lg flex flex-col gap-stack-lg">
+<div class="relative">
+<label class="font-label-md text-label-md text-on-surface block mb-2">Nama Warga</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-outline">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-xl py-3 pl-12 pr-4 font-body-md text-body-md focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-outline-variant" placeholder="Cari nama warga..." type="text" value="Siti">
+</div>
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface block mb-2">Filter RT</label>
+<div class="flex gap-2 flex-wrap">
+<button class="px-4 py-2 rounded-full bg-primary/10 text-primary font-label-md text-label-md transition-colors">Semua</button>
+<button class="px-4 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high transition-colors">RT 07</button>
+<button class="px-4 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high transition-colors">RT 11</button>
+</div>
+</div>
+<!-- Autocomplete Result -->
+<div class="mt-2 flex items-center justify-between p-4 bg-primary/5 border border-primary/20 rounded-xl cursor-pointer hover:bg-primary/10 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-headline-md text-headline-md">S</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Ibu Siti Aminah</p>
+<p class="font-body-sm text-on-surface-variant text-sm">RT 07 / RW 02</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+</div>
+<div class="mt-section-gap">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 rounded-xl soft-shadow hover:opacity-90 active:scale-95 transition-all" onclick="nextStep(2)">Lanjut Pilih Sampah</button>
+</div>
+</section>
+<!-- Step 2: Masukkan Sampah (Hidden initially) -->
+<section class="hide-step transition-opacity duration-300" id="step-2">
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-lg">Rincian Sampah</h2>
+<div class="flex flex-col gap-4 mb-stack-lg">
+<!-- Waste Card 1 -->
+<div class="bg-surface-lowest rounded-2xl soft-shadow p-stack-md flex flex-col gap-3">
+<div class="flex justify-between items-center border-b border-surface-variant pb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Kardus Bekas</h3>
+<p class="font-body-sm text-on-surface-variant text-sm">Rp1.500 / kg</p>
+</div>
+</div>
+<button class="text-error hover:bg-error/10 p-2 rounded-full transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex-1">
+<label class="text-xs text-on-surface-variant block mb-1">Berat (kg)</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-2 px-3 font-body-md text-body-md text-center focus:ring-2 focus:ring-primary/20" type="number" value="4.5">
+</div>
+<div class="flex-1 text-right">
+<label class="text-xs text-on-surface-variant block mb-1">Subtotal</label>
+<p class="font-label-md text-label-md text-primary">Rp6.750</p>
+</div>
+</div>
+</div>
+<!-- Waste Card 2 -->
+<div class="bg-surface-lowest rounded-2xl soft-shadow p-stack-md flex flex-col gap-3">
+<div class="flex justify-between items-center border-b border-surface-variant pb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600">
+<span class="material-symbols-outlined">water_bottle</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Botol Plastik</h3>
+<p class="font-body-sm text-on-surface-variant text-sm">Rp2.500 / kg</p>
+</div>
+</div>
+<button class="text-error hover:bg-error/10 p-2 rounded-full transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex-1">
+<label class="text-xs text-on-surface-variant block mb-1">Berat (kg)</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-2 px-3 font-body-md text-body-md text-center focus:ring-2 focus:ring-primary/20" type="number" value="4.5">
+</div>
+<div class="flex-1 text-right">
+<label class="text-xs text-on-surface-variant block mb-1">Subtotal</label>
+<p class="font-label-md text-label-md text-primary">Rp11.250</p>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full border-2 border-dashed border-primary/30 text-primary font-label-md text-label-md py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors mb-section-gap">
+<span class="material-symbols-outlined">add</span> Tambah Jenis Sampah
+            </button>
+<div class="flex gap-4">
+<button class="flex-1 bg-surface-variant text-on-surface-variant font-label-md text-label-md py-4 rounded-xl hover:bg-surface-container-high active:scale-95 transition-all" onclick="nextStep(1)">Kembali</button>
+<button class="flex-[2] bg-primary text-on-primary font-label-md text-label-md py-4 rounded-xl soft-shadow hover:opacity-90 active:scale-95 transition-all" onclick="nextStep(3)">Lanjut Periksa</button>
+</div>
+</section>
+<!-- Step 3: Periksa & Bayar -->
+<section class="hide-step transition-opacity duration-300" id="step-3">
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-lg">Konfirmasi Transaksi</h2>
+<div class="bg-surface-lowest rounded-2xl soft-shadow overflow-hidden mb-section-gap">
+<div class="bg-primary/5 p-stack-md flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-headline-md text-headline-md">S</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Ibu Siti Aminah</p>
+<p class="font-body-sm text-on-surface-variant text-sm">RT 07 / RW 02</p>
+</div>
+</div>
+<div class="p-stack-md flex flex-col gap-3">
+<div class="flex justify-between items-center py-2 border-b border-surface-variant/50">
+<span class="font-body-md text-body-md text-on-surface-variant">Kardus Bekas (4.5 kg)</span>
+<span class="font-label-md text-label-md text-on-surface">Rp6.750</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-surface-variant/50">
+<span class="font-body-md text-body-md text-on-surface-variant">Botol Plastik (4.5 kg)</span>
+<span class="font-label-md text-label-md text-on-surface">Rp11.250</span>
+</div>
+<div class="flex justify-between items-center pt-4">
+<span class="font-label-md text-label-md text-on-surface font-bold">Total Berat</span>
+<span class="font-label-md text-label-md text-on-surface">9.0 kg</span>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="font-headline-md text-headline-md text-primary">Total Bayar</span>
+<span class="font-display-currency text-display-currency text-secondary">Rp18.000</span>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 bg-surface-variant text-on-surface-variant font-label-md text-label-md py-4 rounded-xl hover:bg-surface-container-high active:scale-95 transition-all" onclick="nextStep(2)">Kembali</button>
+<button class="flex-[2] bg-primary text-on-primary font-label-md text-label-md py-4 rounded-xl soft-shadow hover:opacity-90 active:scale-95 transition-all" onclick="showSuccess()">Bayar &amp; Simpan</button>
+</div>
+</section>
+<!-- Success State -->
+
+</main>
+<script>
+        function nextStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('section').forEach(sec => {
+                sec.classList.add('hide-step');
+                sec.style.opacity = '0';
+            });
+            
+            // Show target step
+            const target = document.getElementById('step-' + stepNumber);
+            target.classList.remove('hide-step');
+            setTimeout(() => target.style.opacity = '1', 50);
+
+            // Update Progress Bar & Indicators
+            const progress = document.getElementById('progress-bar');
+            if(stepNumber === 1) progress.style.width = '33%';
+            else if(stepNumber === 2) progress.style.width = '66%';
+            else if(stepNumber === 3) progress.style.width = '100%';
+
+            document.querySelectorAll('.step-indicator').forEach(ind => {
+                const step = parseInt(ind.getAttribute('data-step'));
+                const circle = ind.querySelector('div');
+                const text = ind.querySelector('span');
+                
+                if (step <= stepNumber) {
+                    circle.classList.replace('bg-surface-variant', 'bg-primary');
+                    circle.classList.replace('text-on-surface-variant', 'text-on-primary');
+                    text.classList.replace('text-on-surface-variant', 'text-primary');
+                } else {
+                    circle.classList.replace('bg-primary', 'bg-surface-variant');
+                    circle.classList.replace('text-on-primary', 'text-on-surface-variant');
+                    text.classList.replace('text-primary', 'text-on-surface-variant');
+                }
+            });
+        }
+
+        function showSuccess() {
+            document.getElementById('step-3').classList.add('hide-step');
+            document.querySelector('.mb-section-gap.relative').style.display = 'none'; // Hide progress bar
+            
+            const success = document.getElementById('success-state');
+            success.classList.remove('hide-step');
+            setTimeout(() => success.style.opacity = '1', 50);
+        }
+    </script>
+
+
+
+
+</body></html>

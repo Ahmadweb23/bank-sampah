@@ -1,0 +1,227 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Catat Biaya - Bank Sampah Bojong Karya 2</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#0a45e6",
+                        "on-surface-variant": "#3f4947",
+                        "on-secondary-fixed": "#001355",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "background": "#f9f9ff",
+                        "tertiary": "#3a3225",
+                        "primary": "#003a36",
+                        "secondary-fixed-dim": "#b8c3ff",
+                        "tertiary-container": "#52483a",
+                        "on-tertiary-fixed-variant": "#4f4537",
+                        "outline-variant": "#bfc9c6",
+                        "surface-container-high": "#dee8ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#d9e3f9",
+                        "surface-tint": "#246862",
+                        "tertiary-fixed-dim": "#d3c4b2",
+                        "on-secondary-container": "#f9f7ff",
+                        "secondary-fixed": "#dde1ff",
+                        "on-tertiary-container": "#c5b7a5",
+                        "surface-dim": "#d0daf0",
+                        "primary-container": "#00534d",
+                        "tertiary-fixed": "#efe0cd",
+                        "surface-container": "#e7eeff",
+                        "error": "#ba1a1a",
+                        "on-background": "#121c2c",
+                        "surface-container-low": "#f0f3ff",
+                        "inverse-on-surface": "#ebf1ff",
+                        "primary-fixed": "#acefe6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#83c5bd",
+                        "on-secondary-fixed-variant": "#0035bd",
+                        "surface-bright": "#f9f9ff",
+                        "on-surface": "#121c2c",
+                        "on-error-container": "#93000a",
+                        "surface": "#f9f9ff",
+                        "surface-variant": "#d9e3f9",
+                        "inverse-primary": "#91d3ca",
+                        "inverse-surface": "#273141",
+                        "on-tertiary-fixed": "#221a0f",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "outline": "#6f7977",
+                        "on-primary-fixed": "#00201d",
+                        "secondary-container": "#3862ff",
+                        "primary-fixed-dim": "#91d3ca",
+                        "on-primary-fixed-variant": "#00504a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "24px",
+                        "stack-md": "12px",
+                        "container-padding": "20px",
+                        "gutter": "16px",
+                        "section-gap": "32px",
+                        "stack-sm": "4px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display-currency": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "display-currency": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #f9f9ff; color: #121c2c; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 10px 30px rgba(0, 83, 77, 0.06);
+        }
+        .chip-input:checked + label {
+            background-color: #003a36;
+            color: #ffffff;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col items-center">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background w-full top-0 z-50">
+<div class="flex justify-between items-center px-container-padding py-stack-md w-full max-w-[768px] mx-auto">
+<div class="flex items-center gap-3">
+<button class="text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">Catat Biaya</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-primary font-bold">
+                BK
+            </div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-[768px] mx-auto px-container-padding py-stack-lg pb-[100px]">
+<!-- Saldo Info Card -->
+<div class="glass-card rounded-2xl p-6 mb-8 flex flex-col gap-2">
+<span class="font-body-md text-body-md text-on-surface-variant">Saldo Saat Ini</span>
+<span class="font-display-currency text-display-currency text-primary">Rp 650.000</span>
+</div>
+<form class="flex flex-col gap-section-gap">
+<!-- Nominal Input -->
+<section class="flex flex-col gap-stack-md">
+<label class="font-label-md text-label-md text-on-surface" for="jumlah-biaya">Jumlah Biaya</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-headline-md text-headline-md text-on-surface-variant">Rp</span>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl pl-12 pr-4 py-4 font-headline-md text-headline-md text-on-surface focus:ring-2 focus:ring-primary shadow-sm transition-all outline-none" id="jumlah-biaya" placeholder="0" required="" type="number">
+</div>
+</section>
+<!-- Kategori Chips -->
+<section class="flex flex-col gap-stack-md">
+<span class="font-label-md text-label-md text-on-surface">Kategori</span>
+<div class="flex flex-wrap gap-stack-sm">
+<div>
+<input checked="" class="hidden chip-input" id="kat-angkut" name="kategori" type="radio">
+<label class="inline-flex items-center px-4 py-2 rounded-full bg-surface-variant text-on-surface font-label-md text-label-md cursor-pointer transition-colors hover:opacity-90" for="kat-angkut">Angkut</label>
+</div>
+<div>
+<input class="hidden chip-input" id="kat-karung" name="kategori" type="radio">
+<label class="inline-flex items-center px-4 py-2 rounded-full bg-surface-variant text-on-surface font-label-md text-label-md cursor-pointer transition-colors hover:opacity-90" for="kat-karung">Karung</label>
+</div>
+<div>
+<input class="hidden chip-input" id="kat-konsumsi" name="kategori" type="radio">
+<label class="inline-flex items-center px-4 py-2 rounded-full bg-surface-variant text-on-surface font-label-md text-label-md cursor-pointer transition-colors hover:opacity-90" for="kat-konsumsi">Konsumsi</label>
+</div>
+<div>
+<input class="hidden chip-input" id="kat-alattulis" name="kategori" type="radio">
+<label class="inline-flex items-center px-4 py-2 rounded-full bg-surface-variant text-on-surface font-label-md text-label-md cursor-pointer transition-colors hover:opacity-90" for="kat-alattulis">Alat Tulis</label>
+</div>
+<div>
+<input class="hidden chip-input" id="kat-perawatan" name="kategori" type="radio">
+<label class="inline-flex items-center px-4 py-2 rounded-full bg-surface-variant text-on-surface font-label-md text-label-md cursor-pointer transition-colors hover:opacity-90" for="kat-perawatan">Perawatan</label>
+</div>
+<div>
+<input class="hidden chip-input" id="kat-sosial" name="kategori" type="radio">
+<label class="inline-flex items-center px-4 py-2 rounded-full bg-surface-variant text-on-surface font-label-md text-label-md cursor-pointer transition-colors hover:opacity-90" for="kat-sosial">Kegiatan Sosial</label>
+</div>
+<div>
+<input class="hidden chip-input" id="kat-lainnya" name="kategori" type="radio">
+<label class="inline-flex items-center px-4 py-2 rounded-full bg-surface-variant text-on-surface font-label-md text-label-md cursor-pointer transition-colors hover:opacity-90" for="kat-lainnya">Lainnya</label>
+</div>
+</div>
+</section>
+<!-- Keterangan -->
+<section class="flex flex-col gap-stack-md">
+<label class="font-label-md text-label-md text-on-surface" for="keterangan">Keterangan</label>
+<textarea class="w-full bg-surface-container-lowest border-none rounded-xl px-4 py-3 font-body-md text-body-md text-on-surface focus:ring-2 focus:ring-primary shadow-sm transition-all outline-none resize-none" id="keterangan" placeholder="Tuliskan detail biaya..." rows="3"></textarea>
+</section>
+<!-- Foto Bukti -->
+<section class="flex flex-col gap-stack-md">
+<span class="font-label-md text-label-md text-on-surface">Foto Bukti (Opsional)</span>
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center gap-3 bg-surface-container-lowest hover:bg-surface-variant transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-surface-variant group-hover:bg-primary-container flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" style="font-variation-settings: 'FILL' 0;">add_a_photo</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant text-center">Ketuk untuk unggah foto nota<br>atau struk pembelian</span>
+</div>
+</section>
+<!-- Action Area (Sticky on mobile) -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-md p-container-padding shadow-[0px_-10px_30px_rgba(0,83,77,0.06)] md:relative md:bg-transparent md:shadow-none md:p-0 md:mt-4 z-40">
+<div class="max-w-[768px] mx-auto flex flex-col gap-4">
+<div class="flex justify-between items-center px-2">
+<span class="font-body-md text-body-md text-on-surface-variant">Saldo setelah biaya:</span>
+<span class="font-headline-md text-headline-md text-primary" id="preview-saldo">Rp 510.000</span>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 rounded-xl shadow-md hover:opacity-90 active:scale-[0.98] transition-all" type="button">
+                        Simpan Biaya
+                    </button>
+</div>
+</div>
+</form>
+</main>
+<script>
+        // Simple preview logic for demonstration
+        const inputBiaya = document.getElementById('jumlah-biaya');
+        const previewSaldo = document.getElementById('preview-saldo');
+        const saldoAwal = 650000;
+
+        inputBiaya.addEventListener('input', function() {
+            let biaya = parseInt(this.value) || 0;
+            let sisa = saldoAwal - biaya;
+            previewSaldo.textContent = 'Rp ' + sisa.toLocaleString('id-ID');
+        });
+    </script>
+</body></html>

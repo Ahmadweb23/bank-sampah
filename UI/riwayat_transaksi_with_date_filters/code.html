@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Riwayat Transaksi - Bank Sampah</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#0a45e6",
+                        "on-surface-variant": "#3f4947",
+                        "on-secondary-fixed": "#001355",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "background": "#f9f9ff",
+                        "tertiary": "#3a3225",
+                        "primary": "#003a36",
+                        "secondary-fixed-dim": "#b8c3ff",
+                        "tertiary-container": "#52483a",
+                        "on-tertiary-fixed-variant": "#4f4537",
+                        "outline-variant": "#bfc9c6",
+                        "surface-container-high": "#dee8ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#d9e3f9",
+                        "surface-tint": "#246862",
+                        "tertiary-fixed-dim": "#d3c4b2",
+                        "on-secondary-container": "#f9f7ff",
+                        "secondary-fixed": "#dde1ff",
+                        "on-tertiary-container": "#c5b7a5",
+                        "surface-dim": "#d0daf0",
+                        "primary-container": "#00534d",
+                        "tertiary-fixed": "#efe0cd",
+                        "surface-container": "#e7eeff",
+                        "error": "#ba1a1a",
+                        "on-background": "#121c2c",
+                        "surface-container-low": "#f0f3ff",
+                        "inverse-on-surface": "#ebf1ff",
+                        "primary-fixed": "#acefe6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#83c5bd",
+                        "on-secondary-fixed-variant": "#0035bd",
+                        "surface-bright": "#f9f9ff",
+                        "on-surface": "#121c2c",
+                        "on-error-container": "#93000a",
+                        "surface": "#f9f9ff",
+                        "surface-variant": "#d9e3f9",
+                        "inverse-primary": "#91d3ca",
+                        "inverse-surface": "#273141",
+                        "on-tertiary-fixed": "#221a0f",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "outline": "#6f7977",
+                        "on-primary-fixed": "#00201d",
+                        "secondary-container": "#3862ff",
+                        "primary-fixed-dim": "#91d3ca",
+                        "on-primary-fixed-variant": "#00504a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "24px",
+                        "stack-md": "12px",
+                        "container-padding": "20px",
+                        "gutter": "16px",
+                        "section-gap": "32px",
+                        "stack-sm": "4px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display-currency": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "display-currency": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #f9f9ff;
+            color: #121c2c;
+        }
+        /* Soft ambient shadow for cards */
+        .ambient-shadow {
+            box-shadow: 0px 10px 30px rgba(0, 83, 77, 0.06);
+        }
+        /* Hide scrollbar for clean horizontal scrolling */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-md text-body-md antialiased pb-24 md:pb-0">
+<!-- Desktop Sidebar Navigation -->
+<nav class="hidden md:flex flex-col h-screen border-r border-outline-variant/10 bg-surface-container-low dark:bg-surface-container-high w-64 fixed left-0 top-0 shadow-sm z-50">
+<div class="px-container-padding py-stack-lg flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold">
+                 BK
+             </div>
+<div>
+<div class="font-label-md text-label-md text-primary dark:text-primary-fixed">Bank Sampah</div>
+<div class="text-xs text-on-surface-variant">Bojong Karya 2</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto py-stack-md flex flex-col gap-1">
+<a class="text-on-surface-variant dark:text-outline mx-2 my-1 px-4 py-3 flex items-center gap-3 rounded-lg hover:bg-surface-container-highest dark:hover:bg-surface-dim transition-colors active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">receipt_long</span>
+<span class="font-label-md text-label-md">Transaksi</span>
+</a>
+<a class="bg-secondary dark:bg-secondary-container text-on-secondary dark:text-on-secondary-container rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 transition-transform active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="font-label-md text-label-md">Riwayat</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline mx-2 my-1 px-4 py-3 flex items-center gap-3 rounded-lg hover:bg-surface-container-highest dark:hover:bg-surface-dim transition-colors active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">analytics</span>
+<span class="font-label-md text-label-md">Laporan</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="md:ml-64 min-h-screen relative flex flex-col">
+<!-- Top App Bar -->
+<header class="w-full top-0 bg-background dark:bg-background sticky z-40 flat no shadows">
+<div class="flex justify-between items-center px-container-padding py-stack-md w-full max-w-[768px] mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold md:hidden">
+                        BK
+                    </div>
+<h1 class="font-headline-md text-headline-md-mobile md:text-headline-md text-primary dark:text-primary-fixed">Riwayat Transaksi</h1>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+</button>
+</div>
+</header>
+<!-- Content Container -->
+<div class="w-full max-w-[768px] mx-auto px-container-padding py-stack-md flex-1 flex flex-col gap-stack-lg">
+<!-- Search and Filter Section -->
+<section class="flex flex-col gap-stack-md">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="w-full pl-12 pr-4 py-3 rounded-xl bg-surface-container-low border-none focus:ring-2 focus:ring-primary-container text-body-md text-on-surface placeholder:text-on-surface-variant transition-all focus:bg-white focus:shadow-[0_0_15px_rgba(0,83,77,0.1)]" placeholder="Cari nama atau jenis transaksi..." type="text">
+</div>
+<div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 pt-1">
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md shadow-sm active:scale-95 transition-transform">Semua</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest transition-colors active:scale-95">Setoran</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest transition-colors active:scale-95">Penjualan</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest transition-colors active:scale-95">Biaya</button>
+</div><div class="flex gap-3 overflow-x-auto no-scrollbar pt-1">
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container-low text-on-surface-variant font-label-md text-label-md border border-outline-variant/20 hover:bg-surface-container-high transition-colors active:scale-95">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">calendar_month</span>
+<span class="">Pilih Bulan</span>
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+
+</div>
+</section>
+<!-- Transaction List -->
+<section class="flex flex-col gap-2 pb-section-gap">
+<h2 class="font-label-md text-label-md text-on-surface-variant mb-2">Hari Ini</h2>
+<!-- Transaction Card 1 (Income) -->
+<button class="w-full text-left bg-white rounded-2xl p-4 flex items-center justify-between ambient-shadow active:scale-[0.98] transition-all group hover:shadow-md">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-low text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">recycling</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-md text-label-md text-on-surface">Setoran Sampah</span>
+<span class="font-body-sm text-sm text-on-surface-variant">Budi Santoso • 12.5 kg</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-label-md text-label-md text-primary-container">+ Rp 45.000</span>
+<span class="font-body-sm text-sm text-on-surface-variant">10:30 WIB</span>
+</div>
+</button>
+<!-- Transaction Card 2 (Neutral) -->
+<button class="w-full text-left bg-white rounded-2xl p-4 flex items-center justify-between ambient-shadow active:scale-[0.98] transition-all group hover:shadow-md mt-2">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-low text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-md text-label-md text-on-surface">Tarik Saldo</span>
+<span class="font-body-sm text-sm text-on-surface-variant">Ani Yudhoyono</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-label-md text-label-md text-on-surface">- Rp 20.000</span>
+<span class="font-body-sm text-sm text-on-surface-variant">09:15 WIB</span>
+</div>
+</button>
+</section>
+</div>
+</main>
+<!-- Mobile Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 md:hidden bg-surface/80 dark:bg-surface-container-highest/80 backdrop-blur-xl border-t border-outline-variant/20 rounded-t-xl shadow-[0px_-10px_30px_rgba(0,83,77,0.06)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high active:scale-98 transition-all duration-200 p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">receipt_long</span>
+<span class="font-label-sm text-label-sm mt-1">Transaksi</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed font-bold hover:bg-surface-container-low dark:hover:bg-surface-container-high active:scale-98 transition-all duration-200 p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="font-label-sm text-label-sm mt-1">Riwayat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high active:scale-98 transition-all duration-200 p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">analytics</span>
+<span class="font-label-sm text-label-sm mt-1">Laporan</span>
+</a>
+</nav>
+
+
+</body></html>

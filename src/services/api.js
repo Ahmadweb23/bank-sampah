@@ -1,5 +1,5 @@
 const DEFAULT_API_BASE_URL =
-  'https://script.google.com/macros/s/AKfycbx7IFpvD0AL9fHkqlrStsl46MEsyAmJGdq25t95oNV1KhH_kzcNS0k0eBa0woORBzXE/exec'
+  'https://script.google.com/macros/s/AKfycbyGiJ1D8nodqphTC0_7LH5OwI5fyrmQ3sRELgWLukJ5Wqbbd1owyRWopH6oPdBXS1BH/exec'
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
@@ -508,6 +508,42 @@ export function ujiApi({
     action,
     params,
     body
+  })
+}
+
+/* =========================================================
+ * KATALOG SEMBAKO
+ * ======================================================= */
+
+export function getKatalog() {
+  return request({
+    action: 'get_katalog'
+  })
+}
+
+export function tambahKatalog(payload) {
+  return request({
+    method: 'POST',
+    action: 'tambah_katalog',
+    body: payload
+  })
+}
+
+export function ubahKatalog(payload) {
+  return request({
+    method: 'POST',
+    action: 'ubah_katalog',
+    body: payload
+  })
+}
+
+export function hapusKatalog(idKatalog) {
+  return request({
+    method: 'POST',
+    action: 'hapus_katalog',
+    body: {
+      id_katalog: idKatalog
+    }
   })
 }
 

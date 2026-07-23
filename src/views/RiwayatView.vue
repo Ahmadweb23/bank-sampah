@@ -82,11 +82,11 @@
       >
         <div class="max-w-md mx-auto flex items-center justify-between px-6">
           <router-link
-            to="/transaksi"
+            to="/dashboard"
             class="flex flex-col items-center gap-1 text-sm text-on-surface-variant"
           >
-            <span class="material-symbols-outlined">inventory_2</span>
-            <span>Transaksi</span>
+            <span class="material-symbols-outlined">home</span>
+            <span>Beranda</span>
           </router-link>
           <router-link
             to="/riwayat"

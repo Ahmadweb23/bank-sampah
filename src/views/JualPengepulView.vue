@@ -26,65 +26,96 @@
           />
         </div>
 
-        <div class="mt-4">
-          <p class="text-sm text-slate-600">Jenis Sampah</p>
-          <div class="mt-2 grid grid-cols-2 gap-3">
+        <div class="mt-5">
+          <div class="flex items-center justify-between">
+            <p class="text-[15px] font-medium">
+              Item Sampah
+            </p>
             <button
-              v-for="item in stokList"
-              :key="item.kode"
-              @click="selectItem(item)"
-              :class="[
-                'rounded-xl p-3 text-sm border text-left',
-                selectedKode === item.kode
-                  ? 'bg-primary/10 border-primary'
-                  : 'bg-white border-slate-200',
-              ]"
+              type="button"
+              class="text-sm font-medium text-[#147052]"
+              @click="addItem"
             >
-              <div class="font-medium">{{ item.nama }}</div>
-              <div class="text-xs text-slate-500">Stok: {{ item.stok }} kg</div>
+              + Tambah Item
             </button>
           </div>
+
+          <div class="mt-3 space-y-3">
+            <div
+              v-for="(item, index) in items"
+              :key="index"
+              class="rounded-xl border border-slate-200 p-3 bg-slate-50/50"
+            >
+              <!-- Dropdown Kategori Sampah -->
+              <label class="mb-1 block text-xs font-medium text-[#687481]">
+                Kategori Sampah
+              </label>
+
+              <select
+                v-model="item.kode"
+                class="mb-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-[#147052]"
+                @change="onKategoriChange(index)"
+              >
+                <option value="" disabled>-- Pilih Kategori Sampah --</option>
+                <option
+                  v-for="cat in masterSampahList"
+                  :key="cat.kode || cat.nama_kategori || cat.nama"
+                  :value="cat.kode || cat.nama_kategori || cat.nama"
+                >
+                  {{ cat.nama_kategori || cat.nama }}
+                </option>
+              </select>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="mb-1 block text-xs font-medium text-[#687481]">
+                    Berat (kg)
+                  </label>
+                  <input
+                    v-model.number="item.berat"
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    placeholder="0.0"
+                    class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-[#147052]"
+                  />
+                </div>
+                <div>
+                  <label class="mb-1 block text-xs font-medium text-[#687481]">
+                    Harga Jual/kg (Rp)
+                  </label>
+                  <input
+                    v-model.number="item.harga_jual"
+                    type="number"
+                    min="0"
+                    placeholder="0"
+                    class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-[#147052]"
+                  />
+                </div>
+              </div>
+
+              <div class="mt-2 flex items-end justify-between">
+                <span class="text-xs text-slate-500">
+                  Stok tersedia: {{ getStokForKategori(item.kode) }} kg
+                </span>
+                <button
+                  type="button"
+                  class="rounded-lg bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-100"
+                  @click="removeItem(index)"
+                >
+                  Hapus
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div
-          class="mt-4 rounded-2xl bg-surface-container p-3 flex items-center justify-between"
-        >
-          <div>
-            <p class="text-sm text-on-surface-variant">Stok Tersedia</p>
-            <p class="font-semibold">{{ selectedItem?.stok || 0 }} kg</p>
-          </div>
-          <div>
-            <p class="text-sm text-on-surface-variant">Berat Dijual (kg)</p>
-            <input
-              v-model.number="beratJual"
-              type="number"
-              min="0"
-              :max="selectedItem?.stok"
-              class="w-28 text-right font-semibold bg-transparent outline-none"
-            />
-          </div>
-        </div>
-
-        <div class="mt-4">
-          <p class="text-sm text-slate-600">Harga Jual / kg (Rp)</p>
-          <div
-            class="mt-2 rounded-xl bg-surface-container px-3 py-3 flex items-center justify-between"
-          >
-            <span class="text-sm text-on-surface-variant">Rp</span>
-            <input
-              v-model.number="hargaPerKg"
-              type="number"
-              min="0"
-              class="w-36 text-right font-semibold bg-transparent outline-none"
-            />
-          </div>
-        </div>
-
-        <div class="mt-6 rounded-2xl bg-white p-6 text-center">
+        <div class="mt-6 rounded-2xl bg-white p-6 text-center border border-slate-100">
           <p class="text-sm text-on-surface-variant">TOTAL DITERIMA</p>
-          <p class="mt-2 text-2xl font-bold text-primary">
-            {{ formatRupiah(totalDiterima) }}
+          <p class="mt-2 text-3xl font-bold text-primary">
+            {{ formatCurrency(totalDiterima) }}
           </p>
+          <p class="mt-1 text-xs text-slate-500">Total Berat: {{ totalBerat }} kg</p>
         </div>
 
         <div class="mt-4 flex flex-col gap-3">
@@ -110,50 +141,85 @@
 <script setup>
 import { ref, computed, inject, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { getStok, submitPenjualan } from '../services/api'
+import { getStok, submitPenjualan, getMasterSampah } from '../services/api'
 
 const showModal = inject('showModal')
 const router = useRouter()
 
 const namaPengepul = ref('')
 const stokList = ref([])
-const selectedKode = ref('')
-const beratJual = ref(0)
-const hargaPerKg = ref(0)
+const masterSampahList = ref([])
+const items = ref([
+  {
+    kode: '',
+    berat: null,
+    harga_jual: 0
+  }
+])
 const loading = ref(false)
 
-const selectedItem = computed(() => {
-  return stokList.value.find(item => item.kode === selectedKode.value)
+const totalBerat = computed(() => {
+  return items.value.reduce((sum, item) => sum + (Number(item.berat) || 0), 0)
 })
 
 const totalDiterima = computed(() => {
-  return (Number(beratJual.value) || 0) * (Number(hargaPerKg.value) || 0)
+  return items.value.reduce((sum, item) => {
+    return sum + ((Number(item.berat) || 0) * (Number(item.harga_jual) || 0))
+  }, 0)
 })
 
-function formatRupiah(v) {
-  return 'Rp' + Number(v).toLocaleString('id-ID')
+function formatCurrency(value) {
+  return 'Rp' + Number(value).toLocaleString('id-ID')
 }
 
-function selectItem(item) {
-  selectedKode.value = item.kode
-  hargaPerKg.value = item.harga_jual || 0
-  beratJual.value = 0
+function getStokForKategori(kode) {
+  const stokItem = stokList.value.find(s => s.kode === kode)
+  return stokItem ? stokItem.stok : 0
 }
 
-async function loadStok() {
+function onKategoriChange(index) {
+  const item = items.value[index]
+  const stokItem = stokList.value.find(s => s.kode === item.kode)
+  if (stokItem) {
+    item.harga_jual = stokItem.harga_jual || 0
+  }
+}
+
+function addItem() {
+  items.value.push({
+    kode: '',
+    berat: null,
+    harga_jual: 0
+  })
+}
+
+function removeItem(i) {
+  if (items.value.length > 1) {
+    items.value.splice(i, 1)
+  } else {
+    items.value = [{ kode: '', berat: null, harga_jual: 0 }]
+  }
+}
+
+async function loadData() {
   try {
-    const result = await getStok()
-    if (result.success && result.data) {
-      stokList.value = result.data
-      if (stokList.value.length > 0) {
-        selectItem(stokList.value[0])
-      }
+    const [resStok, resMaster] = await Promise.all([getStok(), getMasterSampah()])
+
+    if (resStok.success && resStok.data) {
+      stokList.value = resStok.data
+    }
+
+    if (resMaster.success && resMaster.data) {
+      masterSampahList.value = resMaster.data.map(item => ({
+        ...item,
+        nama_kategori: item.nama_kategori || item.nama || item.kategori
+      }))
     }
   } catch (error) {
     showModal({
       type: 'error',
       title: 'Gagal',
-      message: error.message || 'Gagal memuat data stok'
+      message: error.message || 'Gagal memuat data'
     })
   }
 }
@@ -168,29 +234,19 @@ async function terimaSimpan() {
     return
   }
 
-  if (!selectedKode.value) {
-    showModal({
-      type: 'error',
-      title: 'Gagal',
-      message: 'Pilih jenis sampah terlebih dahulu'
-    })
-    return
-  }
+  const invalidItem = items.value.find((it) => {
+    if (!it.kode) return true
+    if (!it.berat || Number(it.berat) <= 0) return true
+    const stok = getStokForKategori(it.kode)
+    if (Number(it.berat) > stok) return true
+    return false
+  })
 
-  if (beratJual.value <= 0) {
+  if (invalidItem) {
     showModal({
       type: 'error',
       title: 'Gagal',
-      message: 'Berat jual harus lebih dari 0'
-    })
-    return
-  }
-
-  if (selectedItem.value && beratJual.value > selectedItem.value.stok) {
-    showModal({
-      type: 'error',
-      title: 'Gagal',
-      message: `Stok tidak mencukupi. Sisa stok: ${selectedItem.value.stok} kg`
+      message: 'Harap pilih kategori, isi berat lebih dari 0, dan tidak melebihi stok'
     })
     return
   }
@@ -200,13 +256,11 @@ async function terimaSimpan() {
   try {
     await submitPenjualan({
       nama_pengepul: namaPengepul.value,
-      items: [
-        {
-          kode: selectedKode.value,
-          berat: beratJual.value,
-          harga_jual: hargaPerKg.value
-        }
-      ]
+      items: items.value.map(it => ({
+        kode: it.kode,
+        berat: Number(it.berat),
+        harga_jual: Number(it.harga_jual)
+      }))
     })
 
     showModal({
@@ -229,6 +283,6 @@ async function terimaSimpan() {
 }
 
 onMounted(() => {
-  loadStok()
+  loadData()
 })
 </script>

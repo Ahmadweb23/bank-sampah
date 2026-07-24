@@ -12,6 +12,7 @@ import TukarPoinView from "../views/TukarPoinView.vue";
 import LupaPasswordView from "../views/LupaPasswordView.vue";
 import InformasiView from "../views/InformasiView.vue";
 import KatalogPengelolaView from "../views/KatalogPengelolaView.vue";
+import ProfilPengelolaView from "../views/ProfilPengelolaView.vue";
 
 import LoginWarga from "../views/LoginWarga.vue";
 import DashboardWarga from "../views/warga/DashboardWarga.vue";
@@ -21,121 +22,126 @@ import SuksesTukarPoinView from "../views/warga/SuksesTukarPoinView.vue";
 import RiwayatWargaView from "../views/warga/RiwayatWargaView.vue";
 
 const routes = [
-    {
-        path: "/",
-        redirect: "/login-warga",
-    },
+  {
+    path: "/",
+    redirect: "/login-warga",
+  },
 
-    // =====================================================
-    // AUTENTIKASI PENGELOLA
-    // =====================================================
-    {
-        path: "/login",
-        name: "login",
-        component: LoginView,
-    },
-    {
-        path: "/password",
-        name: "lupa-password",
-        component: LupaPasswordView,
-    },
+  // =====================================================
+  // AUTENTIKASI PENGELOLA
+  // =====================================================
+  {
+    path: "/login",
+    name: "login",
+    component: LoginView,
+  },
+  {
+    path: "/password",
+    name: "lupa-password",
+    component: LupaPasswordView,
+  },
 
-    // =====================================================
-    // PORTAL PENGELOLA
-    // =====================================================
-    {
-        path: "/dashboard",
-        name: "dashboard",
-        component: HomeView,
-    },
-    {
-        path: "/transaksi",
-        name: "transaksi",
-        redirect: "/dashboard",
-    },
-    {
-        path: "/keuangan",
-        name: "keuangan",
-        component: KeuanganView,
-    },
-    {
-        path: "/jual",
-        name: "jual",
-        component: JualPengepulView,
-    },
-    {
-        path: "/tukar",
-        name: "tukar",
-        component: TukarPoinView,
-    },
-    {
-        path: "/riwayat",
-        name: "riwayat",
-        component: RiwayatView,
-    },
-    {
-        path: "/laporan",
-        name: "laporan",
-        component: LaporanView,
-    },
-    {
-        path: "/informasi",
-        name: "informasi",
-        component: InformasiView,
-    },
-    {
-        path: "/katalog-pengelola",
-        name: "katalog-pengelola",
-        component: KatalogPengelolaView,
-    },
+  // =====================================================
+  // PORTAL PENGELOLA
+  // =====================================================
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    component: HomeView,
+  },
+  {
+    path: "/transaksi",
+    name: "transaksi",
+    redirect: "/dashboard",
+  },
+  {
+    path: "/keuangan",
+    name: "keuangan",
+    component: KeuanganView,
+  },
+  {
+    path: "/jual",
+    name: "jual",
+    component: JualPengepulView,
+  },
+  {
+    path: "/tukar",
+    name: "tukar",
+    component: TukarPoinView,
+  },
+  {
+    path: "/riwayat",
+    name: "riwayat",
+    component: RiwayatView,
+  },
+  {
+    path: "/laporan",
+    name: "laporan",
+    component: LaporanView,
+  },
+  {
+    path: "/informasi",
+    name: "informasi",
+    component: InformasiView,
+  },
+  {
+    path: "/katalog-pengelola",
+    name: "katalog-pengelola",
+    component: KatalogPengelolaView,
+  },
+  {
+    path: "/profil-pengelola",
+    name: "profil-pengelola",
+    component: ProfilPengelolaView,
+  },
 
-    // =====================================================
-    // PORTAL WARGA
-    // =====================================================
-    {
-        path: "/login-warga",
-        name: "login-warga",
-        component: LoginWarga,
-    },
-    {
-        path: "/warga",
-        name: "dashboard-warga",
-        component: DashboardWarga,
-    },
-    {
-        path: "/katalog",
-        name: "katalog-warga",
-        component: KatalogView,
-    },
-    {
-        path: "/tukar-poin-sembako",
-        name: "tukar-poin-sembako",
-        component: TukarPoinSembakoView,
-    },
-    {
-        path: "/sukses-tukar-poin",
-        name: "sukses-tukar-poin",
-        component: SuksesTukarPoinView,
-    },
-    {
-        path: "/riwayat-warga",
-        name: "riwayat-warga",
-        component: RiwayatWargaView,
-    },
+  // =====================================================
+  // PORTAL WARGA
+  // =====================================================
+  {
+    path: "/login-warga",
+    name: "login-warga",
+    component: LoginWarga,
+  },
+  {
+    path: "/warga",
+    name: "dashboard-warga",
+    component: DashboardWarga,
+  },
+  {
+    path: "/katalog",
+    name: "katalog-warga",
+    component: KatalogView,
+  },
+  {
+    path: "/tukar-poin-sembako",
+    name: "tukar-poin-sembako",
+    component: TukarPoinSembakoView,
+  },
+  {
+    path: "/sukses-tukar-poin",
+    name: "sukses-tukar-poin",
+    component: SuksesTukarPoinView,
+  },
+  {
+    path: "/riwayat-warga",
+    name: "riwayat-warga",
+    component: RiwayatWargaView,
+  },
 
-    // =====================================================
-    // PENGUJIAN API
-    // =====================================================
-    {
-        path: "/uji-api",
-        name: "uji-api",
-        component: () => import("../views/TestApiView.vue"),
-    },
+  // =====================================================
+  // PENGUJIAN API
+  // =====================================================
+  {
+    path: "/uji-api",
+    name: "uji-api",
+    component: () => import("../views/TestApiView.vue"),
+  },
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes,
+  history: createWebHistory(),
+  routes,
 });
 
 export default router;

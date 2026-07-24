@@ -202,33 +202,7 @@
       </section>
 
       <!-- Bottom Navigation -->
-      <nav
-        class="fixed bottom-0 left-0 w-full bg-surface z-40 py-3 border-t border-slate-100"
-      >
-        <div class="max-w-md mx-auto flex items-center justify-between px-6">
-          <router-link
-            to="/dashboard"
-            class="flex flex-col items-center gap-1 text-sm text-on-surface-variant"
-          >
-            <span class="material-symbols-outlined">home</span>
-            <span>Beranda</span>
-          </router-link>
-          <router-link
-            to="/riwayat"
-            class="flex flex-col items-center gap-1 text-sm text-on-surface-variant"
-          >
-            <span class="material-symbols-outlined">history</span>
-            <span>Riwayat</span>
-          </router-link>
-          <router-link
-            to="/laporan"
-            class="flex flex-col items-center gap-1 text-sm text-primary"
-          >
-            <span class="material-symbols-outlined">bar_chart</span>
-            <span>Laporan</span>
-          </router-link>
-        </div>
-      </nav>
+      <BottomNav />
     </div>
   </div>
 </template>
@@ -236,6 +210,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { getSaldoKas, getDashboardData, getRiwayatKas } from "../services/api";
+import BottomNav from "../components/BottomNav.vue";
 
 const saldoKas = ref(0);
 const totalKg = ref(0);

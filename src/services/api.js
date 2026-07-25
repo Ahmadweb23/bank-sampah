@@ -11,12 +11,12 @@
  * - POST ubah_akun
  * - POST hapus_akun
  *
- * Role akun yang digunakan: admin dan warga.
- * File regenerasi: siap menggantikan src/services/api.js.
+ * Admin disimpan di sheet operator; warga di sheet warga.
+ * File regenerasi 2026-07-25: siap menggantikan src/services/api.js.
  */
 
 const DEFAULT_API_BASE_URL =
-  "https://script.google.com/macros/s/AKfycbzPAaTOfRXKi55MbZuvmudq-J8Rc7mtvIOrAYJdJ_EJ2436aujUq-Xwv-UluOpFJFkl/exec";
+  "https://script.google.com/macros/s/AKfycbwpxEvhZ3T8IYRSDjTXZkDEC9jz1SrmPXs_aA_pjDI640HuUIqmgAxiitRp72K4kDxj/exec";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
@@ -353,6 +353,24 @@ export function tambahWarga(payload) {
     method: "POST",
     action: "tambah_warga",
     body: payload,
+  });
+}
+
+export function ubahWarga(payload) {
+  return request({
+    method: "POST",
+    action: "ubah_warga",
+    body: payload,
+  });
+}
+
+export function hapusWarga(idWarga) {
+  return request({
+    method: "POST",
+    action: "hapus_warga",
+    body: {
+      id_warga: idWarga,
+    },
   });
 }
 

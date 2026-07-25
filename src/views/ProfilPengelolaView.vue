@@ -85,6 +85,34 @@
           </div>
         </section>
 
+        <!-- Tab Jenis Akun -->
+        <section class="mb-5 grid grid-cols-2 rounded-2xl bg-slate-200 p-1">
+          <button
+            type="button"
+            class="rounded-xl px-4 py-3 text-sm font-semibold transition"
+            :class="
+              activeTab === 'admin'
+                ? 'bg-white text-green-800 shadow-sm'
+                : 'text-slate-500'
+            "
+            @click="switchTab('admin')"
+          >
+            Admin
+          </button>
+          <button
+            type="button"
+            class="rounded-xl px-4 py-3 text-sm font-semibold transition"
+            :class="
+              activeTab === 'warga'
+                ? 'bg-white text-green-800 shadow-sm'
+                : 'text-slate-500'
+            "
+            @click="switchTab('warga')"
+          >
+            Warga
+          </button>
+        </section>
+
         <!-- Tombol Tambah Akun -->
         <section class="mb-5">
           <button
@@ -107,7 +135,9 @@
                 <line x1="19" y1="8" x2="19" y2="14" />
                 <line x1="22" y1="11" x2="16" y2="11" />
               </svg>
-              <span class="text-[18px] font-semibold">Tambah Akun</span>
+              <span class="text-[18px] font-semibold">
+                {{ activeTab === "admin" ? "Tambah Admin" : "Tambah Warga" }}
+              </span>
             </span>
             <svg
               viewBox="0 0 24 24"
@@ -125,10 +155,12 @@
 
         <!-- Daftar Akun -->
         <section>
-          <h3 class="text-[18px] font-medium mb-4">Daftar Akun</h3>
+          <h3 class="text-[18px] font-medium mb-4">
+            {{ activeTab === "admin" ? "Daftar Admin" : "Daftar Warga" }}
+          </h3>
 
           <div
-            v-if="pengelolaList.length === 0"
+            v-if="activeList.length === 0"
             class="rounded-2xl bg-white p-8 text-center shadow-sm border border-gray-100"
           >
             <svg
@@ -145,13 +177,19 @@
               <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
               <path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
-            <p class="text-sm text-gray-500">Belum ada akun</p>
+            <p class="text-sm text-gray-500">
+              {{
+                activeTab === "admin"
+                  ? "Belum ada akun admin"
+                  : "Belum ada akun warga"
+              }}
+            </p>
           </div>
 
           <div class="space-y-3">
             <div
-              v-for="(p, i) in pengelolaList"
-              :key="p.id_operator || i"
+              v-for="(p, i) in activeList"
+              :key="getItemId(p) || i"
               class="flex items-center gap-3 rounded-[22px] bg-white px-4 py-4 shadow-sm border border-gray-100"
             >
               <div
@@ -172,9 +210,10 @@
                   <span
                     class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] capitalize text-slate-600"
                   >
-                    {{ p.role || "admin" }}
+                    {{ activeTab }}
                   </span>
                   <span
+                    v-if="activeTab === 'admin'"
                     class="rounded-full px-2 py-0.5 text-[11px] capitalize"
                     :class="
                       String(p.status).toLowerCase() === 'aktif'
@@ -184,7 +223,20 @@
                   >
                     {{ p.status || "nonaktif" }}
                   </span>
+                  <span
+                    v-else
+                    class="rounded-full bg-amber-50 px-2 py-0.5 text-[11px] text-amber-700"
+                  >
+                    {{ Number(p.poin || 0) }} poin
+                  </span>
                 </div>
+                <p
+                  v-if="activeTab === 'warga'"
+                  class="mt-1 truncate text-[11px] text-gray-400"
+                >
+                  {{ Number(p.total_kg || 0) }} kg ·
+                  {{ formatRupiah(p.total_rupiah || 0) }}
+                </p>
               </div>
               <div class="flex items-center gap-2">
                 <button
@@ -274,7 +326,7 @@
         <!-- Modal Header -->
         <div class="mb-5 flex items-center justify-between">
           <h3 class="text-[19px] font-semibold">
-            {{ isEditing ? "Edit Akun" : "Tambah Akun" }}
+            {{ formTitle }}
           </h3>
           <button
             type="button"
@@ -333,20 +385,8 @@
             />
           </div>
 
-          <!-- Role -->
-          <div>
-            <label class="mb-1 block text-[14px] text-[#687481]">Role</label>
-            <select
-              v-model="formData.role"
-              class="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm outline-none focus:border-[#147052]"
-            >
-              <option value="admin">Admin</option>
-              <option value="warga">Warga</option>
-            </select>
-          </div>
-
           <!-- Status -->
-          <div>
+          <div v-if="activeTab === 'admin'">
             <label class="mb-1 block text-[14px] text-[#687481]">Status</label>
             <select
               v-model="formData.status"
@@ -358,7 +398,7 @@
           </div>
 
           <!-- Password -->
-          <div>
+          <div v-if="activeTab === 'admin'">
             <label class="block text-[14px] text-[#687481] mb-1">{{
               isEditing
                 ? "Password Baru (biarkan kosong jika tidak diganti)"
@@ -374,6 +414,15 @@
                   : 'Minimal 6 karakter'
               "
             />
+          </div>
+
+          <div
+            v-if="activeTab === 'warga'"
+            class="rounded-xl border border-blue-100 bg-blue-50 p-3 text-xs leading-relaxed text-blue-700"
+          >
+            Warga login menggunakan username dan nomor HP tanpa password. Poin,
+            total kilogram, dan total rupiah dibuat otomatis dengan nilai awal
+            0.
           </div>
         </div>
 
@@ -528,6 +577,10 @@ import {
   tambahPengelola,
   ubahPengelola,
   hapusPengelola,
+  getWargaList,
+  tambahWarga,
+  ubahWarga,
+  hapusWarga,
 } from "../services/api";
 
 const router = useRouter();
@@ -542,7 +595,9 @@ const isEditing = ref(false);
 const editingId = ref(null);
 const deleteTarget = ref(null);
 const formError = ref("");
+const activeTab = ref("admin");
 const pengelolaList = ref([]);
+const wargaList = ref([]);
 
 // Ambil data operator yang login dari localStorage
 const currentOperator = computed(() => {
@@ -559,8 +614,16 @@ const formData = ref({
   username: "",
   no_hp: "",
   password: "",
-  role: "admin",
   status: "aktif",
+});
+
+const activeList = computed(() =>
+  activeTab.value === "admin" ? pengelolaList.value : wargaList.value,
+);
+
+const formTitle = computed(() => {
+  const jenis = activeTab.value === "admin" ? "Admin" : "Warga";
+  return isEditing.value ? `Edit ${jenis}` : `Tambah ${jenis}`;
 });
 
 function getInitials(name) {
@@ -579,7 +642,6 @@ function resetForm() {
     username: "",
     no_hp: "",
     password: "",
-    role: "admin",
     status: "aktif",
   };
   formError.value = "";
@@ -592,17 +654,29 @@ function openAddModal() {
   showForm.value = true;
 }
 
+function switchTab(tab) {
+  if (tab !== "admin" && tab !== "warga") return;
+  closeForm();
+  showDeleteConfirm.value = false;
+  deleteTarget.value = null;
+  activeTab.value = tab;
+}
+
+function getItemId(item) {
+  return activeTab.value === "admin" ? item?.id_operator : item?.id_warga;
+}
+
 function openEditModal(p) {
   formData.value = {
     nama: p.nama || "",
     username: p.username || "",
     no_hp: p.no_hp || "",
     password: "",
-    role: p.role || "admin",
     status: p.status || "aktif",
   };
   isEditing.value = true;
-  editingId.value = p.id_operator || "";
+  editingId.value =
+    activeTab.value === "admin" ? p.id_operator || "" : p.id_warga || "";
   formError.value = "";
   showForm.value = true;
 }
@@ -633,6 +707,29 @@ async function loadPengelolaList() {
   }
 }
 
+async function loadWargaList() {
+  try {
+    const res = await getWargaList();
+
+    if (res?.success && Array.isArray(res.data)) {
+      wargaList.value = res.data;
+    } else {
+      wargaList.value = [];
+    }
+  } catch (err) {
+    console.error("Gagal memuat daftar warga", err);
+    wargaList.value = [];
+  }
+}
+
+function formatRupiah(value) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  }).format(Number(value || 0));
+}
+
 async function submitForm() {
   formError.value = "";
 
@@ -648,11 +745,16 @@ async function submitForm() {
     formError.value = "Nomor HP harus diisi.";
     return;
   }
-  if (!isEditing.value && !formData.value.password.trim()) {
+  if (
+    activeTab.value === "admin" &&
+    !isEditing.value &&
+    !formData.value.password.trim()
+  ) {
     formError.value = "Password harus diisi.";
     return;
   }
   if (
+    activeTab.value === "admin" &&
     formData.value.password.trim() &&
     formData.value.password.trim().length < 6
   ) {
@@ -663,38 +765,55 @@ async function submitForm() {
   isSubmitting.value = true;
   try {
     let res;
-    if (isEditing.value) {
+
+    const dataDasar = {
+      nama: formData.value.nama.trim(),
+      username: formData.value.username.trim(),
+      no_hp: formData.value.no_hp.trim(),
+    };
+
+    if (activeTab.value === "admin" && isEditing.value) {
       res = await ubahPengelola({
+        ...dataDasar,
         id_operator: editingId.value,
-        nama: formData.value.nama.trim(),
-        username: formData.value.username.trim(),
-        no_hp: formData.value.no_hp.trim(),
-        role: formData.value.role,
+        role: "admin",
         status: formData.value.status,
         ...(formData.value.password.trim()
           ? { password: formData.value.password.trim() }
           : {}),
       });
-    } else {
+    } else if (activeTab.value === "admin") {
       res = await tambahPengelola({
-        nama: formData.value.nama.trim(),
-        username: formData.value.username.trim(),
-        no_hp: formData.value.no_hp.trim(),
+        ...dataDasar,
         password: formData.value.password.trim(),
-        role: formData.value.role,
+        role: "admin",
         status: formData.value.status,
       });
+    } else if (isEditing.value) {
+      res = await ubahWarga({
+        ...dataDasar,
+        id_warga: editingId.value,
+      });
+    } else {
+      res = await tambahWarga(dataDasar);
     }
 
     if (res?.success) {
+      const jenis = activeTab.value === "admin" ? "admin" : "warga";
+
       await showModal({
         title: "Berhasil",
         message: isEditing.value
-          ? "Akun berhasil diperbarui."
-          : "Akun baru berhasil ditambahkan.",
+          ? `Akun ${jenis} berhasil diperbarui.`
+          : `Akun ${jenis} baru berhasil ditambahkan.`,
       });
       closeForm();
-      await loadPengelolaList();
+
+      if (activeTab.value === "admin") {
+        await loadPengelolaList();
+      } else {
+        await loadWargaList();
+      }
     } else {
       formError.value = res?.message || "Gagal menyimpan data akun.";
     }
@@ -710,22 +829,31 @@ async function handleDelete() {
 
   isDeleting.value = true;
   try {
-    const id = deleteTarget.value.id_operator;
+    const jenis = activeTab.value === "admin" ? "admin" : "warga";
+    const id = getItemId(deleteTarget.value);
 
     if (!id) {
-      throw new Error("ID operator tidak ditemukan.");
+      throw new Error(`ID ${jenis} tidak ditemukan.`);
     }
 
-    const res = await hapusPengelola(id);
+    const res =
+      activeTab.value === "admin"
+        ? await hapusPengelola(id)
+        : await hapusWarga(id);
 
     if (res?.success) {
       await showModal({
         title: "Berhasil",
-        message: "Akun berhasil dihapus.",
+        message: `Akun ${jenis} berhasil dihapus.`,
       });
       showDeleteConfirm.value = false;
       deleteTarget.value = null;
-      await loadPengelolaList();
+
+      if (activeTab.value === "admin") {
+        await loadPengelolaList();
+      } else {
+        await loadWargaList();
+      }
     } else {
       await showModal({
         title: "Gagal",
@@ -748,7 +876,10 @@ function handleLogout() {
 }
 
 onMounted(async () => {
-  await loadPengelolaList();
-  isLoading.value = false;
+  try {
+    await Promise.all([loadPengelolaList(), loadWargaList()]);
+  } finally {
+    isLoading.value = false;
+  }
 });
 </script>

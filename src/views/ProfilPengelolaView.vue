@@ -23,7 +23,7 @@
           <h1 class="text-2xl font-bold text-green-900 leading-tight">
             Profil
           </h1>
-          <p class="text-sm text-gray-500">Kelola akun pengelola</p>
+          <p class="text-sm text-gray-500">Kelola akun admin dan warga</p>
         </div>
       </div>
     </header>
@@ -107,9 +107,7 @@
                 <line x1="19" y1="8" x2="19" y2="14" />
                 <line x1="22" y1="11" x2="16" y2="11" />
               </svg>
-              <span class="text-[18px] font-semibold"
-                >Tambah Akun Pengelola</span
-              >
+              <span class="text-[18px] font-semibold">Tambah Akun</span>
             </span>
             <svg
               viewBox="0 0 24 24"
@@ -125,9 +123,9 @@
           </button>
         </section>
 
-        <!-- Daftar Akun Pengelola -->
+        <!-- Daftar Akun -->
         <section>
-          <h3 class="text-[18px] font-medium mb-4">Daftar Akun Pengelola</h3>
+          <h3 class="text-[18px] font-medium mb-4">Daftar Akun</h3>
 
           <div
             v-if="pengelolaList.length === 0"
@@ -147,7 +145,7 @@
               <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
               <path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
-            <p class="text-sm text-gray-500">Belum ada akun pengelola</p>
+            <p class="text-sm text-gray-500">Belum ada akun</p>
           </div>
 
           <div class="space-y-3">
@@ -174,7 +172,7 @@
                   <span
                     class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] capitalize text-slate-600"
                   >
-                    {{ p.role || "operator" }}
+                    {{ p.role || "admin" }}
                   </span>
                   <span
                     class="rounded-full px-2 py-0.5 text-[11px] capitalize"
@@ -276,7 +274,7 @@
         <!-- Modal Header -->
         <div class="mb-5 flex items-center justify-between">
           <h3 class="text-[19px] font-semibold">
-            {{ isEditing ? "Edit Akun Pengelola" : "Tambah Akun Pengelola" }}
+            {{ isEditing ? "Edit Akun" : "Tambah Akun" }}
           </h3>
           <button
             type="button"
@@ -302,14 +300,12 @@
         <div class="space-y-4">
           <!-- Nama -->
           <div>
-            <label class="mb-1 block text-[14px] text-[#687481]">
-              Nama Pengelola
-            </label>
+            <label class="mb-1 block text-[14px] text-[#687481]"> Nama </label>
             <input
               v-model="formData.nama"
               type="text"
               class="w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:border-[#147052]"
-              placeholder="Nama lengkap pengelola"
+              placeholder="Nama lengkap"
             />
           </div>
 
@@ -344,8 +340,8 @@
               v-model="formData.role"
               class="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm outline-none focus:border-[#147052]"
             >
-              <option value="operator">Operator</option>
               <option value="admin">Admin</option>
+              <option value="warga">Warga</option>
             </select>
           </div>
 
@@ -563,7 +559,7 @@ const formData = ref({
   username: "",
   no_hp: "",
   password: "",
-  role: "operator",
+  role: "admin",
   status: "aktif",
 });
 
@@ -583,7 +579,7 @@ function resetForm() {
     username: "",
     no_hp: "",
     password: "",
-    role: "operator",
+    role: "admin",
     status: "aktif",
   };
   formError.value = "";
@@ -602,7 +598,7 @@ function openEditModal(p) {
     username: p.username || "",
     no_hp: p.no_hp || "",
     password: "",
-    role: p.role || "operator",
+    role: p.role || "admin",
     status: p.status || "aktif",
   };
   isEditing.value = true;
@@ -641,7 +637,7 @@ async function submitForm() {
   formError.value = "";
 
   if (!formData.value.nama.trim()) {
-    formError.value = "Nama pengelola harus diisi.";
+    formError.value = "Nama harus diisi.";
     return;
   }
   if (!formData.value.username.trim()) {
@@ -694,13 +690,13 @@ async function submitForm() {
       await showModal({
         title: "Berhasil",
         message: isEditing.value
-          ? "Akun pengelola berhasil diperbarui."
-          : "Akun pengelola baru berhasil ditambahkan.",
+          ? "Akun berhasil diperbarui."
+          : "Akun baru berhasil ditambahkan.",
       });
       closeForm();
       await loadPengelolaList();
     } else {
-      formError.value = res?.message || "Gagal menyimpan data pengelola.";
+      formError.value = res?.message || "Gagal menyimpan data akun.";
     }
   } catch (err) {
     formError.value = err.message || "Terjadi kesalahan server.";
@@ -725,7 +721,7 @@ async function handleDelete() {
     if (res?.success) {
       await showModal({
         title: "Berhasil",
-        message: "Akun pengelola berhasil dihapus.",
+        message: "Akun berhasil dihapus.",
       });
       showDeleteConfirm.value = false;
       deleteTarget.value = null;
@@ -733,7 +729,7 @@ async function handleDelete() {
     } else {
       await showModal({
         title: "Gagal",
-        message: res?.message || "Gagal menghapus akun pengelola.",
+        message: res?.message || "Gagal menghapus akun.",
       });
     }
   } catch (err) {

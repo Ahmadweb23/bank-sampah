@@ -1,5 +1,22 @@
+/**
+ * =========================================================
+ * API.JS
+ * Sistem Digital Bank Sampah Bojong Karya 2
+ * =========================================================
+ *
+ * Integrasi CRUD akun:
+ * - GET  akun
+ * - GET  detail_akun
+ * - POST tambah_akun
+ * - POST ubah_akun
+ * - POST hapus_akun
+ *
+ * Role akun yang digunakan: admin dan warga.
+ * File regenerasi: siap menggantikan src/services/api.js.
+ */
+
 const DEFAULT_API_BASE_URL =
-  "https://script.google.com/macros/s/AKfycbyGiJ1D8nodqphTC0_7LH5OwI5fyrmQ3sRELgWLukJ5Wqbbd1owyRWopH6oPdBXS1BH/exec";
+  "https://script.google.com/macros/s/AKfycbzPAaTOfRXKi55MbZuvmudq-J8Rc7mtvIOrAYJdJ_EJ2436aujUq-Xwv-UluOpFJFkl/exec";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||

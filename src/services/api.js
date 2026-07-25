@@ -264,14 +264,23 @@ export function resetPasswordApi(payload) {
 
 export function getPengelolaList() {
   return request({
-    action: "get_pengelola",
+    action: "akun",
+  });
+}
+
+export function getDetailPengelola(idOperator) {
+  return request({
+    action: "detail_akun",
+    params: {
+      id_operator: idOperator,
+    },
   });
 }
 
 export function tambahPengelola(payload) {
   return request({
     method: "POST",
-    action: "tambah_pengelola",
+    action: "tambah_akun",
     body: payload,
   });
 }
@@ -279,17 +288,17 @@ export function tambahPengelola(payload) {
 export function ubahPengelola(payload) {
   return request({
     method: "POST",
-    action: "ubah_pengelola",
+    action: "ubah_akun",
     body: payload,
   });
 }
 
-export function hapusPengelola(idPengelola) {
+export function hapusPengelola(idOperator) {
   return request({
     method: "POST",
-    action: "hapus_pengelola",
+    action: "hapus_akun",
     body: {
-      id_pengelola: idPengelola,
+      id_operator: idOperator,
     },
   });
 }

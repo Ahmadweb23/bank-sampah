@@ -153,7 +153,7 @@
           <div class="space-y-3">
             <div
               v-for="(p, i) in pengelolaList"
-              :key="p.id_pengelola || i"
+              :key="p.id_operator || i"
               class="flex items-center gap-3 rounded-[22px] bg-white px-4 py-4 shadow-sm border border-gray-100"
             >
               <div
@@ -170,6 +170,23 @@
                 <p class="truncate text-[14px] text-gray-500">
                   @{{ p.username || "-" }}
                 </p>
+                <div class="mt-1 flex items-center gap-2">
+                  <span
+                    class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] capitalize text-slate-600"
+                  >
+                    {{ p.role || "operator" }}
+                  </span>
+                  <span
+                    class="rounded-full px-2 py-0.5 text-[11px] capitalize"
+                    :class="
+                      String(p.status).toLowerCase() === 'aktif'
+                        ? 'bg-green-50 text-green-700'
+                        : 'bg-gray-100 text-gray-500'
+                    "
+                  >
+                    {{ p.status || "nonaktif" }}
+                  </span>
+                </div>
               </div>
               <div class="flex items-center gap-2">
                 <button
@@ -283,6 +300,19 @@
 
         <!-- Form -->
         <div class="space-y-4">
+          <!-- Nama -->
+          <div>
+            <label class="mb-1 block text-[14px] text-[#687481]">
+              Nama Pengelola
+            </label>
+            <input
+              v-model="formData.nama"
+              type="text"
+              class="w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:border-[#147052]"
+              placeholder="Nama lengkap pengelola"
+            />
+          </div>
+
           <!-- Username -->
           <div>
             <label class="block text-[14px] text-[#687481] mb-1"
@@ -305,6 +335,30 @@
               class="w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:border-[#147052]"
               placeholder="Nomor handphone"
             />
+          </div>
+
+          <!-- Role -->
+          <div>
+            <label class="mb-1 block text-[14px] text-[#687481]">Role</label>
+            <select
+              v-model="formData.role"
+              class="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm outline-none focus:border-[#147052]"
+            >
+              <option value="operator">Operator</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
+          <!-- Status -->
+          <div>
+            <label class="mb-1 block text-[14px] text-[#687481]">Status</label>
+            <select
+              v-model="formData.status"
+              class="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm outline-none focus:border-[#147052]"
+            >
+              <option value="aktif">Aktif</option>
+              <option value="nonaktif">Nonaktif</option>
+            </select>
           </div>
 
           <!-- Password -->
@@ -505,9 +559,12 @@ const currentOperator = computed(() => {
 });
 
 const formData = ref({
+  nama: "",
   username: "",
   no_hp: "",
   password: "",
+  role: "operator",
+  status: "aktif",
 });
 
 function getInitials(name) {
@@ -521,7 +578,14 @@ function getInitials(name) {
 }
 
 function resetForm() {
-  formData.value = { username: "", no_hp: "", password: "" };
+  formData.value = {
+    nama: "",
+    username: "",
+    no_hp: "",
+    password: "",
+    role: "operator",
+    status: "aktif",
+  };
   formError.value = "";
   isEditing.value = false;
   editingId.value = null;
@@ -534,12 +598,15 @@ function openAddModal() {
 
 function openEditModal(p) {
   formData.value = {
+    nama: p.nama || "",
     username: p.username || "",
     no_hp: p.no_hp || "",
     password: "",
+    role: p.role || "operator",
+    status: p.status || "aktif",
   };
   isEditing.value = true;
-  editingId.value = p.id_pengelola || p.id || "";
+  editingId.value = p.id_operator || "";
   formError.value = "";
   showForm.value = true;
 }
@@ -557,8 +624,10 @@ function confirmDelete(p) {
 async function loadPengelolaList() {
   try {
     const res = await getPengelolaList();
-    if (res?.success && Array.isArray(res.data)) {
-      pengelolaList.value = res.data;
+    const daftarAkun = res?.data?.akun;
+
+    if (res?.success && Array.isArray(daftarAkun)) {
+      pengelolaList.value = daftarAkun;
     } else {
       pengelolaList.value = [];
     }
@@ -571,8 +640,16 @@ async function loadPengelolaList() {
 async function submitForm() {
   formError.value = "";
 
+  if (!formData.value.nama.trim()) {
+    formError.value = "Nama pengelola harus diisi.";
+    return;
+  }
   if (!formData.value.username.trim()) {
     formError.value = "Username harus diisi.";
+    return;
+  }
+  if (!formData.value.no_hp.trim()) {
+    formError.value = "Nomor HP harus diisi.";
     return;
   }
   if (!isEditing.value && !formData.value.password.trim()) {
@@ -592,18 +669,24 @@ async function submitForm() {
     let res;
     if (isEditing.value) {
       res = await ubahPengelola({
-        id_pengelola: editingId.value,
+        id_operator: editingId.value,
+        nama: formData.value.nama.trim(),
         username: formData.value.username.trim(),
         no_hp: formData.value.no_hp.trim(),
+        role: formData.value.role,
+        status: formData.value.status,
         ...(formData.value.password.trim()
           ? { password: formData.value.password.trim() }
           : {}),
       });
     } else {
       res = await tambahPengelola({
+        nama: formData.value.nama.trim(),
         username: formData.value.username.trim(),
         no_hp: formData.value.no_hp.trim(),
         password: formData.value.password.trim(),
+        role: formData.value.role,
+        status: formData.value.status,
       });
     }
 
@@ -631,7 +714,12 @@ async function handleDelete() {
 
   isDeleting.value = true;
   try {
-    const id = deleteTarget.value.id_pengelola || deleteTarget.value.id;
+    const id = deleteTarget.value.id_operator;
+
+    if (!id) {
+      throw new Error("ID operator tidak ditemukan.");
+    }
+
     const res = await hapusPengelola(id);
 
     if (res?.success) {

@@ -392,10 +392,7 @@
         </router-link>
 
         <!-- Tukar Poin Full Width -->
-        <router-link
-          to="/tukar-poin-sembako"
-          class="col-span-2 flex min-h-[92px] items-center gap-3 rounded-[22px] bg-white px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition active:scale-[0.98]"
-        >
+        <router-link to="/tukar" class="col-span-2 flex min-h-[92px] items-center gap-3 rounded-[22px] bg-white px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition active:scale-[0.98]">
           <div
             class="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full bg-[#f4f5e9]"
           >

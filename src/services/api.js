@@ -16,7 +16,7 @@
  */
 
 const DEFAULT_API_BASE_URL =
-  "https://script.google.com/macros/s/AKfycbwpxEvhZ3T8IYRSDjTXZkDEC9jz1SrmPXs_aA_pjDI640HuUIqmgAxiitRp72K4kDxj/exec";
+  "https://script.google.com/macros/s/AKfycbzv5PKro2tnDRPEAxJI7m7t2aN0JeXWfKktrrPpCrcfHXkvdLV4qGezBYmlE5v4cX2D/exec";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
@@ -279,10 +279,48 @@ export function resetPasswordApi(payload) {
  * PENGELOLA (OPERATOR)
  * ======================================================= */
 
-export function getPengelolaList() {
-  return request({
-    action: "akun",
-  });
+// export async function getPengelolaList() {
+//   try {
+//     const res1 = await request({
+//       action: "akun",
+//     });
+//     if (res1?.success || !(res1?.message && String(res1.message).toLowerCase().includes("tidak ditemukan"))) {
+//       return res1;
+//     }
+//     throw new Error("Fallback to get_akun");
+//   } catch (err) {
+//     return await request({
+//       action: "get_akun",
+//     });
+//   }
+// }
+
+export async function getPengelolaList() {
+  try {
+    const res1 = await request({
+      action: "akun",
+    });
+
+    console.log("RES1 =", res1);
+
+    if (
+      res1?.success ||
+      !(res1?.message &&
+        String(res1.message).toLowerCase().includes("tidak ditemukan"))
+    ) {
+      return res1;
+    }
+
+    throw new Error("Fallback to get_akun");
+  } catch (err) {
+    const res2 = await request({
+      action: "get_akun",
+    });
+
+    console.log("RES2 =", res2);
+
+    return res2;
+  }
 }
 
 export function getDetailPengelola(idOperator) {
@@ -581,3 +619,21 @@ export function hapusKatalog(idKatalog) {
 export function getApiBaseUrl() {
   return API_BASE_URL;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

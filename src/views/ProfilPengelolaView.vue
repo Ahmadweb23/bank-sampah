@@ -694,9 +694,18 @@ function confirmDelete(p) {
 async function loadPengelolaList() {
   try {
     const res = await getPengelolaList();
-    const daftarAkun = res?.data?.akun;
+
+    console.log("RES PENGELOLA:", res);
+    console.log("AKUN:", res?.data?.akun);
+
+
+    const daftarAkun = res?.akun || res?.data?.akun;
+
+    console.log("DAFTAR AKUN:", daftarAkun);
 
     if (res?.success && Array.isArray(daftarAkun)) {
+      pengelolaList.value = daftarAkun;
+    } else if (Array.isArray(daftarAkun)) {
       pengelolaList.value = daftarAkun;
     } else {
       pengelolaList.value = [];
@@ -798,7 +807,7 @@ async function submitForm() {
       res = await tambahWarga(dataDasar);
     }
 
-    if (res?.success) {
+    if (res?.success || res?.data?.success) {
       const jenis = activeTab.value === "admin" ? "admin" : "warga";
 
       await showModal({
@@ -815,7 +824,7 @@ async function submitForm() {
         await loadWargaList();
       }
     } else {
-      formError.value = res?.message || "Gagal menyimpan data akun.";
+      formError.value = res?.message || res?.data?.message || "Gagal menyimpan data akun.";
     }
   } catch (err) {
     formError.value = err.message || "Terjadi kesalahan server.";
@@ -841,7 +850,7 @@ async function handleDelete() {
         ? await hapusPengelola(id)
         : await hapusWarga(id);
 
-    if (res?.success) {
+    if (res?.success || res?.data?.success) {
       await showModal({
         title: "Berhasil",
         message: `Akun ${jenis} berhasil dihapus.`,
@@ -857,7 +866,7 @@ async function handleDelete() {
     } else {
       await showModal({
         title: "Gagal",
-        message: res?.message || "Gagal menghapus akun.",
+        message: res?.message || res?.data?.message || "Gagal menghapus akun.",
       });
     }
   } catch (err) {

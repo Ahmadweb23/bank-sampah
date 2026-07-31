@@ -93,16 +93,12 @@ async function request({
     options.body = JSON.stringify(payload);
   }
 
-  console.group(`[API CALL] ${metode} action=${action}`);
-
-  console.log("URL:", url.toString());
-
   if (metode === "POST") {
-    console.log("Payload:", options.body);
+    // request payload logged only when debugging
   }
 
   if (Object.keys(params).length > 0) {
-    console.log("Params:", params);
+    // request params available for developer debugging
   }
 
   try {
@@ -127,7 +123,6 @@ async function request({
     }
 
     if (!teksRespons) {
-      console.log("Respons server kosong");
       return {};
     }
 
@@ -141,8 +136,6 @@ async function request({
       throw new Error("Respons server bukan JSON yang valid");
     }
 
-    console.log("Hasil Server:", hasil);
-
     return hasil;
   } catch (error) {
     console.error("Kesalahan API:", error);
@@ -153,8 +146,6 @@ async function request({
       error?.message ||
         "Tidak dapat terhubung ke server. Periksa koneksi atau URL API.",
     );
-  } finally {
-    console.groupEnd();
   }
 }
 
@@ -301,8 +292,6 @@ export async function getPengelolaList() {
       action: "akun",
     });
 
-    console.log("RES1 =", res1);
-
     if (
       res1?.success ||
       !(res1?.message &&
@@ -316,8 +305,6 @@ export async function getPengelolaList() {
     const res2 = await request({
       action: "get_akun",
     });
-
-    console.log("RES2 =", res2);
 
     return res2;
   }

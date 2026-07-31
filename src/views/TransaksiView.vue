@@ -587,7 +587,7 @@ function addLog(type, title, message, detail = null) {
     message,
     detail
   });
-  console.log(`[DEBUG_LOG][${type.toUpperCase()}] ${title}: ${message}`, detail || '');
+  // suppress console output for production debug logs
 }
 
 const masterSampahList = ref([]);
@@ -760,10 +760,7 @@ async function loadInitialData() {
     if (resTransaksi.status === 'fulfilled') {
       addLog('info', 'Res Transaksi Status', 'resTransaksi.status fulfilled', resTransaksi);
       if (resTransaksi.value?.success && Array.isArray(resTransaksi.value.data)) {
-        console.log('[DEBUG] Data transaksi mentah dari server:', resTransaksi.value.data);
-        
         transactions.value = resTransaksi.value.data.map((item) => {
-          console.log('[DEBUG] Memproses item transaksi:', item);
           
           // Ambil nama dari berbagai kemungkinan field
           const namaWarga = item.nama || item.nama_warga || item.username || "Nama Tidak Diketahui";
@@ -810,11 +807,9 @@ async function loadInitialData() {
             type: "Setoran"
           };
           
-          console.log('[DEBUG] Hasil mapping item:', result);
           return result;
         });
         addLog('success', 'Riwayat Transaksi Loaded', `Jumlah transaksi: ${transactions.value.length}`);
-        console.log('[DEBUG] Final transactions.value:', transactions.value);
       } else {
         addLog('error', 'Riwayat Transaksi Gagal', 'resTransaksi.value is not success or data is not array', resTransaksi.value);
       }

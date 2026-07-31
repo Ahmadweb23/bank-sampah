@@ -158,10 +158,6 @@ async function resetPassword() {
   }
 
   loading.value = true;
-  console.group("[RESET_PASSWORD_LOG]");
-  console.log("Mengirim request reset password...");
-  console.log("Username:", username.value.trim());
-  console.log("No HP:", phone.value.trim());
 
   try {
     const res = await resetPasswordApi({
@@ -169,9 +165,6 @@ async function resetPassword() {
       no_hp: phone.value.trim(),
       new_password: password.value
     });
-
-    console.log("Respons Server:", res);
-    console.groupEnd();
 
     if (res && res.success === false) {
       debugInfo.value = `Gagal: ${res.message || 'Data tidak cocok'}`;
@@ -181,8 +174,6 @@ async function resetPassword() {
       router.push("/login");
     }
   } catch (error) {
-    console.error("Reset password error:", error);
-    console.groupEnd();
     debugInfo.value = `Error: ${error.message}`;
     alert("Gagal mengubah password: " + (error.message || "Error koneksi ke server"));
   } finally {

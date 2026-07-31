@@ -173,6 +173,6 @@ function keRiwayat() {
 }
 
 function openDetail(item) {
-  console.log('Detail produk:', item)
+  // no-op for production
 }
 </script>

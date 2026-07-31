@@ -587,7 +587,7 @@ function addLog(type, title, message, detail = null) {
     message,
     detail
   });
-  console.log(`[DEBUG_LOG][${type.toUpperCase()}] ${title}: ${message}`, detail || '');
+  // suppress console output for production debug logs
 }
 
 const masterSampahList = ref([]);

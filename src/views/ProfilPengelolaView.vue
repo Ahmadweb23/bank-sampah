@@ -695,13 +695,7 @@ async function loadPengelolaList() {
   try {
     const res = await getPengelolaList();
 
-    console.log("RES PENGELOLA:", res);
-    console.log("AKUN:", res?.data?.akun);
-
-
     const daftarAkun = res?.akun || res?.data?.akun;
-
-    console.log("DAFTAR AKUN:", daftarAkun);
 
     if (res?.success && Array.isArray(daftarAkun)) {
       pengelolaList.value = daftarAkun;

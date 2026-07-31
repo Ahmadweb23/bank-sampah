@@ -30,7 +30,7 @@
         <div class="flex items-center justify-between mb-3">
           <div>
             <p class="text-sm uppercase tracking-wide text-gray-500">
-              Kelola Stok
+              Kelola Katalog
             </p>
             <h2 class="text-lg font-semibold text-slate-900">
               Daftar Item Katalog
@@ -71,21 +71,13 @@
         </div>
       </section>
 
-      <section class="grid grid-cols-2 gap-4 mb-5">
+      <section class="mb-5">
         <div
           class="rounded-[24px] bg-white p-4 shadow-sm border border-gray-100"
         >
           <p class="text-sm text-gray-500">Total Item</p>
           <p class="text-2xl font-bold text-slate-900 mt-2">
             {{ catalogItems.length }}
-          </p>
-        </div>
-        <div
-          class="rounded-[24px] bg-white p-4 shadow-sm border border-gray-100"
-        >
-          <p class="text-sm text-gray-500">Stok Menipis</p>
-          <p class="text-2xl font-bold text-amber-600 mt-2">
-            {{ lowStockCount }}
           </p>
         </div>
       </section>
@@ -108,23 +100,11 @@
             </div>
 
             <div class="flex-1">
-              <div class="flex items-start justify-between gap-3">
-                <div>
-                  <h3 class="font-semibold text-slate-900">{{ item.nama }}</h3>
-                  <p class="text-sm text-gray-500 mt-1">
-                    {{ item.kategori }} • {{ item.satuan }}
-                  </p>
-                </div>
-                <span
-                  class="rounded-full px-2.5 py-1 text-xs font-semibold"
-                  :class="
-                    item.stok < 5
-                      ? 'bg-amber-50 text-amber-700'
-                      : 'bg-green-50 text-green-700'
-                  "
-                >
-                  Stok {{ item.stok }}
-                </span>
+              <div>
+                <h3 class="font-semibold text-slate-900">{{ item.nama }}</h3>
+                <p class="text-sm text-gray-500 mt-1">
+                  {{ item.kategori }} • {{ item.satuan }}
+                </p>
               </div>
 
               <div class="mt-3 flex items-center justify-between">
@@ -234,31 +214,17 @@
               </div>
             </div>
 
-            <div class="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label class="mb-2 block text-sm font-medium text-slate-700"
-                  >Poin</label
-                >
-                <input
-                  v-model.number="formData.poin"
-                  type="number"
-                  min="0"
-                  placeholder="150"
-                  class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 outline-none focus:border-green-400 focus:ring-2 focus:ring-green-100"
-                />
-              </div>
-              <div>
-                <label class="mb-2 block text-sm font-medium text-slate-700"
-                  >Stok</label
-                >
-                <input
-                  v-model.number="formData.stok"
-                  type="number"
-                  min="0"
-                  placeholder="12"
-                  class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 outline-none focus:border-green-400 focus:ring-2 focus:ring-green-100"
-                />
-              </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-slate-700"
+                >Poin</label
+              >
+              <input
+                v-model.number="formData.poin"
+                type="number"
+                min="0"
+                placeholder="150"
+                class="w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 outline-none focus:border-green-400 focus:ring-2 focus:ring-green-100"
+              />
             </div>
 
             <div>
@@ -373,7 +339,6 @@ const formData = ref({
   kategori: "",
   satuan: "",
   poin: 0,
-  stok: 0,
   image: "",
 });
 
@@ -384,7 +349,6 @@ const catalogItems = ref([
     kategori: "Sembako",
     satuan: "5kg",
     poin: 150,
-    stok: 12,
     image: "/images/sembako/beras.jpg",
   },
   {
@@ -393,7 +357,6 @@ const catalogItems = ref([
     kategori: "Sembako",
     satuan: "1L",
     poin: 180,
-    stok: 4,
     image: "/images/sembako/minyak.jpg",
   },
   {
@@ -402,7 +365,6 @@ const catalogItems = ref([
     kategori: "Sembako",
     satuan: "1kg",
     poin: 160,
-    stok: 7,
     image: "/images/sembako/gula.jpg",
   },
   {
@@ -411,7 +373,6 @@ const catalogItems = ref([
     kategori: "Sembako",
     satuan: "500g",
     poin: 50,
-    stok: 2,
     image: "/images/sembako/garam.jpg",
   },
 ]);
@@ -424,7 +385,6 @@ function resetForm() {
     kategori: "",
     satuan: "",
     poin: 0,
-    stok: 0,
     image: "",
   };
 }
@@ -460,10 +420,6 @@ function validateForm() {
   }
   if (formData.value.poin < 0) {
     formError.value = "Poin tidak boleh negatif.";
-    return false;
-  }
-  if (formData.value.stok < 0) {
-    formError.value = "Stok tidak boleh negatif.";
     return false;
   }
   if (!formData.value.image.trim()) {
@@ -536,10 +492,6 @@ const filteredItems = computed(() => {
     );
   });
 });
-
-const lowStockCount = computed(
-  () => catalogItems.value.filter((item) => item.stok < 5).length,
-);
 
 function goBack() {
   router.push("/dashboard");

@@ -82,6 +82,50 @@
           </div>
         </div>
 
+        <!-- Filter & Export -->
+        <div class="rounded-2xl bg-white p-4 soft-float space-y-3">
+          <h3 class="font-bold text-slate-800 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">download</span>
+            Export Laporan Excel
+          </h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs text-on-surface-variant font-medium">Bulan</label>
+              <select
+                v-model.number="bulanExport"
+                class="mt-1 w-full rounded-xl border border-slate-200 bg-surface-container px-3 py-2 text-sm text-slate-800"
+              >
+                <option v-for="(nama, idx) in namaBulan" :key="idx" :value="idx + 1">
+                  {{ nama }}
+                </option>
+              </select>
+            </div>
+            <div>
+              <label class="text-xs text-on-surface-variant font-medium">Tahun</label>
+              <select
+                v-model.number="tahunExport"
+                class="mt-1 w-full rounded-xl border border-slate-200 bg-surface-container px-3 py-2 text-sm text-slate-800"
+              >
+                <option v-for="t in tahunOptions" :key="t" :value="t">{{ t }}</option>
+              </select>
+            </div>
+          </div>
+          <button
+            @click="handleExport"
+            class="w-full rounded-xl bg-secondary text-on-secondary py-3 font-semibold flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50"
+            :disabled="exporting || loading"
+          >
+            <span
+              class="material-symbols-outlined text-lg"
+              :class="{ 'animate-spin': exporting }"
+            >
+              {{ exporting ? "progress_activity" : "file_save" }}
+            </span>
+            {{ exporting ? "Menyiapkan Excel..." : "Export ke Excel" }}
+          </button>
+          <p v-if="exportError" class="text-xs text-rose-600">{{ exportError }}</p>
+        </div>
+
         <!-- Metric Cards -->
         <div class="grid grid-cols-2 gap-3">
           <div class="rounded-2xl bg-white p-4 soft-float">
@@ -210,8 +254,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { getSaldoKas, getDashboardData, getRiwayatKas } from "../services/api";
+import { exportLaporanExcel } from "../utils/exportLaporanExcel";
 import BottomNav from "../components/BottomNav.vue";
 
+const now = new Date();
 const saldoKas = ref(0);
 const totalKg = ref(0);
 const totalPenjualan = ref(0);
@@ -220,6 +266,25 @@ const riwayatKas = ref([]);
 const totalKasMasuk = ref(0);
 const totalKasKeluar = ref(0);
 const loading = ref(false);
+const exporting = ref(false);
+const exportError = ref("");
+const bulanExport = ref(now.getMonth() + 1);
+const tahunExport = ref(now.getFullYear());
+const namaBulan = [
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember",
+];
+const tahunOptions = Array.from({ length: 5 }, (_, i) => now.getFullYear() - 2 + i);
 
 function isMasuk(item) {
   const jenis = String(item.jenis || "")
@@ -242,6 +307,20 @@ function formatTanggal(tglStr) {
     });
   } catch (e) {
     return String(tglStr);
+  }
+}
+
+async function handleExport() {
+  exporting.value = true;
+  exportError.value = "";
+  try {
+    await exportLaporanExcel(bulanExport.value, tahunExport.value);
+  } catch (err) {
+    console.error("Gagal export laporan:", err);
+    exportError.value =
+      err?.message || "Gagal mengekspor laporan. Coba lagi.";
+  } finally {
+    exporting.value = false;
   }
 }
 

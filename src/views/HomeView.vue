@@ -392,7 +392,7 @@
         </router-link>
 
         <!-- Tukar Poin Full Width -->
-        <router-link to="/tukar" class="col-span-2 flex min-h-[92px] items-center gap-3 rounded-[22px] bg-white px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition active:scale-[0.98]">
+        <router-link to="/tukar-poin-sembako" class="col-span-2 flex min-h-[92px] items-center gap-3 rounded-[22px] bg-white px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition active:scale-[0.98]">
           <div
             class="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full bg-[#f4f5e9]"
           >
@@ -533,8 +533,10 @@
                   t.amount >= 0 ? 'text-[#08704f]' : 'text-red-500',
                 ]"
               >
-                {{ t.amount >= 0 ? "+" : "-" }} Rp
+                {{ t.amount >= 0 ? "+" : "-" }}
+                {{ t.type === "Tukar Poin" ? "" : "Rp" }}
                 {{ Math.abs(t.amount).toLocaleString("id-ID") }}
+                {{ t.type === "Tukar Poin" ? "Poin" : "" }}
               </p>
               <p class="mt-1 whitespace-nowrap text-[13px] text-[#687481]">
                 {{ t.time }}
@@ -611,7 +613,7 @@
           <div
             v-if="
               showWargaSuggestions &&
-              namaWarga.trim() !== '' &&
+              namaWarga.trim().length >= 1 &&
               filteredWargaSuggestions.length > 0
             "
             class="absolute left-0 right-0 top-full z-20 mt-1 max-h-48 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl"
@@ -793,6 +795,7 @@ import {
   getWargaList,
   getRiwayatTransaksi,
   getDashboardData,
+  getRiwayatTukarPoin,
 } from "../services/api";
 import BottomNav from "../components/BottomNav.vue";
 
@@ -823,7 +826,8 @@ const items = ref([
 // Filter Warga dari data spreadsheet yang di-load via API
 const filteredWargaSuggestions = computed(() => {
   const queryText = namaWarga.value.toLowerCase().trim();
-  if (!queryText) {
+
+  if (queryText.length < 1) {
     return [];
   }
 
@@ -835,11 +839,13 @@ const filteredWargaSuggestions = computed(() => {
       .toLowerCase()
       .includes(queryText);
     return nameMatch || userMatch;
-  });
+  }).slice(0, 8);
 });
 
 function onNamaWargaInput() {
-  showWargaSuggestions.value = true;
+  const queryText = namaWarga.value.trim();
+  showWargaSuggestions.value = queryText.length >= 1;
+
   if (
     selectedWargaObj.value &&
     selectedWargaObj.value.nama !== namaWarga.value
@@ -948,12 +954,13 @@ async function loadInitialData() {
   isLoadingData.value = true;
 
   try {
-    const [resMaster, resWarga, resTransaksi, resDashboard] =
+    const [resMaster, resWarga, resTransaksi, resDashboard, resTukarPoin] =
       await Promise.allSettled([
         getMasterSampah(),
         getWargaList(),
         getRiwayatTransaksi(),
         getDashboardData(),
+        getRiwayatTukarPoin(),
       ]);
 
     if (
@@ -1039,6 +1046,67 @@ async function loadInitialData() {
           }
         });
       }
+    }
+
+    // Gabungkan dengan riwayat tukar poin
+    if (
+      resTukarPoin.status === "fulfilled" &&
+      resTukarPoin.value?.success &&
+      Array.isArray(resTukarPoin.value.data)
+    ) {
+      const tukarPoinTransactions = resTukarPoin.value.data.map((item) => {
+        const nama = item.nama_warga || item.nama || "Nama Tidak Diketahui";
+
+        let waktuFormatted = "Terbaru";
+        if (item.tanggal) {
+          const tanggalStr = String(item.tanggal);
+
+          let date;
+          if (tanggalStr.includes("T")) {
+            date = new Date(tanggalStr);
+          } else if (tanggalStr.includes(" ")) {
+            const [tanggal, waktu] = tanggalStr.split(" ");
+            if (waktu) {
+              const [jam, menit] = waktu.split(":");
+              if (jam && menit) {
+                waktuFormatted = `${jam}:${menit}`;
+              } else {
+                waktuFormatted = waktu;
+              }
+            }
+          }
+
+          if (date && !isNaN(date.getTime())) {
+            waktuFormatted = date.toLocaleTimeString("id-ID", {
+              timeZone: "Asia/Jakarta",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            });
+          }
+        }
+
+        return {
+          title: "Tukar Poin",
+          subtitle: `${nama} • ${item.poin_digunakan || 0} Poin`,
+          amount: -(Number(item.poin_digunakan || 0)), // negative karena poin berkurang
+          time: waktuFormatted,
+          type: "Penarikan",
+          aliases: ["Tukar Poin"],
+          date: item.tanggal, // untuk sorting
+        };
+      });
+
+      transactions.value = [...transactions.value, ...tukarPoinTransactions];
+    }
+
+    // Sort transactions by date (newest first)
+    if (transactions.value.length > 0) {
+      transactions.value.sort((a, b) => {
+        const dateA = a.date ? new Date(a.date) : new Date(0);
+        const dateB = b.date ? new Date(b.date) : new Date(0);
+        return dateB - dateA;
+      });
     }
 
     if (

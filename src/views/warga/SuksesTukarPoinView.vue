@@ -130,30 +130,58 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-// Data dummy transaksi sesuai tampilan foto
-const transaksi = ref({
-  id: '#TRX-99210',
-  waktu: 'Hari ini, 10:45',
-  totalPoin: 150,
-  penerima: {
+const savedTransaction = computed(() => {
+  try {
+    const raw = localStorage.getItem('tukarPoinLastTransaction')
+    if (!raw) return null
+    return JSON.parse(raw)
+  } catch (error) {
+    return null
+  }
+})
+
+const transaksi = computed(() => {
+  const data = savedTransaction.value || {
+    id: '#TRX-99210',
+    waktu: 'Hari ini, 10:45',
+    totalPoin: 150,
     nama: 'Ibu Siti Aminah',
-    foto: 'https://ui-avatars.com/api/?name=Siti+Aminah&background=random'
-  },
-  items: [
-    { nama: 'Beras Premium', varian: '1 Pack (5kg)', poin: 100, icon: '🍚' },
-    { nama: 'Gula Pasir', varian: '1 Pack (1kg)', poin: 50, icon: '💧' }
-  ]
+    no_hp: '-',
+    items: [
+      { nama: 'Beras Premium', varian: '1 Pack (5kg)', poin: 100, icon: '🍚' },
+      { nama: 'Gula Pasir', varian: '1 Pack (1kg)', poin: 50, icon: '💧' }
+    ]
+  }
+
+  return {
+    id: data.id || '#TRX-99210',
+    waktu: data.waktu || 'Hari ini, 10:45',
+    totalPoin: Number(data.totalPoin || 0),
+    penerima: {
+      nama: data.nama || 'Ibu Siti Aminah',
+      foto: `https://ui-avatars.com/api/?name=${encodeURIComponent((data.nama || 'Warga').replace(/\s+/g, '+'))}&background=random`
+    },
+    items: Array.isArray(data.items) && data.items.length > 0 ? data.items.map((item) => ({
+      nama: item.nama || 'Sembako',
+      varian: `${item.qty || 1} item`,
+      poin: Number(item.subtotal_poin || item.poin_per_item || item.poin || 0),
+      icon: '📦'
+    })) : [
+      { nama: 'Beras Premium', varian: '1 Pack (5kg)', poin: 100, icon: '🍚' },
+      { nama: 'Gula Pasir', varian: '1 Pack (1kg)', poin: 50, icon: '💧' }
+    ]
+  }
 })
 
 const formatAngka = (num) => new Intl.NumberFormat('id-ID').format(num)
 
 function kembaliKeBeranda() {
-  router.push('/warga')
+  router.push('/dashboard')
 }
 
 function transaksiBaru() {

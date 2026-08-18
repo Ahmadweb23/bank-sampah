@@ -75,7 +75,6 @@ const routes = [
     component: RiwayatView,
   },
   {
-    path: "/laporan",
     name: "laporan",
     component: LaporanView,
   },
@@ -139,9 +138,60 @@ const routes = [
   },
 ];
 
+const isOperatorLoggedIn = () => {
+  try {
+    return Boolean(localStorage.getItem("operator"));
+  } catch (error) {
+    return false;
+  }
+};
+
+const isWargaLoggedIn = () => {
+  try {
+    return Boolean(localStorage.getItem("warga"));
+  } catch (error) {
+    return false;
+  }
+};
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const operatorRoutes = [
+    "/dashboard",
+    "/transaksi",
+    "/keuangan",
+    "/jual",
+    "/tukar",
+    "/tukar-poin-sembako",
+    "/riwayat",
+    "/laporan",
+    "/informasi",
+    "/katalog-pengelola",
+    "/profil-pengelola",
+  ];
+
+  const wargaRoutes = ["/warga", "/katalog", "/riwayat-warga"];
+
+  if (operatorRoutes.includes(to.path) && !isOperatorLoggedIn()) {
+    next("/login");
+    return;
+  }
+
+  if (wargaRoutes.includes(to.path) && !isWargaLoggedIn()) {
+    next("/login-warga");
+    return;
+  }
+
+  if (to.path === "/tukar-poin-sembako" && !isOperatorLoggedIn()) {
+    next("/login");
+    return;
+  }
+
+  next();
 });
 
 export default router;

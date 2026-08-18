@@ -31,6 +31,9 @@
           </svg>
           
           <input 
+            v-model="searchWarga"
+            @input="onWargaSearchInput"
+            @blur="onWargaSearchBlur"
             type="text" 
             placeholder="Cari nama atau ID warga" 
             class="w-full bg-[#F4F5F9] rounded-xl py-3 pl-10 pr-10 text-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#014D40]"
@@ -40,15 +43,34 @@
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
           </svg>
+
+          <div
+            v-if="showWargaSuggestions && searchWarga.trim().length >= 1 && filteredWargaSuggestions.length > 0"
+            class="absolute left-0 right-0 top-full z-20 mt-1 max-h-48 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl"
+          >
+            <button
+              v-for="warga in filteredWargaSuggestions"
+              :key="warga.username || warga.nama || warga.id_warga"
+              type="button"
+              @mousedown.prevent="selectWargaSuggestion(warga)"
+              class="flex w-full items-center justify-between border-b border-slate-100 px-4 py-2.5 text-left text-sm hover:bg-emerald-50 focus:bg-emerald-50 transition"
+            >
+              <div>
+                <p class="font-medium text-[#142431]">{{ warga.nama }}</p>
+                <p class="text-xs text-[#687481]" v-if="warga.username">@{{ warga.username }}</p>
+              </div>
+              <span class="text-xs font-semibold text-[#147052]" v-if="warga.no_hp">{{ warga.no_hp }}</span>
+            </button>
+          </div>
         </div>
 
         <!-- Warga Terpilih -->
         <div class="flex items-center gap-3">
           <div class="w-7 h-7 rounded-full bg-[#A8E8D5] flex items-center justify-center text-[10px] font-bold text-[#024034]">
-            BK
+            {{ selectedWarga?.nama ? selectedWarga.nama.charAt(0).toUpperCase() : 'BK' }}
           </div>
           <p class="text-[13px] font-medium text-gray-800">
-            Budi Kusuma (5.150 Poin)
+            {{ selectedWarga ? `${selectedWarga.nama} (${formatAngka(selectedWarga.poin || 0)} Poin)` : 'Belum memilih warga' }}
           </p>
         </div>
       </div>
@@ -118,15 +140,15 @@
       
       <button 
         @click="konfirmasiTukar"
-        :disabled="totalPoin === 0"
+        :disabled="totalPoin === 0 || loading"
         class="w-full mt-4 py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-colors duration-300"
-        :class="totalPoin === 0 ? 'bg-gray-400 text-white cursor-not-allowed' : 'bg-[#014D40] hover:bg-[#01352c] text-white shadow-md'"
+        :class="totalPoin === 0 || loading ? 'bg-gray-400 text-white cursor-not-allowed' : 'bg-[#014D40] hover:bg-[#01352c] text-white shadow-md'"
       >
         <!-- Cart Icon -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
         </svg>
-        Konfirmasi Tukar
+        {{ loading ? 'Menyimpan...' : 'Konfirmasi Tukar' }}
       </button>
     </div>
 
@@ -134,10 +156,72 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { getWargaList, submitTukarPoin } from '../../services/api'
 
 const router = useRouter()
+
+const searchWarga = ref('')
+const selectedWarga = ref(null)
+const showWargaSuggestions = ref(false)
+const wargaList = ref([])
+const loading = ref(false)
+
+const filteredWargaSuggestions = computed(() => {
+  const query = searchWarga.value.trim().toLowerCase()
+
+  if (query.length < 1) {
+    return []
+  }
+
+  return wargaList.value
+    .filter((warga) => {
+      const nama = String(warga.nama || '').toLowerCase()
+      const username = String(warga.username || '').toLowerCase()
+      const noHp = String(warga.no_hp || '').toLowerCase()
+      return nama.includes(query) || username.includes(query) || noHp.includes(query)
+    })
+    .slice(0, 8)
+})
+
+function onWargaSearchInput() {
+  const query = searchWarga.value.trim()
+  showWargaSuggestions.value = query.length >= 1
+
+  if (selectedWarga.value && selectedWarga.value.nama !== searchWarga.value) {
+    selectedWarga.value = null
+  }
+}
+
+function onWargaSearchBlur() {
+  setTimeout(() => {
+    showWargaSuggestions.value = false
+  }, 180)
+}
+
+function selectWargaSuggestion(warga) {
+  selectedWarga.value = warga
+  searchWarga.value = warga.nama
+  showWargaSuggestions.value = false
+}
+
+onMounted(async () => {
+  try {
+    const response = await getWargaList()
+    if (response?.success && Array.isArray(response.data)) {
+      wargaList.value = response.data.map((warga) => ({
+        ...warga,
+        nama: String(warga.nama || warga.nama_warga || '').trim(),
+        username: String(warga.username || '').trim(),
+        no_hp: String(warga.no_hp || warga.nohp || '').trim(),
+        poin: Number(warga.poin || warga.total_poin || 0),
+      })).filter((warga) => warga.nama)
+    }
+  } catch (error) {
+    console.error('Gagal memuat data warga untuk pencarian:', error)
+  }
+})
 
 // State Kategori
 const kategoriAktif = ref('Sembako')
@@ -177,10 +261,74 @@ function kembali() {
   router.back()
 }
 
-function konfirmasiTukar() {
-  if (totalPoin.value > 0) {
-    // Navigasi ke halaman sukses tukar poin
+async function konfirmasiTukar() {
+  if (!selectedWarga.value) {
+    alert('Pilih warga terlebih dahulu.')
+    return
+  }
+
+  if (totalPoin.value <= 0) {
+    alert('Pilih minimal satu sembako untuk ditukar.')
+    return
+  }
+
+  try {
+    loading.value = true
+
+    const items = produkList.value
+      .filter((item) => item.qty > 0)
+      .map((item) => ({
+        id: item.id,
+        nama: item.nama,
+        qty: item.qty,
+        poin_per_item: item.poin,
+        subtotal_poin: item.poin * item.qty,
+      }))
+
+    const operatorData = JSON.parse(localStorage.getItem('operator') || '{}')
+
+    const payload = {
+      username_warga: selectedWarga.value.username || selectedWarga.value.username_warga || '',
+      nama_warga: selectedWarga.value.nama,
+      no_hp: selectedWarga.value.no_hp || '',
+      poin_digunakan: totalPoin.value,
+      status: 'diproses',
+      petugas: operatorData.nama || operatorData.username || 'Admin',
+      katalog_json: items,
+      catatan: `Penukaran sembako oleh ${operatorData.nama || operatorData.username || 'Admin'}`,
+    }
+
+    const response = await submitTukarPoin(payload)
+
+    if (!response?.success) {
+      throw new Error(response?.message || 'Gagal menyimpan riwayat tukar poin.')
+    }
+
+    const savedTransaction = {
+      id: response?.data?.id_tukar || `TP-${Date.now()}`,
+      totalPoin: totalPoin.value,
+      nama: selectedWarga.value.nama,
+      no_hp: selectedWarga.value.no_hp || '',
+      username: selectedWarga.value.username || '',
+      items,
+      waktu: new Date().toLocaleString('id-ID', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+      petugas: payload.petugas,
+    }
+
+    localStorage.setItem('tukarPoinLastTransaction', JSON.stringify(savedTransaction))
+
     router.push('/sukses-tukar-poin')
+  } catch (error) {
+    console.error('Gagal submit tukar poin:', error)
+    alert(error?.message || 'Terjadi kesalahan saat menyimpan tukar poin.')
+  } finally {
+    loading.value = false
   }
 }
 </script>

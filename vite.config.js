@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 const SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbzv5PKro2tnDRPEAxJI7m7t2aN0JeXWfKktrrPpCrcfHXkvdLV4qGezBYmlE5v4cX2D'
+  'https://script.google.com/macros/s/AKfycbxhEBbGRW14N0x2-F8TW3tRUxRQygQ5jQea7c08tTTOEHVOmcbiVGDjgtdm6vo5Q9BT'
 
 export default defineConfig({
   plugins: [vue()],

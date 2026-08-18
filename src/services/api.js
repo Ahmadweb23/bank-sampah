@@ -16,7 +16,7 @@
  */
 
 const DEFAULT_API_BASE_URL =
-  "https://script.google.com/macros/s/AKfycbzv5PKro2tnDRPEAxJI7m7t2aN0JeXWfKktrrPpCrcfHXkvdLV4qGezBYmlE5v4cX2D/exec";
+  "https://script.google.com/macros/s/AKfycbxhEBbGRW14N0x2-F8TW3tRUxRQygQ5jQea7c08tTTOEHVOmcbiVGDjgtdm6vo5Q9BT/exec";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
@@ -551,6 +551,13 @@ export function submitTukarPoin(payload) {
     method: "POST",
     action: "tukar_poin",
     body: payload,
+  });
+}
+
+export function getRiwayatTukarPoin(username = null) {
+  return request({
+    action: "riwayat_tukar_poin",
+    params: username ? { username } : {},
   });
 }
 

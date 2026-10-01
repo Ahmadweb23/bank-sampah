@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen bg-[#f7f8f7] max-w-md mx-auto pb-24 text-slate-900">
+  <div class="min-h-screen bg-[#f7f8f7] text-slate-900">
     <!-- Header -->
-    <header class="bg-white px-6 pt-8 pb-6 border-b border-gray-100">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-3">
+    <header class="border-b border-gray-100 bg-white px-6 pb-6 pt-8 lg:border-0 lg:bg-transparent lg:px-8 lg:pb-2 lg:pt-7">
+      <div class="mx-auto flex max-w-7xl items-center justify-between">
+        <div class="flex items-center gap-3 lg:hidden">
           <div
             class="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center"
           >
@@ -32,9 +32,16 @@
           </div>
         </div>
 
+        <div class="hidden lg:block">
+          <p class="text-sm text-slate-500">Selamat datang di</p>
+          <h1 class="text-3xl font-bold leading-tight text-green-950">Bank Sampah</h1>
+          <p class="text-base font-medium text-green-700">Bojong Karya 2</p>
+        </div>
+
         <router-link
           to="/profil-pengelola"
-          class="w-11 h-11 rounded-full flex items-center justify-center text-gray-700"
+          aria-label="Profil pengelola"
+          class="flex h-11 w-11 items-center justify-center rounded-full bg-green-50 text-gray-700 transition hover:bg-green-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
         >
           <svg
             viewBox="0 0 24 24"
@@ -52,9 +59,11 @@
       </div>
     </header>
 
-    <main class="px-6 py-6 pb-28">
+    <main
+      class="mx-auto w-full px-6 py-6 pb-28 lg:grid lg:max-w-7xl lg:grid-cols-12 lg:gap-6 lg:px-8"
+    >
       <!-- Greeting -->
-      <section class="mb-6">
+      <section class="mb-6 lg:hidden">
         <div class="flex items-center gap-2">
           <h2 class="text-2xl font-bold text-slate-900">
             Selamat pagi, Pengelola
@@ -82,7 +91,7 @@
 
       <!-- Saldo Poin Hero -->
       <section
-        class="relative overflow-hidden bg-gradient-to-br from-green-800 to-green-950 rounded-[28px] p-6 mb-5 text-white shadow-sm"
+        class="relative mb-5 overflow-hidden rounded-[28px] bg-gradient-to-br from-green-800 to-green-950 p-6 text-white shadow-sm lg:col-span-7 lg:mb-0 lg:p-8"
       >
         <div class="relative z-10">
           <p class="text-sm uppercase tracking-wide text-white/80 mb-4">
@@ -90,7 +99,7 @@
           </p>
 
           <div class="flex items-end gap-2">
-            <p class="text-6xl font-bold leading-none">
+            <p class="text-6xl font-bold leading-none lg:text-7xl">
               {{ dashboardData.total_poin || 0 }}
             </p>
             <span class="text-lg font-semibold mb-2">Poin</span>
@@ -140,7 +149,7 @@
 
       <!-- Nilai Saldo -->
       <section
-        class="bg-white rounded-[24px] p-6 mb-5 shadow-sm border border-gray-100"
+        class="mb-5 rounded-[24px] border border-gray-100 bg-white p-6 shadow-sm lg:col-span-5 lg:mb-0"
       >
         <div class="flex items-start justify-between">
           <div>
@@ -176,7 +185,7 @@
         </div>
 
         <button
-          class="mt-6 flex items-center gap-2 ml-auto text-sm font-semibold text-green-800"
+          class="ml-auto mt-6 flex items-center gap-2 rounded-lg px-2 py-1 text-sm font-semibold text-green-800 transition hover:bg-green-50 hover:text-green-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
         >
           Lihat detail
           <span class="text-lg">›</span>
@@ -184,7 +193,7 @@
       </section>
 
       <!-- Statistik Kecil -->
-      <section class="grid grid-cols-2 gap-4 mb-5">
+      <section class="mb-5 grid grid-cols-2 gap-4 lg:col-span-7 lg:mb-0">
         <div
           class="bg-white rounded-[24px] p-5 shadow-sm border border-gray-100"
         >
@@ -267,7 +276,7 @@
 
       <!-- Motivasi -->
       <section
-        class="bg-green-50 rounded-[24px] p-5 mb-6 overflow-hidden relative min-h-[135px]"
+        class="relative mb-6 min-h-[135px] overflow-hidden rounded-[24px] bg-green-50 p-5 lg:col-span-5 lg:mb-0"
       >
         <div class="relative z-10 max-w-[58%]">
           <p class="text-lg font-bold text-green-950 leading-snug">
@@ -296,12 +305,17 @@
         </div>
       </section>
 
+      <section class="hidden items-center gap-4 lg:col-span-12 lg:flex">
+        <h3 class="whitespace-nowrap text-xl font-bold text-green-950">Menu Utama</h3>
+        <div class="h-px flex-1 bg-green-900/10"></div>
+      </section>
+
       <!-- Primary Action (Setor Sampah) -->
-      <section class="mb-6">
+      <section class="mb-6 lg:col-span-3 lg:mb-0">
         <button
           type="button"
           @click="openFormModal"
-          class="flex w-full items-center justify-between rounded-[22px] bg-[#08704f] px-5 py-4 text-white shadow-[0_8px_18px_rgba(8,112,79,0.22)] transition active:scale-[0.98]"
+          class="flex min-h-[92px] w-full items-center justify-between rounded-[22px] bg-[#08704f] px-5 py-4 text-white shadow-[0_8px_18px_rgba(8,112,79,0.22)] transition hover:-translate-y-0.5 hover:bg-green-800 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 active:scale-[0.98] lg:rounded-[18px] lg:px-4"
         >
           <span class="flex items-center gap-3">
             <svg
@@ -319,7 +333,7 @@
               <path d="M9 18c1.4-.4 2.7-.4 4 0" />
               <path d="M7.5 10c2-.5 3.5-1 5.3-2.4" />
             </svg>
-            <span class="text-[18px] font-semibold"> Terima Sampah Warga </span>
+            <span class="text-[18px] font-semibold lg:text-[15px] lg:leading-5"> Terima Sampah Warga </span>
           </span>
           <svg
             viewBox="0 0 24 24"
@@ -336,14 +350,14 @@
       </section>
 
       <!-- Quick Actions -->
-      <section class="mb-6 grid grid-cols-2 gap-3">
+      <section class="mb-6 grid grid-cols-2 gap-3 lg:col-span-9 lg:mb-0 lg:grid-cols-3">
         <!-- Jadwal Penjemputan -->
         <router-link
           to="/jual"
-          class="flex min-h-[92px] items-center gap-3 rounded-[22px] bg-white px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition active:scale-[0.98]"
+          class="flex min-h-[92px] items-center gap-3 rounded-[22px] bg-sky-50 px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition hover:-translate-y-0.5 hover:bg-sky-100 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 focus-visible:ring-offset-2 active:scale-[0.98] lg:rounded-[18px] lg:px-3"
         >
           <div
-            class="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full bg-[#f4f5e9]"
+            class="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full bg-sky-100"
           >
             <svg
               viewBox="0 0 24 24"
@@ -365,10 +379,10 @@
         <!-- Catat Biaya -->
         <router-link
           to="/riwayat"
-          class="flex min-h-[92px] items-center gap-3 rounded-[22px] bg-white px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition active:scale-[0.98]"
+          class="flex min-h-[92px] items-center gap-3 rounded-[22px] bg-amber-50 px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition hover:-translate-y-0.5 hover:bg-amber-100 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 active:scale-[0.98] lg:rounded-[18px] lg:px-3"
         >
           <div
-            class="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full bg-[#f4f5e9]"
+            class="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full bg-amber-100"
           >
             <svg
               viewBox="0 0 24 24"
@@ -392,9 +406,9 @@
         </router-link>
 
         <!-- Tukar Poin Full Width -->
-        <router-link to="/tukar-poin-sembako" class="col-span-2 flex min-h-[92px] items-center gap-3 rounded-[22px] bg-white px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition active:scale-[0.98]">
+        <router-link to="/tukar-poin-sembako" class="col-span-2 flex min-h-[92px] items-center gap-3 rounded-[22px] bg-violet-50 px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition hover:-translate-y-0.5 hover:bg-violet-100 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-600 focus-visible:ring-offset-2 active:scale-[0.98] lg:col-span-1 lg:rounded-[18px] lg:px-3">
           <div
-            class="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full bg-[#f4f5e9]"
+            class="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full bg-violet-100"
           >
             <svg
               viewBox="0 0 24 24"
@@ -425,7 +439,7 @@
       </section>
 
       <!-- Search & Filter -->
-      <section class="mb-6">
+      <section class="mb-6 lg:col-span-12 lg:mb-0">
         <div class="relative">
           <svg
             viewBox="0 0 24 24"
@@ -464,7 +478,7 @@
       </section>
 
       <!-- Recent Transactions -->
-      <section>
+      <section class="lg:col-span-12">
         <div class="mb-4 flex items-center justify-between">
           <h3 class="text-[18px] font-medium">Transaksi Terakhir</h3>
           <button

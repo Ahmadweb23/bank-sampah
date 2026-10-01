@@ -75,6 +75,7 @@ const routes = [
     component: RiwayatView,
   },
   {
+    path: "/laporan",
     name: "laporan",
     component: LaporanView,
   },

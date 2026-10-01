@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen flex items-center justify-center overflow-x-hidden bg-[#f9f9ff] px-5"
+    class="flex min-h-screen items-center justify-center overflow-x-hidden bg-[#f9f9ff] px-5 py-8 lg:px-10"
   >
     <!-- Background -->
     <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
@@ -13,10 +13,29 @@
       ></div>
     </div>
 
-    <!-- Card -->
-    <main
-      class="w-full max-w-[420px] rounded-3xl bg-white p-8 shadow-[0_10px_30px_rgba(0,83,77,.08)]"
+    <section
+      class="grid w-full max-w-6xl grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-20"
     >
+      <aside class="hidden max-w-xl lg:block">
+        <p class="mb-6 text-sm font-semibold uppercase tracking-[3px] text-[#00534d]">
+          Bank Sampah · Bojong Karya 2
+        </p>
+
+        <div class="mb-8 h-1 w-16 rounded bg-[#c56b3c]"></div>
+
+        <h2 class="text-4xl font-bold leading-tight text-[#003A36] xl:text-5xl">
+          Kelola sampah, bangun lingkungan yang lebih baik.
+        </h2>
+
+        <p class="mt-6 max-w-lg text-lg leading-8 text-slate-600">
+          Satu tempat untuk mengelola setoran, poin, dan layanan warga.
+        </p>
+      </aside>
+
+      <!-- Card -->
+      <main
+        class="w-full max-w-[420px] justify-self-center rounded-3xl bg-white p-6 shadow-[0_10px_30px_rgba(0,83,77,.08)] sm:p-8 lg:max-w-none"
+      >
       <!-- Logo -->
       <div class="mb-8 flex flex-col items-center">
 
@@ -182,7 +201,8 @@
 
       </p>
 
-    </main>
+      </main>
+    </section>
 
   </div>
 </template>

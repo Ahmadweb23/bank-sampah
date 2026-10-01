@@ -1,10 +1,29 @@
 <template>
   <div
-    class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(172,239,230,0.35),_transparent_40%),linear-gradient(135deg,_#f8fbff_0%,_#f5f7ff_100%)] flex items-center justify-center px-4 py-8"
+    class="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top_left,_rgba(172,239,230,0.35),_transparent_40%),linear-gradient(135deg,_#f8fbff_0%,_#f5f7ff_100%)] px-5 py-8 lg:px-10"
   >
-    <div
-      class="w-full max-w-md rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-[0_20px_50px_rgba(0,58,54,0.12)] backdrop-blur"
+    <section
+      class="grid w-full max-w-6xl grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_448px] lg:gap-20"
     >
+      <aside class="hidden max-w-xl lg:block">
+        <p class="mb-6 text-sm font-semibold uppercase tracking-[3px] text-[#00534d]">
+          Bank Sampah · Bojong Karya 2
+        </p>
+
+        <div class="mb-8 h-1 w-16 rounded bg-[#c56b3c]"></div>
+
+        <h2 class="text-4xl font-bold leading-tight text-[#003A36] xl:text-5xl">
+          Setoran dan poin Anda, dalam satu tempat.
+        </h2>
+
+        <p class="mt-6 max-w-lg text-lg leading-8 text-slate-600">
+          Masuk untuk melihat aktivitas dan layanan Bank Sampah warga.
+        </p>
+      </aside>
+
+      <div
+        class="w-full max-w-md justify-self-center rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-[0_20px_50px_rgba(0,58,54,0.12)] backdrop-blur sm:p-8 lg:max-w-none"
+      >
       <!-- Logo -->
       <div class="flex flex-col items-center text-center">
         <div
@@ -91,7 +110,8 @@
       <div class="mt-6 border-t border-slate-200 pt-4 text-center text-sm text-slate-500">
         © 2026 KKN Universitas Buana Perjuangan Karawang
       </div>
-    </div>
+      </div>
+    </section>
   </div>
 </template>
 

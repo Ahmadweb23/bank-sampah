@@ -1,11 +1,18 @@
 <template>
-  <router-view />
+  <div :class="{ 'lg:pl-64': hasOperatorSidebar }">
+    <router-view />
+  </div>
   <CustomModal ref="modalRef" />
 </template>
 
 <script setup>
 import CustomModal from './components/CustomModal.vue'
-import { ref, provide } from 'vue'
+import { computed, ref, provide } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const operatorNavRoutes = ['/dashboard', '/keuangan', '/katalog-pengelola', '/laporan']
+const hasOperatorSidebar = computed(() => operatorNavRoutes.includes(route.path))
 
 const modalRef = ref(null)
 

@@ -4,17 +4,36 @@
  * Sistem Digital Bank Sampah Bojong Karya 2
  * =========================================================
  *
- * Seluruh request frontend diteruskan ke API CodeIgniter.
- * Data aplikasi dikelola backend dan disimpan di database.
+ * Seluruh request frontend diteruskan ke Google Apps Script.
+ * Data aplikasi dikelola backend dan disimpan di Google Spreadsheet.
  */
 
 const DEFAULT_API_BASE_URL =
-  "/api";
+  "https://script.google.com/macros/s/AKfycbymjPUZTasHne8tPp8XsJFpGnIwo3weKQnRW9eOH-j-gRVpFBchEEPzsuZwkyqkT9v6/exec";
+const AUTH_TOKEN_KEY = "api_token";
+const PUBLIC_ACTIONS = new Set([
+  "ping",
+  "status",
+  "login_operator",
+  "login_warga",
+  "reset_password",
+  "lupa_password",
+  "pengumuman",
+  "get_katalog",
+]);
 
-const API_BASE_URL =
-  import.meta.env.DEV
-    ? import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE_URL
-    : DEFAULT_API_BASE_URL;
+function getConfiguredApiBaseUrl() {
+  return (
+    import.meta.env.VITE_API_BASE_URL?.trim() ||
+    DEFAULT_API_BASE_URL
+  );
+}
+
+function getAuthToken() {
+  return typeof window !== "undefined"
+    ? window.localStorage.getItem(AUTH_TOKEN_KEY)
+    : null;
+}
 
 async function request({
   method = "GET",
@@ -26,11 +45,12 @@ async function request({
     throw new Error("Action API wajib diisi");
   }
   const metode = String(method).toUpperCase();
+  const apiBaseUrl = getConfiguredApiBaseUrl();
 
-  const baseUrl = /^https?:\/\//.test(API_BASE_URL)
-    ? new URL(API_BASE_URL)
+  const baseUrl = /^https?:\/\//.test(apiBaseUrl)
+    ? new URL(apiBaseUrl)
     : new URL(
-        API_BASE_URL,
+        apiBaseUrl,
         typeof window !== "undefined"
           ? window.location.origin
           : "http://localhost:3000",
@@ -43,15 +63,20 @@ async function request({
   // Tambahkan parameter untuk mencegah caching
   url.searchParams.set("_t", Date.now().toString());
 
+  const token = getAuthToken();
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== "") {
       url.searchParams.set(key, String(value));
     }
   });
 
+  if (token && !PUBLIC_ACTIONS.has(action) && metode === "GET") {
+    url.searchParams.set("token", token);
+  }
+
   const options = {
     method: metode,
-    credentials: "include",
+    credentials: "omit",
   };
 
   if (metode === "POST") {
@@ -73,19 +98,15 @@ async function request({
       };
     }
 
+    if (token && !PUBLIC_ACTIONS.has(action)) {
+      payload.token = token;
+    }
+
     options.headers = {
-      "Content-Type": "application/json",
+      "Content-Type": "text/plain;charset=UTF-8",
     };
 
     options.body = JSON.stringify(payload);
-  }
-
-  if (metode === "POST") {
-    // request payload logged only when debugging
-  }
-
-  if (Object.keys(params).length > 0) {
-    // request params available for developer debugging
   }
 
   try {
@@ -121,6 +142,20 @@ async function request({
       console.error("Respons bukan JSON:", teksRespons);
 
       throw new Error("Respons server bukan JSON yang valid");
+    }
+
+    if (hasil?.success === false) {
+      throw new Error(hasil.message || "Permintaan API gagal.");
+    }
+
+    if (
+      (action === "login_operator" || action === "login_warga") &&
+      hasil?.data?.token &&
+      typeof window !== "undefined"
+    ) {
+      window.localStorage.setItem(AUTH_TOKEN_KEY, hasil.data.token);
+    } else if (action === "logout" && typeof window !== "undefined") {
+      window.localStorage.removeItem(AUTH_TOKEN_KEY);
     }
 
     return hasil;
@@ -610,12 +645,8 @@ export function hapusKatalog(idKatalog) {
 }
 
 export function getApiBaseUrl() {
-  return API_BASE_URL;
+  return getConfiguredApiBaseUrl();
 }
-
-
-
-
 
 
 

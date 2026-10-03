@@ -3,8 +3,27 @@
 
 ### Base URL
 ```
-https://script.google.com/macros/s/AKfycbzPAaTOfRXKi55MbZuvmudq-J8Rc7mtvIOrAYJdJ_EJ2436aujUq-Xwv-UluOpFJFkl/exec
+https://script.google.com/macros/s/AKfycbymjPUZTasHne8tPp8XsJFpGnIwo3weKQnRW9eOH-j-gRVpFBchEEPzsuZwkyqkT9v6/exec
 ```
+
+Vue menggunakan deployment Apps Script ini sebagai URL default. Untuk memakai
+deployment lain, atur `VITE_API_BASE_URL` pada `.env` sebelum menjalankan atau
+build aplikasi. Vue tidak lagi menggunakan proxy CodeIgniter.
+
+Setelah login, API mengembalikan token sesi. Vue menyimpan token tersebut dan
+mengirimkannya pada request yang memerlukan autentikasi: parameter `token`
+untuk GET dan field `token` di body POST. Request tulis dikirim sebagai JSON
+dengan content type `text/plain;charset=UTF-8`.
+
+### Deployment
+1. Impor workbook spreadsheet ke Google Sheets, lalu buat/buka project Apps
+   Script yang terikat ke spreadsheet tersebut.
+2. Muat semua file `.gs` dan `appsscript.json` dari folder `appsScript`.
+3. Deploy sebagai Web app dengan eksekusi sebagai pemilik spreadsheet dan akses
+   yang mengizinkan frontend memanggil endpoint.
+4. Salin URL deployment yang berakhiran `/exec` ke `VITE_API_BASE_URL` di `.env`
+   (lokal) dan Environment Variables deployment Vue (misalnya Vercel), lalu
+   deploy ulang frontend.
 
 ### Format Response
 Semua response menggunakan format berikut.
@@ -128,9 +147,13 @@ Semua response menggunakan format berikut.
 ## WARGA
 
 ### 1. Login
-**GET**
+**POST**
 ```
-?action=login_warga&username=budi&no_hp=08123456789
+{
+    "action": "login_warga",
+    "username": "budi",
+    "no_hp": "08123456789"
+}
 ```
 
 **Response**
@@ -140,6 +163,7 @@ Semua response menggunakan format berikut.
     "data": {
         "nama": "Budi",
         "username": "budi",
+        "token": "token-sesi",
         "poin": 25000,
         "total_setoran_kg": 17,
         "total_nilai_rupiah": 25000

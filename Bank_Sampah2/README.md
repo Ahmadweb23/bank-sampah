@@ -1,21 +1,14 @@
+# Legacy CodeIgniter backend
+
+This folder is retained as a legacy reference and is no longer used by the Vue
+application. The active backend is in `../appsScript`; the Vue API endpoint is
+configured with `VITE_API_BASE_URL` and documented in `../pandua_api.md`.
+
+The CodeIgniter app below remains available for historical reference only.
+
+---
+
 # CodeIgniter 4 Framework
-
-## Bank Sampah API (Apps Script replacement)
-
-The API is served by `app/Controllers/Api.php` at `/api` and uses JSON responses. It supports the frontend actions for operator and resident accounts, waste categories, collection groups, deposits, sales and stock, cash and reports, announcements, points redemption, and the catalog. Operator data is read from the existing `operator` table. Except for login, ping, public announcements/catalog reads, and logout, API actions require an active login session. Writes require an operator session, POST with a JSON body, and an allowed Origin. In production, session cookies are marked `Secure`.
-
-### Local setup
-
-1. Start MySQL/MariaDB with the existing `bank_sampah` database and verify its `operator` table has `id_operator`, `nama`, `username`, `no_hp`, `password`, `role`, and `status` columns. Do not run migrations against an existing database.
-2. Set the local database connection in `.env` (copy `env` as a starting point if needed). The ignored local `.env` in this workspace is configured for Laragon's `127.0.0.1:3306` with database `bank_sampah` and root with no password.
-3. From this folder, run `composer install` if dependencies are missing, then start the API with `php spark serve --host 0.0.0.0 --port 8080`. Check that it responds with `http://127.0.0.1:8080/api?action=ping`.
-4. In the workspace root, start the Vue app with `npm run dev`. Vite proxies `/api` to `http://127.0.0.1:8080/api`; override the proxy target with `VITE_CI_API_PROXY` if needed.
-
-For the Vercel deployment, the frontend calls `/api` on its own origin and `vercel.json` rewrites that path to the CodeIgniter API host. This same-origin proxy avoids browser CORS preflight requests. Update the rewrite destination if the API host changes, then redeploy Vercel. `VITE_API_BASE_URL` only overrides the API URL during local development.
-
-For direct cross-origin API access outside the Vercel proxy, set `CORS_ALLOWED_ORIGINS` in the API host's private `.env` to the exact frontend origin(s), comma-separated and without paths. The API must run in the `production` environment over HTTPS so its session cookie is marked `Secure`. Keep database credentials and other secrets in the API host's private `.env`, never in Vercel `VITE_*` variables or committed files. API session cookies are included with requests. There is no default operator account or CSV seeder; existing passwords in `operator.password` must be PHP password hashes.
-
-> The legacy Apps Script API did not enforce operator authorization. This port preserves that endpoint contract for compatibility, so protect write endpoints with authentication/authorization before exposing the API publicly.
 
 ## What is CodeIgniter?
 

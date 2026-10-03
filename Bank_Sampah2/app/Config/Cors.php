@@ -17,10 +17,14 @@ class Cors extends BaseConfig
 
         $origins = env(
             'CORS_ALLOWED_ORIGINS',
-            'https://bank-sampah-livid.vercel.app,http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000,http://127.0.0.1:3000',
+            implode(',', $this->default['allowedOrigins']),
         );
 
-        $this->default['allowedOrigins'] = array_values(array_filter(array_map('trim', explode(',', $origins))));
+        $configuredOrigins = array_values(array_filter(array_map('trim', explode(',', $origins))));
+        $this->default['allowedOrigins'] = array_values(array_unique([
+            'https://bank-sampah-livid.vercel.app',
+            ...$configuredOrigins,
+        ]));
     }
 
     /**

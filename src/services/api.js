@@ -9,7 +9,7 @@
  */
 
 const DEFAULT_API_BASE_URL =
-  "/api";
+  "https://bank-sampah-bk2.rf.gd/api";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
@@ -24,7 +24,6 @@ async function request({
   if (!action) {
     throw new Error("Action API wajib diisi");
   }
-
   const metode = String(method).toUpperCase();
 
   const baseUrl = /^https?:\/\//.test(API_BASE_URL)
@@ -612,8 +611,6 @@ export function hapusKatalog(idKatalog) {
 export function getApiBaseUrl() {
   return API_BASE_URL;
 }
-
-
 
 
 

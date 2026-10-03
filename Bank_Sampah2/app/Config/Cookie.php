@@ -12,6 +12,7 @@ class Cookie extends BaseConfig
         parent::__construct();
 
         $this->secure = ENVIRONMENT === 'production';
+        $this->samesite = ENVIRONMENT === 'production' ? 'None' : 'Lax';
     }
 
     /**

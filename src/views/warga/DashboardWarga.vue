@@ -99,6 +99,9 @@
       <div v-if="loadingPengumuman" class="text-center text-gray-500 my-6">
         Memuat pengumuman...
       </div>
+      <div v-else-if="pengumumanError" class="text-center text-rose-600 my-6">
+        {{ pengumumanError }}
+      </div>
       <div v-else-if="pengumuman.length === 0" class="text-center text-gray-400 my-6">
         Tidak ada pengumuman.
       </div>
@@ -106,7 +109,7 @@
       <div v-else class="space-y-4">
         <div 
           v-for="(item, index) in pengumuman" 
-          :key="index" 
+          :key="item.id_pengumuman" 
           class="bg-white rounded-3xl p-4 shadow-sm flex gap-4 items-start"
         >
           <div class="shrink-0 mt-0.5">
@@ -131,10 +134,10 @@
           </div>
           <div class="flex-1">
             <p class="text-xs font-bold text-[#003A36] uppercase tracking-wide">
-              {{ item.jenis || 'INFO' }}
+              {{ formatTanggal(item.tanggal) }}
             </p>
             <h4 class="text-[14px] font-bold text-gray-900 leading-snug">{{ item.judul }}</h4>
-            <p class="text-[13px] text-gray-600 mt-1 leading-snug">{{ item.konten || item.deskripsi }}</p>
+            <p class="text-[13px] text-gray-600 mt-1 leading-snug whitespace-pre-line">{{ item.isi }}</p>
           </div>
         </div>
       </div>
@@ -215,15 +218,9 @@ const catalogItems = ref([
   },
 ])
 
-// Data Pengumuman Mock
-const mockPengumuman = [
-  { jenis: 'JADWAL', judul: 'Jadwal Penjemputan Rutin Minggu Ini', deskripsi: 'Berlaku mulai 12 - 18 Agustus 2024' },
-  { jenis: 'PROMO', judul: 'Promo Tukar Poin Merdeka', deskripsi: 'Diskon 17% tukar poin untuk semua sembako' },
-  { jenis: 'EDUKASI', judul: 'Cara Memilah Sampah Plastik Baru', deskripsi: 'Tips agar sampah plastik Anda dihargai lebih tinggi' },
-]
-
 const pengumuman = ref([])
 const loadingPengumuman = ref(false)
+const pengumumanError = ref('')
 
 // Formatting Ribuan
 const formatAngka = (angka) => {
@@ -234,19 +231,32 @@ async function fetchPengumuman() {
   loadingPengumuman.value = true
   try {
     const response = await getPengumuman()
-    if (response && response.data && response.data.length > 0) {
-      pengumuman.value = response.data
-    } else if (Array.isArray(response) && response.length > 0) {
-      pengumuman.value = response
-    } else {
-      pengumuman.value = mockPengumuman 
+    if (response?.success === false) {
+      throw new Error(response.message || 'Pengumuman tidak dapat dimuat.')
     }
+    const rows = Array.isArray(response?.data)
+      ? response.data
+      : Array.isArray(response)
+        ? response
+        : []
+    pengumuman.value = rows.filter((item) => String(item.status || 'AKTIF').toUpperCase() === 'AKTIF')
   } catch (error) {
     console.error('Gagal memuat pengumuman:', error)
-    pengumuman.value = mockPengumuman
+    pengumuman.value = []
+    pengumumanError.value = 'Pengumuman belum dapat dimuat.'
   } finally {
     loadingPengumuman.value = false
   }
+}
+
+function formatTanggal(value) {
+  if (!value) return 'Pengumuman'
+  const tanggal = new Date(String(value).replace(' ', 'T'))
+  if (Number.isNaN(tanggal.getTime())) return 'Pengumuman'
+  return new Intl.DateTimeFormat('id-ID', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(tanggal)
 }
 
 function getIconType(judul) {

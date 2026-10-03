@@ -161,12 +161,16 @@ Semua response menggunakan format berikut.
 
 ### 4. Tambah Warga
 **POST**
+
+Nomor HP bersifat opsional. Warga tanpa nomor HP dapat dilayani operator,
+namun login mandiri warga tetap memerlukan username dan nomor HP.
+
 ```json
 {
     "action": "tambah_warga",
     "nama": "Budi",
     "username": "budi",
-    "no_hp": "08123456789"
+    "no_hp": ""
 }
 ```
 
@@ -176,18 +180,23 @@ Semua response menggunakan format berikut.
 
 ### 1. Simpan Setoran
 **POST**
+
+Nilai setoran dihitung berdasarkan berat dan harga beli masing-masing jenis sampah.
+Nasabah menerima 50% dari nilai setoran. Pilih `metode_pembayaran` sebagai
+`POIN` (default) untuk mengubah bagian nasabah menjadi poin, dengan 1 poin = Rp100,
+atau `TUNAI` untuk membayar bagian tersebut langsung dari kas. Poin dibulatkan ke
+poin terdekat, sedangkan nilai tunai dibulatkan ke rupiah terdekat. Contoh: setoran
+bernilai Rp3.000 memberi 15 poin atau pembayaran tunai Rp1.500.
+
 ```json
 {
     "action": "simpan_setoran",
     "username": "budi",
+    "metode_pembayaran": "POIN",
     "items": [
         {
             "kode": "PLS",
-            "berat": 3.5
-        },
-        {
-            "kode": "KRD",
-            "berat": 5
+            "berat": 2
         }
     ]
 }
@@ -199,10 +208,33 @@ Semua response menggunakan format berikut.
     "success": true,
     "data": {
         "id_setoran": "STR-20260719-0001",
-        "total_kg": 8.5,
-        "total_rupiah": 16500,
-        "total_poin": 16500
+        "total_kg": 2,
+        "total_rupiah": 4000,
+        "total_poin": 20,
+        "metode_pembayaran": "POIN",
+        "nilai_dibayarkan": 0
     }
+}
+```
+
+Untuk pembayaran langsung, kirim `"metode_pembayaran": "TUNAI"`. Jika nilai
+setoran Rp4.000, response berisi `total_poin: 0` dan `nilai_dibayarkan: 2000`.
+Pembayaran dicatat sebagai pengeluaran kas dan dikembalikan ke kas bila setoran
+dibatalkan.
+
+### Penukaran Poin Menjadi Uang
+Operator dapat menukar poin warga menjadi uang tunai melalui action
+`tukar_poin`, dengan mengirim `jenis_penukaran: "UANG"` dan `poin_digunakan`.
+Nilainya 1 poin = Rp100. Poin dikurangi dan kas keluar dicatat dalam satu
+transaksi database.
+
+```json
+{
+    "action": "tukar_poin",
+    "username_warga": "budi",
+    "jenis_penukaran": "UANG",
+    "poin_digunakan": 150,
+    "petugas": "Operator"
 }
 ```
 
@@ -277,6 +309,11 @@ Semua response menggunakan format berikut.
 ---
 
 ## KEUANGAN
+
+Saldo kas tidak berkurang saat warga menyetor sampah. Saldo kas berkurang saat
+pengeluaran dicatat atau saat poin ditukar; penukaran dicatat sebagai kas keluar
+sebesar 100 rupiah untuk setiap poin yang digunakan. Pergerakan kas lama yang
+terhubung ke transaksi setoran tidak dihitung dalam saldo.
 
 ### 1. Dashboard
 **GET**

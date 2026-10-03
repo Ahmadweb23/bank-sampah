@@ -1,0 +1,116 @@
+# Dependency
+node_modules/
+
+# Hasil build
+dist/
+dist-ssr/
+
+# File environment
+.env
+.env.*
+
+# Jangan abaikan contoh environment
+!.env.example
+!.env.*.example
+
+# Log
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Cache
+.cache/
+.vite/
+.eslintcache
+.php-cs-fixer.cache
+.phpunit.cache/
+**/.phpunit.cache/
+
+# Coverage pengujian
+coverage/
+
+# Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*~
+
+# Sistem operasi
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# File sementara
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# Database lokal dan backup data
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.sql.gz
+/backups/
+
+# Vercel
+.vercel/
+
+# Netlify
+.netlify/
+
+# Firebase
+.firebase/
+
+# Local hosting / Laragon
+*.local
+appsScript/warga.gs
+appsScript/transaksi.gs
+appsScript/pengumuman.gs
+appsScript/master.gs
+appsScript/kode.gs
+appsScript/router.gs
+appsScript/keuangan.gs
+appsScript/helper.gs
+appsScript/config.gs
+appsScript/auth.gs
+appsScript/*.xlsx
+router.gs
+router.gs
+appsScript/akun.gs
+appsScript/katalog.gs
+appsScript/tukar_poin.gs
+
+# CodeIgniter local configuration and Composer dependencies
+/Bank_Sampah2/.env
+/Bank_Sampah2/vendor/
+/Bank_Sampah2/build/
+
+# CodeIgniter generated runtime files; retain directory protection files
+/Bank_Sampah2/writable/cache/*
+!/Bank_Sampah2/writable/cache/index.html
+/Bank_Sampah2/writable/debugbar/*
+!/Bank_Sampah2/writable/debugbar/index.html
+/Bank_Sampah2/writable/logs/*
+!/Bank_Sampah2/writable/logs/index.html
+/Bank_Sampah2/writable/session/*
+!/Bank_Sampah2/writable/session/index.html
+/Bank_Sampah2/writable/uploads/*
+!/Bank_Sampah2/writable/uploads/index.html
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+

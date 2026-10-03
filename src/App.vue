@@ -11,7 +11,7 @@ import { computed, ref, provide } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const operatorNavRoutes = ['/dashboard', '/keuangan', '/katalog-pengelola', '/laporan']
+const operatorNavRoutes = ['/dashboard', '/keuangan', '/tukar', '/katalog-pengelola', '/jenis-sampah', '/laporan', '/pengumuman']
 const hasOperatorSidebar = computed(() => operatorNavRoutes.includes(route.path))
 
 const modalRef = ref(null)

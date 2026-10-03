@@ -413,7 +413,7 @@ async function jalankanPengujian() {
     hasilPengujian.value = hasil
 
     statusPengujian.value =
-      hasil?.berhasil === false
+      hasil?.success === false || hasil?.berhasil === false
         ? 'gagal'
         : 'berhasil'
   } catch (error) {
@@ -467,7 +467,7 @@ async function salinRespons() {
 
         <p class="deskripsi">
           Gunakan halaman ini untuk menguji koneksi
-          antara Vue dan Google Apps Script.
+          antara Vue dan API CodeIgniter.
         </p>
       </div>
 

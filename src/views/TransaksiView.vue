@@ -526,10 +526,10 @@
             Gagal: {{ lastErrorMsg }}
           </p>
           <p class="mt-1 leading-relaxed">
-            <strong>Penyebab:</strong> Google Apps Script server pada URL deployment yang dipanggil belum di-deploy ke versi terbaru (.gs).
+            <strong>Penyebab:</strong> Server CodeIgniter atau koneksi database belum tersedia.
           </p>
           <p class="mt-1 leading-relaxed text-red-900 font-semibold">
-            👉 <strong>Solusi:</strong> Buka script.google.com -> Klik <em>Deploy</em> -> <em>New Deployment</em> -> Pilih <em>Web App</em> -> Set <em>Who has access: Anyone</em> -> Simpan & Deploy.
+            <strong>Solusi:</strong> Jalankan backend dari folder <code>Bank_Sampah2</code> dengan <code>php spark serve --host 0.0.0.0 --port 8080</code> dan pastikan database sudah dikonfigurasi serta dimigrasikan.
           </p>
         </div>
 

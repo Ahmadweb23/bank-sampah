@@ -4,19 +4,12 @@
  * Sistem Digital Bank Sampah Bojong Karya 2
  * =========================================================
  *
- * Integrasi CRUD akun:
- * - GET  akun
- * - GET  detail_akun
- * - POST tambah_akun
- * - POST ubah_akun
- * - POST hapus_akun
- *
- * Admin disimpan di sheet operator; warga di sheet warga.
- * File regenerasi 2026-07-25: siap menggantikan src/services/api.js.
+ * Seluruh request frontend diteruskan ke API CodeIgniter.
+ * Data aplikasi dikelola backend dan disimpan di database.
  */
 
 const DEFAULT_API_BASE_URL =
-  "https://script.google.com/macros/s/AKfycbxhEBbGRW14N0x2-F8TW3tRUxRQygQ5jQea7c08tTTOEHVOmcbiVGDjgtdm6vo5Q9BT/exec";
+  "/api";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
@@ -58,6 +51,7 @@ async function request({
 
   const options = {
     method: metode,
+    credentials: "include",
   };
 
   if (metode === "POST") {
@@ -79,15 +73,8 @@ async function request({
       };
     }
 
-    /*
-     * Gunakan text/plain agar request ke Apps Script
-     * tidak memicu CORS preflight OPTIONS.
-     *
-     * Backend Apps Script harus membaca body melalui:
-     * JSON.parse(e.postData.contents)
-     */
     options.headers = {
-      "Content-Type": "text/plain;charset=utf-8",
+      "Content-Type": "application/json",
     };
 
     options.body = JSON.stringify(payload);
@@ -139,8 +126,6 @@ async function request({
     return hasil;
   } catch (error) {
     console.error("Kesalahan API:", error);
-    console.error("URL yang dipanggil:", url.toString());
-    console.error("Opsi request:", options);
 
     throw new Error(
       error?.message ||
@@ -250,11 +235,19 @@ export function loginOperator({ username, password }) {
 
 export function loginWarga({ username, no_hp }) {
   return request({
+    method: "POST",
     action: "login_warga",
-    params: {
+    body: {
       username,
       no_hp,
     },
+  });
+}
+
+export function logoutApi() {
+  return request({
+    method: "POST",
+    action: "logout",
   });
 }
 
@@ -584,6 +577,12 @@ export function getKatalog() {
   });
 }
 
+export function getKatalogAdmin() {
+  return request({
+    action: "get_katalog_admin",
+  });
+}
+
 export function tambahKatalog(payload) {
   return request({
     method: "POST",
@@ -613,10 +612,6 @@ export function hapusKatalog(idKatalog) {
 export function getApiBaseUrl() {
   return API_BASE_URL;
 }
-
-
-
-
 
 
 

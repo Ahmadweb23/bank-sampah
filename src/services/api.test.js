@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { getDashboardData, loginOperator, loginWarga, submitSetoran } from './api'
+import { getDashboardData, loginOperator, loginWarga, logoutApi, submitSetoran } from './api'
 
 describe('api service', () => {
   beforeEach(() => {  
@@ -16,7 +16,7 @@ describe('api service', () => {
 
     expect(fetch).toHaveBeenCalledWith(
       expect.stringContaining('action=dashboard'),
-      expect.objectContaining({ method: 'GET' })
+      expect.objectContaining({ method: 'GET', credentials: 'include' })
     )
     expect(result.data.total_warga).toBe(12)
   })
@@ -29,18 +29,22 @@ describe('api service', () => {
 
     const result = await submitSetoran({
       username: 'budi',
-      items: [{ kode: 'PLS', berat: 3.5 }]
+      items: [{ kode: 'PLS', berat: 3.5 }],
+      metode_pembayaran: 'TUNAI'
     })
 
     expect(fetch).toHaveBeenCalledWith(
       expect.any(String),
       expect.objectContaining({
-        method: 'POST'
+        method: 'POST',
+        credentials: 'include'
       })
     )
 
     const [, options] = vi.mocked(fetch).mock.calls[0]
     expect(options.body).toContain('simpan_setoran')
+    expect(JSON.parse(options.body).metode_pembayaran).toBe('TUNAI')
+    expect(options.headers['Content-Type']).toBe('application/json')
     expect(result.data.id_setoran).toBe('STR-1')
   })
 
@@ -81,5 +85,19 @@ describe('api service', () => {
     expect(options.body).toContain('login_warga')
     expect(options.body).toContain('08123456789')
     expect(result.data.nama).toBe('Budi')
+  })
+
+  it('mengakhiri sesi backend lewat POST', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce({
+      ok: true,
+      text: async () => JSON.stringify({ success: true })
+    })
+
+    await logoutApi()
+
+    expect(fetch).toHaveBeenCalledWith(
+      expect.stringContaining('action=logout'),
+      expect.objectContaining({ method: 'POST', credentials: 'include' })
+    )
   })
 })

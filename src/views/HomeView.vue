@@ -406,7 +406,7 @@
         </router-link>
 
         <!-- Tukar Poin Full Width -->
-        <router-link to="/tukar-poin-sembako" class="col-span-2 flex min-h-[92px] items-center gap-3 rounded-[22px] bg-violet-50 px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition hover:-translate-y-0.5 hover:bg-violet-100 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-600 focus-visible:ring-offset-2 active:scale-[0.98] lg:col-span-1 lg:rounded-[18px] lg:px-3">
+        <router-link to="/tukar" class="col-span-2 flex min-h-[92px] items-center gap-3 rounded-[22px] bg-violet-50 px-4 shadow-[0_8px_18px_rgba(20,36,49,0.08)] transition hover:-translate-y-0.5 hover:bg-violet-100 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-600 focus-visible:ring-offset-2 active:scale-[0.98] lg:col-span-1 lg:rounded-[18px] lg:px-3">
           <div
             class="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full bg-violet-100"
           >
@@ -724,6 +724,28 @@
             </div>
           </div>
         </div>
+        <div class="mt-5 rounded-xl border border-emerald-100 bg-emerald-50 p-4">
+          <label class="block text-sm font-semibold text-[#14532d]">
+            Imbalan untuk warga
+            <select
+              v-model="metodePembayaran"
+              class="mt-2 w-full rounded-lg border border-emerald-200 bg-white px-3 py-2.5 text-sm text-slate-800"
+            >
+              <option value="POIN">Masukkan sebagai poin warga</option>
+              <option value="TUNAI">Tukar langsung menjadi uang tunai</option>
+            </select>
+          </label>
+          <p class="mt-2 text-xs leading-relaxed text-emerald-900">
+            Warga menerima 50% dari nilai setoran. Nilai saat ini:
+            <strong>Rp{{ formatCurrency(estimasiImbalanWarga) }}</strong>
+            <template v-if="metodePembayaran === 'POIN'">
+              (sekitar <strong>{{ estimasiPoin }} poin</strong>, 1 poin = Rp100).
+            </template>
+            <template v-else>
+              akan dibayarkan tunai dan dicatat sebagai pengeluaran kas.
+            </template>
+          </p>
+        </div>
         <!-- Banner Error & Petunjuk Update Deployment -->
         <div
           v-if="lastErrorMsg"
@@ -748,14 +770,14 @@
             Gagal: {{ lastErrorMsg }}
           </p>
           <p class="mt-1 leading-relaxed">
-            <strong>Penyebab:</strong> Google Apps Script server pada URL
-            deployment yang dipanggil belum di-deploy ke versi terbaru (.gs).
+            <strong>Penyebab:</strong> Server CodeIgniter atau koneksi database
+            belum tersedia.
           </p>
           <p class="mt-1 leading-relaxed text-red-900 font-semibold">
-            👉 <strong>Solusi:</strong> Buka script.google.com -> Klik
-            <em>Deploy</em> -> <em>New Deployment</em> -> Pilih
-            <em>Web App</em> -> Set <em>Who has access: Anyone</em> -> Simpan &
-            Deploy.
+            <strong>Solusi:</strong> Jalankan backend dari folder
+            <code>Bank_Sampah2</code> dengan
+            <code>php spark serve --host 0.0.0.0 --port 8080</code> dan pastikan
+            database sudah dikonfigurasi serta dimigrasikan.
           </p>
         </div>
         <!-- Modal Actions -->
@@ -836,6 +858,20 @@ const items = ref([
     berat: null,
   },
 ]);
+const metodePembayaran = ref("POIN");
+
+const estimasiTotalSetoran = computed(() =>
+  items.value.reduce((total, item) => {
+    const kategori = masterSampahList.value.find(
+      (sampah) => String(sampah.kode) === String(item.kode),
+    );
+    return total + (Number(item.berat) || 0) * (Number(kategori?.harga_beli) || 0);
+  }, 0),
+);
+const estimasiImbalanWarga = computed(() =>
+  Math.round(estimasiTotalSetoran.value * 50 / 100),
+);
+const estimasiPoin = computed(() => Math.round(estimasiImbalanWarga.value / 100));
 
 // Filter Warga dari data spreadsheet yang di-load via API
 const filteredWargaSuggestions = computed(() => {
@@ -884,6 +920,7 @@ function openFormModal() {
   showForm.value = true;
   showWargaSuggestions.value = false;
   lastErrorMsg.value = "";
+  metodePembayaran.value = "POIN";
 }
 
 function closeFormModal() {
@@ -1050,9 +1087,12 @@ async function loadInitialData() {
               aliases: ["Pembelian"],
             };
           } else {
+            const penerimaan = item.metode_pembayaran === "TUNAI"
+              ? `Tunai Rp${formatCurrency(item.nilai_dibayarkan || 0)}`
+              : `+${formatCurrency(item.total_poin || 0)} poin`;
             return {
               title: "Setoran Sampah",
-              subtitle: `${nama} • ${item.total_kg || 0} kg`,
+              subtitle: `${nama} • ${item.total_kg || 0} kg • ${penerimaan}`,
               amount: Number(item.total_rupiah || 0),
               time: waktuFormatted,
               type: "Setoran",
@@ -1192,6 +1232,7 @@ async function submitTransaction() {
       kategori: it.kode,
       berat: Number(it.berat),
     })),
+    metode_pembayaran: metodePembayaran.value,
   };
 
   isSubmitting.value = true;
@@ -1199,15 +1240,19 @@ async function submitTransaction() {
     const res = await submitSetoran(payload);
 
     if (res && res.success) {
+      const payoutMessage = res.data?.metode_pembayaran === "TUNAI"
+        ? `Warga menerima tunai Rp${formatCurrency(res.data?.nilai_dibayarkan || 0)}.`
+        : `Warga mendapat ${formatCurrency(res.data?.total_poin || 0)} poin.`;
       await showModal({
         title: "Berhasil",
-        message: "Transaksi setoran berhasil disimpan ke database spreadsheet!",
+        message: `Setoran berhasil disimpan. ${payoutMessage}`,
       });
 
       namaWarga.value = "";
       selectedWargaObj.value = null;
       rt.value = "";
       items.value = [{ kode: "", berat: null }];
+      metodePembayaran.value = "POIN";
       showForm.value = false;
 
       await loadInitialData();

@@ -1,8 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-const SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbxhEBbGRW14N0x2-F8TW3tRUxRQygQ5jQea7c08tTTOEHVOmcbiVGDjgtdm6vo5Q9BT'
+const CODEIGNITER_API = process.env.VITE_CI_API_PROXY || 'http://127.0.0.1:8080'
 
 export default defineConfig({
   plugins: [vue()],
@@ -11,10 +10,9 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: SCRIPT_URL,
+        target: CODEIGNITER_API,
         changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/api/, '/exec')
+        secure: false,
       }
     }
   }

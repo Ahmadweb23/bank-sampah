@@ -11,13 +11,14 @@ import JualPengepulView from "../views/JualPengepulView.vue";
 import TukarPoinView from "../views/TukarPoinView.vue";
 import LupaPasswordView from "../views/LupaPasswordView.vue";
 import InformasiView from "../views/InformasiView.vue";
+import PengumumanView from "../views/PengumumanView.vue";
 import KatalogPengelolaView from "../views/KatalogPengelolaView.vue";
+import JenisSampahView from "../views/JenisSampahView.vue";
 import ProfilPengelolaView from "../views/ProfilPengelolaView.vue";
 
 import LoginWarga from "../views/LoginWarga.vue";
 import DashboardWarga from "../views/warga/DashboardWarga.vue";
 import KatalogView from "../views/warga/KatalogView.vue";
-import TukarPoinSembakoView from "../views/warga/TukarPoinSembakoView.vue";
 import SuksesTukarPoinView from "../views/warga/SuksesTukarPoinView.vue";
 import RiwayatWargaView from "../views/warga/RiwayatWargaView.vue";
 
@@ -85,9 +86,19 @@ const routes = [
     component: InformasiView,
   },
   {
+    path: "/pengumuman",
+    name: "pengumuman",
+    component: PengumumanView,
+  },
+  {
     path: "/katalog-pengelola",
     name: "katalog-pengelola",
     component: KatalogPengelolaView,
+  },
+  {
+    path: "/jenis-sampah",
+    name: "jenis-sampah",
+    component: JenisSampahView,
   },
   {
     path: "/profil-pengelola",
@@ -116,7 +127,7 @@ const routes = [
   {
     path: "/tukar-poin-sembako",
     name: "tukar-poin-sembako",
-    component: TukarPoinSembakoView,
+    redirect: "/tukar",
   },
   {
     path: "/sukses-tukar-poin",
@@ -171,7 +182,9 @@ router.beforeEach((to, from, next) => {
     "/riwayat",
     "/laporan",
     "/informasi",
+    "/pengumuman",
     "/katalog-pengelola",
+    "/jenis-sampah",
     "/profil-pengelola",
   ];
 

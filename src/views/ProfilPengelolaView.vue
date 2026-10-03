@@ -376,12 +376,14 @@
 
           <!-- No HP -->
           <div>
-            <label class="block text-[14px] text-[#687481] mb-1">No HP</label>
+            <label class="block text-[14px] text-[#687481] mb-1">
+              No HP{{ activeTab === "warga" ? " (Opsional)" : "" }}
+            </label>
             <input
               v-model="formData.no_hp"
               type="tel"
               class="w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:border-[#147052]"
-              placeholder="Nomor handphone"
+              :placeholder="activeTab === 'warga' ? 'Boleh dikosongkan' : 'Nomor handphone'"
             />
           </div>
 
@@ -420,9 +422,9 @@
             v-if="activeTab === 'warga'"
             class="rounded-xl border border-blue-100 bg-blue-50 p-3 text-xs leading-relaxed text-blue-700"
           >
-            Warga login menggunakan username dan nomor HP tanpa password. Poin,
-            total kilogram, dan total rupiah dibuat otomatis dengan nilai awal
-            0.
+            Nomor HP tidak wajib. Warga tanpa akses HP tetap dapat dibuatkan akun
+            dan dilayani operator untuk setoran serta penukaran poin. Login warga
+            mandiri tetap memerlukan nomor HP. Poin dan total setoran dimulai dari 0.
           </div>
         </div>
 
@@ -578,6 +580,7 @@ import {
   ubahPengelola,
   hapusPengelola,
   getWargaList,
+  logoutApi,
   tambahWarga,
   ubahWarga,
   hapusWarga,
@@ -744,7 +747,7 @@ async function submitForm() {
     formError.value = "Username harus diisi.";
     return;
   }
-  if (!formData.value.no_hp.trim()) {
+  if (activeTab.value === "admin" && !formData.value.no_hp.trim()) {
     formError.value = "Nomor HP harus diisi.";
     return;
   }
@@ -873,9 +876,15 @@ async function handleDelete() {
   }
 }
 
-function handleLogout() {
-  localStorage.removeItem("operator");
-  router.push("/login");
+async function handleLogout() {
+  try {
+    await logoutApi();
+  } catch (error) {
+    console.error("Gagal mengakhiri sesi API:", error);
+  } finally {
+    localStorage.removeItem("operator");
+    router.push("/login");
+  }
 }
 
 onMounted(async () => {

@@ -82,7 +82,12 @@
         </div>
       </section>
 
+      <p v-if="listError" role="alert" class="mb-4 rounded-xl bg-rose-50 p-3 text-sm text-rose-700">{{ listError }}</p>
+      <p v-if="notice" role="status" class="mb-4 rounded-xl bg-green-50 p-3 text-sm text-green-800">{{ notice }}</p>
+
       <section class="space-y-3">
+        <p v-if="loading" class="py-8 text-center text-sm text-gray-500">Memuat katalog...</p>
+        <p v-else-if="!filteredItems.length && !listError" class="rounded-2xl bg-white p-6 text-center text-sm text-gray-500">Belum ada item katalog.</p>
         <div
           v-for="item in filteredItems"
           :key="item.id"
@@ -124,6 +129,7 @@
                   </svg>
                   <span class="font-semibold">{{ item.poin }} Poin</span>
                 </div>
+                <span class="text-xs text-gray-500">Stok: {{ item.stok }} · {{ item.status }}</span>
                 <div class="flex gap-2">
                   <button
                     type="button"
@@ -227,6 +233,20 @@
               />
             </div>
 
+            <div class="grid gap-4 sm:grid-cols-2">
+              <label class="block text-sm font-medium text-slate-700">
+                Stok
+                <input v-model.number="formData.stok" type="number" min="0" step="1" class="mt-2 w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3" />
+              </label>
+              <label class="block text-sm font-medium text-slate-700">
+                Status
+                <select v-model="formData.status" class="mt-2 w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3">
+                  <option value="AKTIF">Aktif</option>
+                  <option value="NONAKTIF">Nonaktif</option>
+                </select>
+              </label>
+            </div>
+
             <div>
               <label class="mb-2 block text-sm font-medium text-slate-700"
                 >Gambar</label
@@ -300,10 +320,11 @@
             </button>
             <button
               type="button"
+              :disabled="saving"
               @click="saveItem"
               class="w-full rounded-2xl bg-[#003A36] px-4 py-3 text-sm font-semibold text-white transition active:scale-[0.98] sm:w-2/3"
             >
-              {{ formMode === "create" ? "Tambah Item" : "Simpan Perubahan" }}
+              {{ saving ? "Menyimpan..." : formMode === "create" ? "Tambah Item" : "Simpan Perubahan" }}
             </button>
           </div>
         </div>
@@ -315,9 +336,10 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import BottomNav from "../components/BottomNav.vue";
+import { getKatalogAdmin, hapusKatalog, tambahKatalog, ubahKatalog } from "../services/api";
 
 const router = useRouter();
 const search = ref("");
@@ -325,6 +347,10 @@ const imageInputRef = ref(null);
 const showForm = ref(false);
 const formMode = ref("create");
 const formError = ref("");
+const listError = ref("");
+const notice = ref("");
+const loading = ref(false);
+const saving = ref(false);
 
 const availableImages = [
   "/images/sembako/beras.jpg",
@@ -339,43 +365,37 @@ const formData = ref({
   kategori: "",
   satuan: "",
   poin: 0,
+  stok: 0,
   image: "",
+  status: "AKTIF",
 });
 
-const catalogItems = ref([
-  {
-    id: 1,
-    nama: "Beras Premium",
-    kategori: "Sembako",
-    satuan: "5kg",
-    poin: 150,
-    image: "/images/sembako/beras.jpg",
-  },
-  {
-    id: 2,
-    nama: "Minyak Goreng",
-    kategori: "Sembako",
-    satuan: "1L",
-    poin: 180,
-    image: "/images/sembako/minyak.jpg",
-  },
-  {
-    id: 3,
-    nama: "Gula Pasir",
-    kategori: "Sembako",
-    satuan: "1kg",
-    poin: 160,
-    image: "/images/sembako/gula.jpg",
-  },
-  {
-    id: 4,
-    nama: "Garam",
-    kategori: "Sembako",
-    satuan: "500g",
-    poin: 50,
-    image: "/images/sembako/garam.jpg",
-  },
-]);
+const catalogItems = ref([]);
+
+function assertSuccess(response) {
+  if (response?.success === false) throw new Error(response.message || "Permintaan tidak berhasil.");
+}
+
+async function loadCatalog() {
+  loading.value = true;
+  listError.value = "";
+  try {
+    const response = await getKatalogAdmin();
+    assertSuccess(response);
+    const rows = Array.isArray(response?.data) ? response.data : Array.isArray(response) ? response : [];
+    catalogItems.value = rows.map((item) => ({
+      ...item,
+      id: item.id_katalog,
+      poin: Number(item.poin) || 0,
+      stok: Number(item.stok) || 0,
+      status: String(item.status || "AKTIF").toUpperCase(),
+    }));
+  } catch (error) {
+    listError.value = error.message || "Katalog tidak dapat dimuat.";
+  } finally {
+    loading.value = false;
+  }
+}
 
 function resetForm() {
   formError.value = "";
@@ -385,7 +405,9 @@ function resetForm() {
     kategori: "",
     satuan: "",
     poin: 0,
+    stok: 0,
     image: "",
+    status: "AKTIF",
   };
 }
 
@@ -422,6 +444,10 @@ function validateForm() {
     formError.value = "Poin tidak boleh negatif.";
     return false;
   }
+  if (formData.value.stok < 0) {
+    formError.value = "Stok tidak boleh negatif.";
+    return false;
+  }
   if (!formData.value.image.trim()) {
     formError.value = "Path gambar harus diisi.";
     return false;
@@ -430,29 +456,36 @@ function validateForm() {
   return true;
 }
 
-function saveItem() {
+async function saveItem() {
   if (!validateForm()) {
     return;
   }
 
-  if (formMode.value === "create") {
-    const nextId = catalogItems.value.length
-      ? Math.max(...catalogItems.value.map((item) => item.id)) + 1
-      : 1;
-    catalogItems.value.push({
-      ...formData.value,
-      id: nextId,
-    });
-  } else {
-    const index = catalogItems.value.findIndex(
-      (item) => item.id === formData.value.id,
-    );
-    if (index !== -1) {
-      catalogItems.value[index] = { ...formData.value };
-    }
+  saving.value = true;
+  formError.value = "";
+  notice.value = "";
+  const payload = {
+    nama: formData.value.nama,
+    kategori: formData.value.kategori,
+    satuan: formData.value.satuan,
+    poin: Number(formData.value.poin),
+    stok: Number(formData.value.stok),
+    image: formData.value.image,
+    status: formData.value.status,
+  };
+  try {
+    const response = formMode.value === "create"
+      ? await tambahKatalog(payload)
+      : await ubahKatalog({ ...payload, id_katalog: formData.value.id_katalog });
+    assertSuccess(response);
+    notice.value = response?.message || (formMode.value === "create" ? "Item katalog ditambahkan." : "Item katalog diperbarui.");
+    closeForm();
+    await loadCatalog();
+  } catch (error) {
+    formError.value = error.message || "Item katalog tidak dapat disimpan.";
+  } finally {
+    saving.value = false;
   }
-
-  closeForm();
 }
 
 function chooseImage() {
@@ -473,12 +506,18 @@ function onImagePicked(event) {
   reader.readAsDataURL(file);
 }
 
-function confirmDelete(item) {
+async function confirmDelete(item) {
   const confirmed = window.confirm(`Hapus item katalog '${item.nama}'?`);
-  if (confirmed) {
-    catalogItems.value = catalogItems.value.filter(
-      (catalogItem) => catalogItem.id !== item.id,
-    );
+  if (!confirmed) return;
+  notice.value = "";
+  listError.value = "";
+  try {
+    const response = await hapusKatalog(item.id_katalog);
+    assertSuccess(response);
+    notice.value = response?.message || "Item katalog dihapus.";
+    await loadCatalog();
+  } catch (error) {
+    listError.value = error.message || "Item katalog tidak dapat dihapus.";
   }
 }
 
@@ -496,4 +535,6 @@ const filteredItems = computed(() => {
 function goBack() {
   router.push("/dashboard");
 }
+
+onMounted(loadCatalog);
 </script>

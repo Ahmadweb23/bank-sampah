@@ -31,6 +31,8 @@
         v-for="item in navItems"
         :key="item.label"
         :to="item.to"
+        :aria-label="item.label"
+        :title="item.label"
         class="flex flex-col items-center gap-1 text-sm transition-colors lg:flex-row lg:justify-start lg:gap-3 lg:rounded-xl lg:px-3 lg:py-3"
         :class="
           isActive(item.to)
@@ -69,6 +71,24 @@
             <path d="M12 12v9" />
           </svg>
           <svg
+            v-else-if="item.icon === 'recycle'"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-6 w-6"
+            :class="isActive(item.to) ? 'text-green-800' : 'text-gray-400'"
+          >
+            <path d="m7 7 2-3h4l2 3" />
+            <path d="m15 4 2 3-3 1" />
+            <path d="m17 11 2 3-2 4h-4" />
+            <path d="m19 14-3 1 1 3" />
+            <path d="m10 18H6l-2-3 2-4" />
+            <path d="m4 15 3 1-1 3" />
+          </svg>
+          <svg
             v-else-if="item.icon === 'clock'"
             viewBox="0 0 24 24"
             fill="none"
@@ -99,6 +119,19 @@
             <path d="M8 17h5" />
           </svg>
           <svg
+            v-else-if="item.icon === 'star'"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-6 w-6"
+            :class="isActive(item.to) ? 'text-green-800' : 'text-gray-400'"
+          >
+            <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" />
+          </svg>
+          <svg
             v-else-if="item.icon === 'chart'"
             viewBox="0 0 24 24"
             fill="none"
@@ -114,6 +147,21 @@
             <path d="M12 11v8" />
             <path d="M17 7v12" />
             <path d="M3 21h18" />
+          </svg>
+          <svg
+            v-else-if="item.icon === 'megaphone'"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-6 w-6"
+            :class="isActive(item.to) ? 'text-green-800' : 'text-gray-400'"
+          >
+            <path d="M3 11v2a2 2 0 0 0 2 2h2l10 4V5L7 9H5a2 2 0 0 0-2 2Z" />
+            <path d="m7 15 2 5h4l-2.5-6" />
+            <path d="M20 9a4 4 0 0 1 0 6" />
           </svg>
           <svg
             v-else
@@ -132,7 +180,8 @@
             <path d="M9 16h4" />
           </svg>
         </span>
-        <span class="whitespace-nowrap">{{ item.label }}</span>
+        <span class="whitespace-nowrap lg:hidden">{{ item.mobileLabel || item.label }}</span>
+        <span class="hidden whitespace-nowrap lg:inline">{{ item.label }}</span>
       </router-link>
     </div>
 
@@ -150,8 +199,11 @@ const route = useRoute();
 const navItems = [
   { label: "Beranda", to: "/dashboard", icon: "home" },
   { label: "Catat Biaya", to: "/keuangan", icon: "receipt" },
+  { label: "Tukar Poin", mobileLabel: "Tukar", to: "/tukar", icon: "star" },
   { label: "Katalog", to: "/katalog-pengelola", icon: "box" },
+  { label: "Jenis Sampah", mobileLabel: "Jenis", to: "/jenis-sampah", icon: "recycle" },
   { label: "Laporan", to: "/laporan", icon: "chart" },
+  { label: "Pengumuman", mobileLabel: "Info", to: "/pengumuman", icon: "megaphone" },
 ];
 
 function isActive(path) {

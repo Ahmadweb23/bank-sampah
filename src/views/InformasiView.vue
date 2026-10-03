@@ -212,21 +212,6 @@
         </div>
       </section>
 
-      <section
-        class="rounded-[32px] bg-gradient-to-b from-emerald-900 to-emerald-800 p-5 text-white shadow-sm"
-      >
-        <p class="text-lg font-semibold">Yuk, Ajak Tetangga!</p>
-        <p class="mt-3 text-sm text-white/80">
-          Dapatkan bonus 50 poin untuk setiap warga baru yang bergabung melalui
-          kode referral Anda.
-        </p>
-        <button
-          class="mt-5 w-full rounded-3xl bg-white px-4 py-3 text-sm font-semibold text-emerald-950"
-          @click="copyReferralCode"
-        >
-          Bagikan Kode
-        </button>
-      </section>
     </main>
 
     <BottomNavWarga />
@@ -234,7 +219,6 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import BottomNavWarga from '../components/BottomNavWarga.vue'
 
 function openWhatsApp() {
@@ -248,9 +232,4 @@ function openGoogleMaps() {
   );
 }
 
-function copyReferralCode() {
-  const code = "REF12345";
-  navigator.clipboard.writeText(code).catch(() => null);
-  alert(`Kode referral disalin: ${code}`);
-}
 </script>

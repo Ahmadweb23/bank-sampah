@@ -1,193 +1,361 @@
 <template>
-  <div class="min-h-screen bg-background px-4 text-on-surface md:px-0 pb-24">
-    <div class="mx-auto max-w-md">
-      <header class="flex items-center justify-between py-4">
-        <div></div>
-        <h1 class="font-headline-md text-headline-md text-primary">
-          Bank Sampah
-        </h1>
-        <button @click="$router.back()" class="text-on-surface-variant">
-          <span class="material-symbols-outlined">close</span>
-        </button>
+  <div class="min-h-screen bg-[#f7f8f7] pb-24 text-slate-900">
+    <main class="mx-auto max-w-3xl px-4 py-6 sm:px-6">
+      <header class="mb-6">
+        <p class="text-sm text-gray-500">Layanan oleh operator</p>
+        <h1 class="text-2xl font-bold text-[#003A36]">Bantu Warga Tukar Poin</h1>
+        <p class="mt-1 text-sm text-gray-600">Warga tidak perlu menggunakan HP atau login sendiri.</p>
       </header>
 
-      <div class="rounded-2xl bg-white p-4 soft-float">
-        <h2 class="text-lg font-semibold text-center">
-          Tukarkan Poin Berhasil
-        </h2>
-        <p class="text-sm text-on-surface-variant text-center mt-2">
-          Sembako sudah dapat diserahkan kepada warga.
+      <section v-if="successTransaction" role="status" class="mb-6 rounded-3xl border border-green-200 bg-green-50 p-5">
+        <h2 class="text-lg font-bold text-green-900">Penukaran berhasil</h2>
+        <p class="mt-2 text-sm text-green-900">
+          {{ successTransaction.nama }}
+          <template v-if="successTransaction.jenis === 'UANG'">
+            menerima uang tunai Rp{{ formatNumber(successTransaction.nominal) }}
+            dari penukaran {{ formatNumber(successTransaction.poin) }} poin.
+          </template>
+          <template v-else>
+            menukar {{ formatNumber(successTransaction.poin) }} poin untuk barang katalog.
+          </template>
+          Saldo tersisa {{ formatNumber(successTransaction.saldo) }} poin.
         </p>
+        <p class="mt-1 text-xs text-green-800">ID transaksi: {{ successTransaction.id }}</p>
+        <button type="button" class="mt-4 rounded-xl bg-[#003A36] px-4 py-2.5 text-sm font-semibold text-white" @click="startNewExchange">
+          Penukaran Baru
+        </button>
+      </section>
 
-        <div
-          class="mt-4 rounded-2xl bg-surface-container p-4 flex items-center justify-between"
-        >
-          <div>
-            <p class="text-sm text-on-surface-variant">Total Poin Dipotong</p>
-            <p class="mt-2 text-2xl font-bold text-primary">150 Poin</p>
-          </div>
-          <div
-            class="w-16 h-16 bg-white rounded-lg flex items-center justify-center soft-float"
-          >
-            <span class="material-symbols-outlined text-primary">star</span>
-          </div>
-        </div>
+      <template v-else>
+        <p v-if="pageError" role="alert" class="mb-4 rounded-xl bg-rose-50 p-3 text-sm text-rose-700">{{ pageError }}</p>
 
-        <div class="mt-4">
-          <p class="text-sm font-medium">Rincian Sembako</p>
-          <div class="mt-2 space-y-2">
-            <div
-              class="rounded-xl bg-white p-3 soft-float flex items-center justify-between"
-            >
-              <div>
-                <p class="font-medium">Beras Premium</p>
-                <p class="text-sm text-on-surface-variant">1 Pack (5kg)</p>
-              </div>
-              <p class="text-sm font-semibold">100 Poin</p>
-            </div>
-            <div
-              class="rounded-xl bg-white p-3 soft-float flex items-center justify-between"
-            >
-              <div>
-                <p class="font-medium">Gula Pasir</p>
-                <p class="text-sm text-on-surface-variant">1 Pack (1kg)</p>
-              </div>
-              <p class="text-sm font-semibold">50 Poin</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-4 grid grid-cols-2 gap-3">
-          <div class="rounded-2xl bg-surface-container p-3">
-            <p class="text-sm text-on-surface-variant">ID Transaksi</p>
-            <p class="font-semibold">#TRX-99210</p>
-          </div>
-          <div class="rounded-2xl bg-surface-container p-3">
-            <p class="text-sm text-on-surface-variant">Waktu</p>
-            <p class="font-semibold">Hari ini, 10:45</p>
-          </div>
-        </div>
-
-        <div
-          class="mt-4 rounded-2xl bg-primary p-3 text-white flex items-center gap-3"
-        >
-          <img src="https://i.pravatar.cc/40" class="w-10 h-10 rounded-full" />
-          <div>
-            <p class="font-medium">Penerima Sembako</p>
-            <p class="font-semibold">Ibu Siti Aminah</p>
-          </div>
-        </div>
-
-        <div class="mt-4 flex flex-col gap-3">
-          <button
-            @click="$router.push('/transaksi')"
-            class="w-full rounded-2xl bg-primary py-3 text-white font-semibold"
-          >
-            Transaksi Baru
-          </button>
-          <div class="flex gap-3">
+        <section class="mb-5 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm">
+          <label for="resident-search" class="block text-sm font-semibold text-gray-700">Pilih atau cari warga</label>
+          <input
+            id="resident-search"
+            v-model="search"
+            type="search"
+            autocomplete="off"
+            placeholder="Cari nama atau username"
+            class="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+          />
+          <p v-if="loadingWarga" class="mt-3 text-sm text-gray-500">Memuat data warga...</p>
+          <div v-else-if="search.trim()" class="mt-2 max-h-56 overflow-y-auto rounded-xl border border-gray-100">
             <button
-              @click="printReceipt"
-              class="flex-1 rounded-2xl bg-white py-3 text-primary border border-surface-container"
+              v-for="warga in filteredWarga"
+              :key="warga.username"
+              type="button"
+              class="flex w-full items-center justify-between gap-4 border-b border-gray-100 px-4 py-3 text-left last:border-0 hover:bg-green-50"
+              @click="selectWarga(warga)"
             >
-              Cetak Struk
+              <span>
+                <span class="block font-semibold">{{ warga.nama }}</span>
+                <span class="block text-xs text-gray-500">@{{ warga.username }}</span>
+              </span>
+              <span class="whitespace-nowrap text-sm font-semibold text-green-800">{{ formatNumber(warga.poin) }} poin</span>
+            </button>
+            <p v-if="!filteredWarga.length" class="p-4 text-sm text-gray-500">Warga tidak ditemukan.</p>
+          </div>
+          <div v-if="selectedWarga" class="mt-4 flex items-center justify-between rounded-2xl bg-green-50 p-4">
+            <div>
+              <p class="font-semibold text-green-950">{{ selectedWarga.nama }}</p>
+              <p class="text-sm text-green-800">@{{ selectedWarga.username }}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-xs text-green-800">Saldo poin</p>
+              <p class="text-lg font-bold text-green-950">{{ formatNumber(selectedWarga.poin) }}</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-5 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm">
+          <h2 class="text-lg font-semibold text-[#003A36]">Pilih penukaran</h2>
+          <div class="mt-3 grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              class="rounded-xl border px-4 py-3 text-sm font-semibold"
+              :class="redemptionMode === 'BARANG' ? 'border-green-800 bg-green-50 text-green-900' : 'border-gray-200 text-gray-600'"
+              @click="setRedemptionMode('BARANG')"
+            >
+              Tukar barang
             </button>
             <button
-              @click="shareReceipt"
-              class="flex-1 rounded-2xl bg-white py-3 text-primary border border-surface-container"
+              type="button"
+              class="rounded-xl border px-4 py-3 text-sm font-semibold"
+              :class="redemptionMode === 'UANG' ? 'border-green-800 bg-green-50 text-green-900' : 'border-gray-200 text-gray-600'"
+              @click="setRedemptionMode('UANG')"
             >
-              Bagikan
+              Tukar uang
             </button>
           </div>
+        </section>
+
+        <section v-if="redemptionMode === 'BARANG'" class="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm">
+          <div class="mb-4 flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-semibold text-[#003A36]">Pilih barang katalog</h2>
+              <p class="text-sm text-gray-500">Saldo poin diperiksa kembali saat penukaran.</p>
+            </div>
+            <button type="button" class="text-sm font-semibold text-green-800" :disabled="loadingKatalog" @click="loadKatalog">Muat ulang</button>
+          </div>
+
+          <p v-if="loadingKatalog" class="py-6 text-center text-sm text-gray-500">Memuat katalog...</p>
+          <p v-else-if="!produkList.length" class="py-6 text-center text-sm text-gray-500">Belum ada barang katalog yang aktif.</p>
+          <div v-else class="space-y-3">
+            <article v-for="produk in produkList" :key="produk.id_katalog" class="flex items-center gap-4 rounded-2xl border border-gray-100 p-3">
+              <img
+                v-if="produk.image"
+                :src="produk.image"
+                :alt="produk.nama"
+                class="h-16 w-16 rounded-xl bg-gray-100 object-cover"
+              />
+              <div class="min-w-0 flex-1">
+                <h3 class="truncate font-semibold">{{ produk.nama }}</h3>
+                <p class="text-sm text-gray-500">{{ formatNumber(produk.poin) }} poin <span v-if="produk.satuan">· {{ produk.satuan }}</span></p>
+                <p class="text-xs text-gray-500">Stok: {{ produk.stok }}</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" class="h-9 w-9 rounded-lg bg-gray-100 text-lg disabled:opacity-40" :disabled="produk.qty === 0" :aria-label="`Kurangi ${produk.nama}`" @click="produk.qty--">−</button>
+                <span class="w-6 text-center font-semibold">{{ produk.qty }}</span>
+                <button type="button" class="h-9 w-9 rounded-lg bg-green-50 text-lg text-green-900 disabled:opacity-40" :disabled="produk.qty >= produk.stok" :aria-label="`Tambah ${produk.nama}`" @click="produk.qty++">+</button>
+              </div>
+            </article>
+          </div>
+
+          <div class="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
+            <span class="font-medium text-gray-600">Total ditukar</span>
+            <span class="text-xl font-bold text-[#003A36]">{{ formatNumber(totalPoin) }} poin</span>
+          </div>
+          <p v-if="selectedWarga && totalPoin > selectedWarga.poin" role="alert" class="mt-2 text-sm text-rose-700">Poin warga tidak mencukupi.</p>
+          <p v-if="formError" role="alert" class="mt-3 text-sm text-rose-700">{{ formError }}</p>
           <button
-            class="mt-2 text-center text-sm text-on-surface-variant"
-            @click="$router.push('/dashboard')"
+            type="button"
+            class="mt-4 w-full rounded-xl bg-[#003A36] px-4 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+            :disabled="saving || !selectedWarga || totalPoin <= 0 || !produkList.length || totalPoin > (selectedWarga?.poin || 0)"
+            @click="exchangePoints"
           >
-            Kembali ke Beranda
+            {{ saving ? 'Memproses penukaran...' : 'Konfirmasi Penukaran' }}
           </button>
-        </div>
-      </div>
-    </div>
+        </section>
+
+        <section v-else class="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm">
+          <h2 class="text-lg font-semibold text-[#003A36]">Tukar poin menjadi uang tunai</h2>
+          <p class="mt-1 text-sm text-gray-500">Nilai penukaran: 1 poin = Rp100. Uang akan dicatat sebagai kas keluar.</p>
+          <label for="cash-points" class="mt-5 block text-sm font-medium text-gray-700">Jumlah poin yang ditukar</label>
+          <input
+            id="cash-points"
+            v-model.number="cashPoints"
+            type="number"
+            min="1"
+            :max="selectedWarga?.poin || 0"
+            step="1"
+            inputmode="numeric"
+            class="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+            placeholder="Masukkan jumlah poin"
+          />
+          <div class="mt-4 flex items-center justify-between rounded-2xl bg-green-50 p-4">
+            <span class="text-sm text-green-900">Uang diterima warga</span>
+            <strong class="text-lg text-green-950">Rp{{ formatNumber(cashAmount) }}</strong>
+          </div>
+          <p v-if="selectedWarga && cashPoints > selectedWarga.poin" role="alert" class="mt-2 text-sm text-rose-700">Jumlah penukaran melebihi saldo poin warga.</p>
+          <p v-if="formError" role="alert" class="mt-3 text-sm text-rose-700">{{ formError }}</p>
+          <button
+            type="button"
+            class="mt-4 w-full rounded-xl bg-[#003A36] px-4 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+            :disabled="saving || !selectedWarga || !Number.isInteger(cashPoints) || cashPoints <= 0 || cashPoints > (selectedWarga?.poin || 0)"
+            @click="exchangePoints"
+          >
+            {{ saving ? 'Memproses penukaran...' : `Tukar ${formatNumber(cashPoints)} poin menjadi uang` }}
+          </button>
+        </section>
+      </template>
+    </main>
+    <BottomNav />
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, onMounted, ref } from 'vue'
+import BottomNav from '../components/BottomNav.vue'
+import { getKatalog, getWargaList, submitTukarPoin } from '../services/api'
 
-// demo transaction data (would come from props or store in real app)
-const trx = ref({
-  id: "#TRX-99210",
-  time: "Hari ini, 10:45",
-  points: 150,
-  items: [
-    { name: "Beras Premium", qty: "1 Pack (5kg)", points: 100 },
-    { name: "Gula Pasir", qty: "1 Pack (1kg)", points: 50 },
-  ],
-  receiver: { name: "Ibu Siti Aminah" },
-});
+const wargaList = ref([])
+const produkList = ref([])
+const selectedWarga = ref(null)
+const search = ref('')
+const loadingWarga = ref(false)
+const loadingKatalog = ref(false)
+const saving = ref(false)
+const pageError = ref('')
+const formError = ref('')
+const successTransaction = ref(null)
+const redemptionMode = ref('BARANG')
+const cashPoints = ref(0)
 
-function buildReceiptHtml(data) {
-  const itemsHtml = data.items
-    .map(
-      (i) =>
-        `<tr><td style="padding:8px">${i.name}<div style="font-size:12px;color:#6b7280">${i.qty}</div></td><td style="padding:8px;text-align:right">${i.points} Poin</td></tr>`,
+const filteredWarga = computed(() => {
+  const query = search.value.trim().toLocaleLowerCase('id-ID')
+  if (!query) return []
+  return wargaList.value
+    .filter((warga) =>
+      `${warga.nama} ${warga.username}`.toLocaleLowerCase('id-ID').includes(query),
     )
-    .join("");
-  return `
-    <html>
-      <head>
-        <meta charset="utf-8" />
-        <title>Struk Tukar Poin</title>
-        <style>body{font-family:Inter,Arial,Helvetica,sans-serif;padding:20px;color:#0f172a} .card{border-radius:12px;padding:16px;border:1px solid #e6eef7}</style>
-      </head>
-      <body>
-        <h2>Bank Sampah - Struk Tukar Poin</h2>
-        <p>ID: ${data.id}</p>
-        <p>Waktu: ${data.time}</p>
-        <div class="card" style="margin-top:12px">
-          <h3>Total Poin Dipotong: ${data.points} Poin</h3>
-          <table style="width:100%;margin-top:8px;border-collapse:collapse">${itemsHtml}</table>
-          <div style="margin-top:12px;padding:12px;background:#003a36;color:white;border-radius:8px">Penerima: ${data.receiver.name}</div>
-        </div>
-      </body>
-    </html>
-  `;
+    .slice(0, 10)
+})
+
+const totalPoin = computed(() =>
+  produkList.value.reduce((total, produk) => total + produk.poin * produk.qty, 0),
+)
+const cashAmount = computed(() => (Number(cashPoints.value) || 0) * 100)
+
+function formatNumber(value) {
+  return new Intl.NumberFormat('id-ID').format(Number(value) || 0)
 }
 
-function printReceipt() {
-  const html = buildReceiptHtml(trx.value);
-  const w = window.open("", "_blank", "noopener");
-  if (!w) {
-    alert("Pop-up diblokir. Izinkan pop-up untuk mencetak struk.");
-    return;
-  }
-  w.document.write(html);
-  w.document.close();
-  w.focus();
-  setTimeout(() => {
-    w.print();
-  }, 300);
+function assertSuccess(response) {
+  if (response?.success === false) throw new Error(response.message || 'Permintaan tidak berhasil.')
 }
 
-async function shareReceipt() {
-  const text = `Struk Tukar Poin\nID: ${trx.value.id}\nTotal: ${trx.value.points} Poin\nPenerima: ${trx.value.receiver.name}`;
-  if (navigator.share) {
-    try {
-      await navigator.share({ title: "Struk Tukar Poin", text });
-    } catch (e) {
-      alert("Bagikan dibatalkan atau tidak tersedia.");
-    }
-    return;
-  }
-
-  // Fallback: copy to clipboard
+async function loadWarga() {
+  loadingWarga.value = true
   try {
-    await navigator.clipboard.writeText(text);
-    alert(
-      "Teks struk telah disalin ke clipboard. Anda dapat menempel untuk membagikannya.",
-    );
-  } catch (e) {
-    alert("Tidak dapat mengakses clipboard.");
+    const response = await getWargaList()
+    assertSuccess(response)
+    const rows = Array.isArray(response?.data) ? response.data : []
+    wargaList.value = rows.map((warga) => ({
+      ...warga,
+      nama: String(warga.nama || warga.nama_warga || warga.username || '').trim(),
+      username: String(warga.username || '').trim(),
+      poin: Number(warga.poin || 0),
+    })).filter((warga) => warga.nama && warga.username)
+  } catch (error) {
+    pageError.value = error.message || 'Data warga tidak dapat dimuat.'
+  } finally {
+    loadingWarga.value = false
   }
 }
+
+async function loadKatalog() {
+  loadingKatalog.value = true
+  try {
+    const response = await getKatalog()
+    assertSuccess(response)
+    const rows = Array.isArray(response?.data) ? response.data : []
+    produkList.value = rows.map((produk) => ({
+      ...produk,
+      poin: Number(produk.poin) || 0,
+      stok: Number(produk.stok) || 0,
+      qty: 0,
+    })).filter((produk) => produk.id_katalog && produk.poin > 0 && produk.stok > 0)
+  } catch (error) {
+    pageError.value = error.message || 'Katalog tidak dapat dimuat.'
+  } finally {
+    loadingKatalog.value = false
+  }
+}
+
+function selectWarga(warga) {
+  selectedWarga.value = warga
+  search.value = ''
+  formError.value = ''
+  successTransaction.value = null
+  cashPoints.value = 0
+  produkList.value.forEach((produk) => { produk.qty = 0 })
+}
+
+function setRedemptionMode(mode) {
+  redemptionMode.value = mode
+  formError.value = ''
+  cashPoints.value = 0
+  produkList.value.forEach((produk) => { produk.qty = 0 })
+}
+
+async function exchangePoints() {
+  const pointsToRedeem = redemptionMode.value === 'UANG'
+    ? Number(cashPoints.value)
+    : totalPoin.value
+  if (!selectedWarga.value || pointsToRedeem <= 0) {
+    formError.value = redemptionMode.value === 'UANG'
+      ? 'Pilih warga dan masukkan jumlah poin untuk ditukar.'
+      : 'Pilih warga dan minimal satu barang untuk ditukar.'
+    return
+  }
+  if (!Number.isInteger(pointsToRedeem)) {
+    formError.value = 'Jumlah poin harus berupa bilangan bulat.'
+    return
+  }
+  if (pointsToRedeem > selectedWarga.value.poin) {
+    formError.value = 'Poin warga tidak mencukupi.'
+    return
+  }
+  const productItems = redemptionMode.value === 'BARANG' ? produkList.value
+    .filter((produk) => produk.qty > 0)
+    .map((produk) => ({
+      id: produk.id_katalog,
+      qty: produk.qty,
+      nama: produk.nama,
+      poin_per_item: produk.poin,
+      subtotal_poin: produk.poin * produk.qty,
+    })) : []
+  if (redemptionMode.value === 'BARANG' && !productItems.length) {
+    formError.value = 'Pilih minimal satu barang untuk ditukar.'
+    return
+  }
+  const cashValue = pointsToRedeem * 100
+  const redemptionLabel = redemptionMode.value === 'UANG'
+    ? `${formatNumber(pointsToRedeem)} poin menjadi Rp${formatNumber(cashValue)} tunai`
+    : `${formatNumber(pointsToRedeem)} poin untuk barang katalog`
+  const accepted = window.confirm(
+    `Konfirmasi penukaran ${redemptionLabel} milik ${selectedWarga.value.nama}?`,
+  )
+  if (!accepted) return
+
+  saving.value = true
+  formError.value = ''
+  try {
+    const operator = JSON.parse(localStorage.getItem('operator') || '{}')
+    const response = await submitTukarPoin({
+      username_warga: selectedWarga.value.username,
+      nama_warga: selectedWarga.value.nama,
+      no_hp: selectedWarga.value.no_hp || '',
+      jenis_penukaran: redemptionMode.value,
+      poin_digunakan: pointsToRedeem,
+      status: redemptionMode.value === 'UANG' ? 'SELESAI' : 'DIPROSES',
+      petugas: operator.nama || operator.username || 'Operator',
+      katalog_json: productItems,
+      catatan: `${redemptionMode.value === 'UANG' ? `Tukar uang Rp${formatNumber(cashValue)}` : 'Tukar barang katalog'} dibantu operator ${operator.nama || operator.username || 'Operator'}`,
+    })
+    assertSuccess(response)
+    successTransaction.value = {
+      id: response?.data?.id_tukar || '',
+      nama: selectedWarga.value.nama,
+      jenis: redemptionMode.value,
+      poin: pointsToRedeem,
+      nominal: Number(response?.data?.nominal_uang) || cashValue,
+      saldo: Number.isFinite(Number(response?.data?.saldo_poin))
+        ? Number(response.data.saldo_poin)
+        : selectedWarga.value.poin - pointsToRedeem,
+    }
+    selectedWarga.value.poin = successTransaction.value.saldo
+    produkList.value.forEach((produk) => { produk.qty = 0 })
+    cashPoints.value = 0
+  } catch (error) {
+    formError.value = error.message || 'Penukaran poin tidak dapat diproses.'
+  } finally {
+    saving.value = false
+  }
+}
+
+function startNewExchange() {
+  selectedWarga.value = null
+  search.value = ''
+  formError.value = ''
+  successTransaction.value = null
+  void loadWarga()
+  void loadKatalog()
+}
+
+onMounted(() => {
+  void loadWarga()
+  void loadKatalog()
+})
 </script>

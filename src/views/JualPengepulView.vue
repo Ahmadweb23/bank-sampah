@@ -96,7 +96,13 @@
 
               <div class="mt-2 flex items-end justify-between">
                 <span class="text-xs text-slate-500">
-                  Stok tersedia: {{ getStokForKategori(item.kode) }} kg
+                  Stok tersedia:
+                  <template v-if="stokLoading">Memuat...</template>
+                  <template v-else-if="stokError">{{ stokError }}</template>
+                  <template v-else-if="getStokForKategori(item.kode) !== null">
+                    {{ getStokForKategori(item.kode) }} kg
+                  </template>
+                  <template v-else>Pilih kategori</template>
                 </span>
                 <button
                   type="button"
@@ -127,10 +133,10 @@
           </button>
           <button
             @click="terimaSimpan"
-            :disabled="loading"
+            :disabled="loading || stokLoading || Boolean(stokError)"
             class="w-full rounded-2xl bg-primary py-3 text-white font-semibold disabled:opacity-50"
           >
-            {{ loading ? 'Menyimpan...' : 'Terima & Simpan' }}
+            {{ loading ? 'Menyimpan...' : stokLoading ? 'Memuat stok...' : 'Terima & Simpan' }}
           </button>
         </div>
       </div>
@@ -157,6 +163,8 @@ const items = ref([
   }
 ])
 const loading = ref(false)
+const stokLoading = ref(true)
+const stokError = ref('')
 
 const totalBerat = computed(() => {
   return items.value.reduce((sum, item) => sum + (Number(item.berat) || 0), 0)
@@ -172,14 +180,27 @@ function formatCurrency(value) {
   return 'Rp' + Number(value).toLocaleString('id-ID')
 }
 
+function normalisasiKodeKategori(value) {
+  return String(value ?? '').trim().toLocaleLowerCase('id-ID')
+}
+
 function getStokForKategori(kode) {
-  const stokItem = stokList.value.find(s => s.kode === kode)
-  return stokItem ? stokItem.stok : 0
+  if (!kode) return null
+  const target = normalisasiKodeKategori(kode)
+  const stokItem = stokList.value.find(s =>
+    normalisasiKodeKategori(s.kode) === target
+  )
+  return stokItem && Number.isFinite(Number(stokItem.stok))
+    ? Number(stokItem.stok)
+    : null
 }
 
 function onKategoriChange(index) {
   const item = items.value[index]
-  const stokItem = stokList.value.find(s => s.kode === item.kode)
+  const target = normalisasiKodeKategori(item.kode)
+  const stokItem = stokList.value.find(s =>
+    normalisasiKodeKategori(s.kode) === target
+  )
   if (stokItem) {
     item.harga_jual = stokItem.harga_jual || 0
   }
@@ -202,25 +223,32 @@ function removeItem(i) {
 }
 
 async function loadData() {
+  stokLoading.value = true
+  stokError.value = ''
   try {
     const [resStok, resMaster] = await Promise.all([getStok(), getMasterSampah()])
 
-    if (resStok.success && resStok.data) {
-      stokList.value = resStok.data
+    if (!Array.isArray(resStok.data)) {
+      throw new Error('API tidak mengembalikan daftar stok yang valid.')
     }
+    stokList.value = resStok.data
 
-    if (resMaster.success && resMaster.data) {
-      masterSampahList.value = resMaster.data.map(item => ({
-        ...item,
-        nama_kategori: item.nama_kategori || item.nama || item.kategori
-      }))
+    if (!Array.isArray(resMaster.data)) {
+      throw new Error('API tidak mengembalikan daftar kategori yang valid.')
     }
+    masterSampahList.value = resMaster.data.map(item => ({
+      ...item,
+      nama_kategori: item.nama_kategori || item.nama || item.kategori
+    }))
   } catch (error) {
+    stokError.value = 'Tidak dapat dibaca'
     showModal({
       type: 'error',
       title: 'Gagal',
       message: error.message || 'Gagal memuat data'
     })
+  } finally {
+    stokLoading.value = false
   }
 }
 
@@ -234,11 +262,20 @@ async function terimaSimpan() {
     return
   }
 
+  if (stokLoading.value || stokError.value) {
+    showModal({
+      type: 'error',
+      title: 'Stok belum tersedia',
+      message: 'Daftar stok belum berhasil dimuat. Muat ulang halaman atau masuk kembali sebelum mencatat penjualan.'
+    })
+    return
+  }
+
   const invalidItem = items.value.find((it) => {
     if (!it.kode) return true
     if (!it.berat || Number(it.berat) <= 0) return true
     const stok = getStokForKategori(it.kode)
-    if (Number(it.berat) > stok) return true
+    if (stok === null || Number(it.berat) > stok) return true
     return false
   })
 
@@ -246,7 +283,7 @@ async function terimaSimpan() {
     showModal({
       type: 'error',
       title: 'Gagal',
-      message: 'Harap pilih kategori, isi berat lebih dari 0, dan tidak melebihi stok'
+      message: 'Harap pilih kategori yang stoknya tersedia, isi berat lebih dari 0, dan tidak melebihi stok'
     })
     return
   }

@@ -9,7 +9,7 @@
  */
 
 const DEFAULT_API_BASE_URL =
-  "https://script.google.com/macros/s/AKfycbz2XnwO9cvXN9EcKdNImEHPpgHKhmXaujLkQMQKBVM5VxrSrt8dxwKeUaFZkxdOWlgC/exec";
+  "https://script.google.com/macros/s/AKfycbwV_Atba5rYBSEjBZoY-GNa6Dv-HpIskHbXic4_3-sb6vo5YUubuL4YI8DCDUPq_WGv/exec";
 const AUTH_TOKEN_KEY = "api_token";
 const PUBLIC_ACTIONS = new Set([
   "ping",
@@ -647,7 +647,6 @@ export function hapusKatalog(idKatalog) {
 export function getApiBaseUrl() {
   return getConfiguredApiBaseUrl();
 }
-
 
 
 

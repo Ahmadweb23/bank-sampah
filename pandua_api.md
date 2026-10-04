@@ -3,7 +3,7 @@
 
 ### Base URL
 ```
-https://script.google.com/macros/s/AKfycbz2XnwO9cvXN9EcKdNImEHPpgHKhmXaujLkQMQKBVM5VxrSrt8dxwKeUaFZkxdOWlgC/exec
+https://script.google.com/macros/s/AKfycbwV_Atba5rYBSEjBZoY-GNa6Dv-HpIskHbXic4_3-sb6vo5YUubuL4YI8DCDUPq_WGv/exec
 ```
 
 Vue menggunakan deployment Apps Script ini sebagai URL default. Untuk memakai
@@ -214,10 +214,11 @@ namun login mandiri warga tetap memerlukan username dan nomor HP.
 
 Nilai setoran dihitung berdasarkan berat dan harga beli masing-masing jenis sampah.
 Nasabah menerima 50% dari nilai setoran. Pilih `metode_pembayaran` sebagai
-`POIN` (default) untuk mengubah bagian nasabah menjadi poin, dengan 1 poin = Rp100,
-atau `TUNAI` untuk membayar bagian tersebut langsung dari kas. Poin dibulatkan ke
-poin terdekat, sedangkan nilai tunai dibulatkan ke rupiah terdekat. Contoh: setoran
-bernilai Rp3.000 memberi 15 poin atau pembayaran tunai Rp1.500.
+`POIN` (default) untuk mengubah bagian nasabah menjadi poin, dengan 1 poin = Rp100;
+mode poin tidak mengubah saldo kas. Pilih `TUNAI` untuk membayar bagian nasabah
+langsung sebagai uang tunai; hanya mode ini yang mencatat pengeluaran kas.
+Contoh: setoran bernilai Rp3.000 memberi 15 poin tanpa mengubah kas atau
+pembayaran tunai Rp1.500 yang mengurangi kas sebesar Rp1.500.
 
 ```json
 {
@@ -250,8 +251,8 @@ bernilai Rp3.000 memberi 15 poin atau pembayaran tunai Rp1.500.
 
 Untuk pembayaran langsung, kirim `"metode_pembayaran": "TUNAI"`. Jika nilai
 setoran Rp4.000, response berisi `total_poin: 0` dan `nilai_dibayarkan: 2000`.
-Pembayaran dicatat sebagai pengeluaran kas dan dikembalikan ke kas bila setoran
-dibatalkan.
+Pembayaran dicatat sebagai pengeluaran kas Rp2.000 dan dikembalikan ke kas
+bila setoran dibatalkan. Pembatalan setoran mode poin tidak mengubah kas.
 
 ### Penukaran Poin Menjadi Uang
 Operator dapat menukar poin warga menjadi uang tunai melalui action

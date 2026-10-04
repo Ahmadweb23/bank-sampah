@@ -112,7 +112,9 @@
               <div class="min-w-0 flex-1">
                 <h3 class="truncate font-semibold">{{ produk.nama }}</h3>
                 <p class="text-sm text-gray-500">{{ formatNumber(produk.poin) }} poin <span v-if="produk.satuan">· {{ produk.satuan }}</span></p>
-                <p class="text-xs text-gray-500">Stok: {{ produk.stok }}</p>
+                <p class="text-xs" :class="produk.stok > 0 ? 'text-gray-500' : 'font-medium text-rose-700'">
+                  {{ produk.stok > 0 ? `Stok: ${produk.stok}` : 'Stok habis' }}
+                </p>
               </div>
               <div class="flex items-center gap-2">
                 <button type="button" class="h-9 w-9 rounded-lg bg-gray-100 text-lg disabled:opacity-40" :disabled="produk.qty === 0" :aria-label="`Kurangi ${produk.nama}`" @click="produk.qty--">−</button>
@@ -245,7 +247,7 @@ async function loadKatalog() {
       poin: Number(produk.poin) || 0,
       stok: Number(produk.stok) || 0,
       qty: 0,
-    })).filter((produk) => produk.id_katalog && produk.poin > 0 && produk.stok > 0)
+    })).filter((produk) => produk.id_katalog && produk.poin > 0)
   } catch (error) {
     pageError.value = error.message || 'Katalog tidak dapat dimuat.'
   } finally {

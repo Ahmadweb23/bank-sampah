@@ -3,7 +3,7 @@
 
 ### Base URL
 ```
-https://script.google.com/macros/s/AKfycbymjPUZTasHne8tPp8XsJFpGnIwo3weKQnRW9eOH-j-gRVpFBchEEPzsuZwkyqkT9v6/exec
+https://script.google.com/macros/s/AKfycbz2XnwO9cvXN9EcKdNImEHPpgHKhmXaujLkQMQKBVM5VxrSrt8dxwKeUaFZkxdOWlgC/exec
 ```
 
 Vue menggunakan deployment Apps Script ini sebagai URL default. Untuk memakai
@@ -24,6 +24,13 @@ dengan content type `text/plain;charset=UTF-8`.
 4. Salin URL deployment yang berakhiran `/exec` ke `VITE_API_BASE_URL` di `.env`
    (lokal) dan Environment Variables deployment Vue (misalnya Vercel), lalu
    deploy ulang frontend.
+
+### Kompatibilitas workbook
+API mendukung header `nama_kategori` pada tab `master_sampah` sebagai alias
+untuk nama jenis sampah. Tab katalog dapat bernama `Katalog` atau `katalog`,
+menggunakan header `id` maupun `id_katalog`, dan tidak wajib memiliki kolom
+`status` (baris tanpa status dianggap aktif). Kolom `username` pada tab `warga`
+digunakan secara spesifik saat saldo poin diperbarui.
 
 ### Format Response
 Semua response menggunakan format berikut.

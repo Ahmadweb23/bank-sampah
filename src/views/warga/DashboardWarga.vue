@@ -57,9 +57,12 @@
       
       <!-- List Scroll Horizontal -->
       <div class="m-5 flex gap-4 overflow-x-auto px-5 pb-4 snap-x hide-scrollbar">
+        <p v-if="loadingKatalog" class="py-4 text-sm text-gray-500">Memuat katalog...</p>
+        <p v-else-if="katalogError" role="alert" class="py-4 text-sm text-rose-600">{{ katalogError }}</p>
+        <p v-else-if="!catalogItems.length" class="py-4 text-sm text-gray-500">Belum ada barang katalog yang aktif.</p>
         <div 
-          v-for="item in catalogItems" 
-          :key="item.id" 
+          v-for="item in catalogItems"
+          :key="item.id_katalog"
           class="min-w-[160px] w-[160px] bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 shrink-0 snap-start flex flex-col justify-between"
         >
           <!-- Bagian Atas: Foto & Informasi Produk -->
@@ -67,7 +70,7 @@
             <!-- Kontainer Foto Produk + Badge Satuan -->
             <div class="h-28 relative overflow-hidden bg-gray-100">
               <img 
-                :src="item.image" 
+                :src="item.image || getCatalogImageFallback(item.nama)"
                 :alt="item.nama" 
                 @error="(e) => e.target.src = 'https://placehold.co/400x300/e2e8f0/475569?text=' + encodeURIComponent(item.nama)"
                 class="w-full h-full object-cover"
@@ -151,7 +154,7 @@
 <script setup>
 import { ref, onMounted, h } from 'vue'
 import { useRouter } from 'vue-router'
-import { getPengumuman } from '../../services/api'
+import { getKatalog, getPengumuman } from '../../services/api'
 import BottomNavWarga from '../../components/BottomNavWarga.vue'
 
 const router = useRouter()
@@ -165,58 +168,9 @@ const warga = ref({
   total_nilai_rupiah: 0
 })
 
-// Data Sembako
-const catalogItems = ref([
-  { 
-    id: 1, 
-    nama: 'Beras Premium', 
-    poin: 150, 
-    satuan: '5kg', 
-    image: '/images/sembako/beras.jpg' 
-  },
-  { 
-    id: 2, 
-    nama: 'Gula Pasir', 
-    poin: 160, 
-    satuan: '1kg', 
-    image: '/images/sembako/gula.jpg' 
-  },
-  { 
-    id: 3, 
-    nama: 'Minyak Goreng', 
-    poin: 180, 
-    satuan: '1L', 
-    image: '/images/sembako/minyak.jpg' 
-  },
-  { 
-    id: 4, 
-    nama: 'Garam', 
-    poin: 50, 
-    satuan: '500g', 
-    image: '/images/sembako/garam.jpg' 
-  },
-  { 
-    id: 5, 
-    nama: 'Kopi Kapal Api', 
-    poin: 45, 
-    satuan: '165g', 
-    image: '/images/sembako/kopi.jpg' 
-  },
-  { 
-    id: 6, 
-    nama: 'Sunlight', 
-    poin: 75, 
-    satuan: '650ml', 
-    image: '/images/sembako/sunlight.jpg' 
-  },
-  { 
-    id: 7, 
-    nama: 'Mie Instan', 
-    poin: 25, 
-    satuan: '1 pck', 
-    image: '/images/sembako/mie.jpg' 
-  },
-])
+const catalogItems = ref([])
+const loadingKatalog = ref(false)
+const katalogError = ref('')
 
 const pengumuman = ref([])
 const loadingPengumuman = ref(false)
@@ -225,6 +179,41 @@ const pengumumanError = ref('')
 // Formatting Ribuan
 const formatAngka = (angka) => {
   return new Intl.NumberFormat('id-ID').format(angka)
+}
+
+async function fetchKatalog() {
+  loadingKatalog.value = true
+  katalogError.value = ''
+  try {
+    const response = await getKatalog()
+    if (response?.success === false) {
+      throw new Error(response.message || 'Katalog tidak dapat dimuat.')
+    }
+    const rows = Array.isArray(response?.data)
+      ? response.data
+      : Array.isArray(response)
+        ? response
+        : []
+    catalogItems.value = rows
+      .map((item) => ({
+        id_katalog: item.id_katalog || item.id,
+        nama: String(item.nama || ''),
+        poin: Number(item.poin) || 0,
+        satuan: String(item.satuan || ''),
+        image: String(item.image || ''),
+      }))
+      .filter((item) => item.id_katalog && item.nama)
+  } catch (error) {
+    console.error('Gagal memuat katalog:', error)
+    catalogItems.value = []
+    katalogError.value = 'Katalog belum dapat dimuat.'
+  } finally {
+    loadingKatalog.value = false
+  }
+}
+
+function getCatalogImageFallback(nama) {
+  return `https://placehold.co/400x300/e2e8f0/475569?text=${encodeURIComponent(nama)}`
 }
 
 async function fetchPengumuman() {
@@ -281,6 +270,7 @@ onMounted(() => {
       console.warn('Gagal parse data warga')
     }
   }
+  fetchKatalog()
   fetchPengumuman()
 })
 </script>

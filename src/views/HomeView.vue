@@ -770,14 +770,10 @@
             Gagal: {{ lastErrorMsg }}
           </p>
           <p class="mt-1 leading-relaxed">
-            <strong>Penyebab:</strong> Server CodeIgniter atau koneksi database
-            belum tersedia.
+            <strong>Penyebab:</strong> API Google Apps Script tidak dapat memproses permintaan.
           </p>
           <p class="mt-1 leading-relaxed text-red-900 font-semibold">
-            <strong>Solusi:</strong> Jalankan backend dari folder
-            <code>Bank_Sampah2</code> dengan
-            <code>php spark serve --host 0.0.0.0 --port 8080</code> dan pastikan
-            database sudah dikonfigurasi serta dimigrasikan.
+            <strong>Solusi:</strong> Pastikan URL deployment Apps Script dan izin Web App benar, lalu deploy versi terbaru seluruh file Apps Script.
           </p>
         </div>
         <!-- Modal Actions -->

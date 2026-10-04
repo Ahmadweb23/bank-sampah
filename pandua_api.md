@@ -3,7 +3,7 @@
 
 ### Base URL
 ```
-https://script.google.com/macros/s/AKfycbwvgY6GpNBSxvxSh3e3ztQLBjLptw9l2_2khPRn8Vw8KFbQXD6CyD3bTDpHuOvSskFB/exec
+https://script.google.com/macros/s/AKfycbzt4kWCLLHtALHHmPXJQjZBZujfLwgWrhL5ZL7Ljcbyo45oqjIh-R8e821UUwAHCFL1/exec
 ```
 
 Vue menggunakan deployment Apps Script ini sebagai URL default. Untuk memakai

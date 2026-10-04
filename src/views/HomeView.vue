@@ -1241,7 +1241,7 @@ async function submitTransaction() {
         : `Warga mendapat ${formatCurrency(res.data?.total_poin || 0)} poin.`;
       await showModal({
         title: "Berhasil",
-        message: `Setoran berhasil disimpan. ${payoutMessage}`,
+        message: `Setoran berhasil disimpan dengan ID ${res.data?.id_setoran || "-"}. ${payoutMessage}`,
       });
 
       namaWarga.value = "";

@@ -9,7 +9,7 @@
  */
 
 const DEFAULT_API_BASE_URL =
-  "https://script.google.com/macros/s/AKfycbzt4kWCLLHtALHHmPXJQjZBZujfLwgWrhL5ZL7Ljcbyo45oqjIh-R8e821UUwAHCFL1/exec";
+  "https://script.google.com/macros/s/AKfycbwnCGzmoN3UbvDjgrvvwEadbm2RxR3C6HhHsda8MEtGIf0QRU7pBU_9JihydqWtLs7B/exec";
 const AUTH_TOKEN_KEY = "api_token";
 const PUBLIC_ACTIONS = new Set([
   "ping",

@@ -870,7 +870,10 @@ async function submitTransaction() {
     addLog(res && res.success ? 'success' : 'error', 'Response Server Simpan Setoran', res?.message || 'Tanpa pesan', res);
 
     if (res && res.success) {
-      await showModal({ title: 'Berhasil', message: 'Transaksi setoran berhasil disimpan ke database spreadsheet!' });
+      await showModal({
+        title: 'Berhasil',
+        message: `Transaksi setoran ${res.data?.id_setoran || ''} berhasil disimpan ke database spreadsheet!`
+      });
 
       // Reset form state
       namaWarga.value = "";

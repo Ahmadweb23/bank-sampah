@@ -25,7 +25,7 @@ import RiwayatWargaView from "../views/warga/RiwayatWargaView.vue";
 const routes = [
   {
     path: "/",
-    redirect: "/login-warga",
+    redirect: "/login",
   },
 
   // =====================================================
